@@ -19,28 +19,9 @@ import org.apache.commons.net.ftp.FTPClient;
  */
 public class FTPDownloadDriveBrowser {
 
-	public static enum BROWSER {
-		BROWSER_FIREFOX("webdriver.gecko.driver"), BROWSER_IE("webdriver.ie.driver"), BROWSER_CHROME("webdriver.chrome.driver");
-
-		private String chaveSystemProperty;
-
-		private BROWSER(String chaveSystemProperty) {
-			this.chaveSystemProperty = chaveSystemProperty;
-		}
-
-		public String getChaveSystemProperty() {
-			return chaveSystemProperty;
-		}
-
-		public void setChaveSystemProperty(String chaveSystemProperty) {
-			this.chaveSystemProperty = chaveSystemProperty;
-		}
-
-	}
-
 	protected static String CAMINHO_PROPERTIES_DRIVER_POROS = "/stor/home/siareear/ambiente/testeFuncional/driverBrowser.properties"; 
 
-	public static void obterDriver(BROWSER browser, String version) {
+	public static void obterDriver(BrowserEnum browser, String version) {
 
 
 		FTPClient ftpClient = new FTPClient();
@@ -104,7 +85,7 @@ public class FTPDownloadDriveBrowser {
 		return ftpClient;
 	}
 
-	protected static String obtemCaminhoDrive(BROWSER browser, String version) throws IOException{
+	protected static String obtemCaminhoDrive(BrowserEnum browser, String version) throws IOException{
 		FTPClient ftpClient = connectFtp();	
 		try {
 			Properties prop = new Properties();
@@ -119,7 +100,7 @@ public class FTPDownloadDriveBrowser {
 	}
 
 	public static void main(String[] args) {
-		FTPDownloadDriveBrowser.obterDriver(BROWSER.BROWSER_IE, "11");
+		FTPDownloadDriveBrowser.obterDriver(BrowserEnum.IE, "11");
 	}
 
 }

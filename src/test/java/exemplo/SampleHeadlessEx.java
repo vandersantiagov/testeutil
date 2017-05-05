@@ -12,10 +12,10 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.ie.InternetExplorerDriver;
 import org.openqa.selenium.remote.DesiredCapabilities;
 
+import util.BrowserEnum;
 import util.FTPDownloadDriveBrowser;
-import util.FTPDownloadDriveBrowser.BROWSER;
 
-public class SampleHeadlessTest {
+public class SampleHeadlessEx {
 	private WebDriver driver;
 
 	private String baseUrl;
@@ -26,9 +26,9 @@ public class SampleHeadlessTest {
 		
 		DesiredCapabilities ieCapabilities = DesiredCapabilities.internetExplorer();  
 		ieCapabilities.setCapability(InternetExplorerDriver.INTRODUCE_FLAKINESS_BY_IGNORING_SECURITY_DOMAINS, true);
-		FTPDownloadDriveBrowser.obterDriver(BROWSER.BROWSER_IE, "11");
-		FTPDownloadDriveBrowser.obterDriver(BROWSER.BROWSER_CHROME, "58");
-		FTPDownloadDriveBrowser.obterDriver(BROWSER.BROWSER_FIREFOX, "53");
+		FTPDownloadDriveBrowser.obterDriver(BrowserEnum.IE, "11");
+		FTPDownloadDriveBrowser.obterDriver(BrowserEnum.CHROME, "58");
+		FTPDownloadDriveBrowser.obterDriver(BrowserEnum.FIREFOX, "53");
 		//driver = new ChromeDriver(); 
 		driver = new InternetExplorerDriver(ieCapabilities);
 		
