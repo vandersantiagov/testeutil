@@ -1,7 +1,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>gov.sefmg</groupId>
+	<groupId>gov.sefmg.teste</groupId>
 	<artifactId>testeutil</artifactId>
 	<version>0.0.1</version>
 	<name>SiarePre</name>
@@ -38,7 +38,6 @@
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 			<version>4.12</version>
-			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>com.google.code.gson</groupId>
@@ -54,25 +53,11 @@
 	    	<groupId>com.codeborne</groupId>
 	    	<artifactId>phantomjsdriver</artifactId>
 	    	<version>1.4.0</version>
-		</dependency>
+		</dependency>	
 	</dependencies>
-	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.1</version>
-				<configuration>
-					<maxmem>758m</maxmem>
-					<meminitial>512m</meminitial>
-					<source>1.8</source>
-					<target>1.8</target>
-					<verbose>true</verbose>
-					<fork>true</fork>
-					<executable>C:\Ambiente\java\jdk1.8.0_71\bin\javac</executable>
-					<compilerVersion>1.8</compilerVersion>
-				</configuration>
-			</plugin>
-		</plugins>
-	</build>
+	<parent>
+		<groupId>gov.sefmg</groupId>
+		<artifactId>projeto-qa</artifactId>
+		<version>1.1</version>
+	</parent>
 </project>
