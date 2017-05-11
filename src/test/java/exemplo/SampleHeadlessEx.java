@@ -12,8 +12,10 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.ie.InternetExplorerDriver;
 import org.openqa.selenium.remote.DesiredCapabilities;
 
-import util.BrowserEnum;
-import util.FTPDownloadDriveBrowser;
+import br.gov.mg.testeutil.util.BrowserEnum;
+import br.gov.mg.testeutil.util.FTPDownloadDriveBrowser;
+
+
 
 public class SampleHeadlessEx {
 	private WebDriver driver;
