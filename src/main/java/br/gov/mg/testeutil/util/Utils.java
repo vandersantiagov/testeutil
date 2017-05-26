@@ -84,7 +84,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 			File scrFile = ((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);
 			Date data = new Date();
 		    try {
-				FileUtils.copyFile(scrFile, new File("Z:\\SeleniumScreenShotsTA\\"+fileName+" - "+data.getTime()+".jpeg"),true); //
+				FileUtils.copyFile(scrFile, new File("Z:\\SeleniumScreenShots\\"+fileName+" - "+data.getTime()+".jpeg"),true); //
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
