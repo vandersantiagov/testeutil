@@ -13,7 +13,7 @@ import br.gov.mg.testeutil.util.Utils;
 
 
 
-public class TelaLogin {
+public class TelaLoginSicaf {
 	
 	/**
 	 * Instancia privada do webDriver que vira da suite de teste
