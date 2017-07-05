@@ -28,8 +28,11 @@ private static WebDriver driver = null;
 		String version = Property.BROWSER_VERSION;
 		if (driver == null) {
 			if (BrowserEnum.CHROME.toString().equals(browser)) {
+				DesiredCapabilities capabilities = new DesiredCapabilities();
+				capabilities.setCapability(CapabilityType.ACCEPT_SSL_CERTS, true);
 				FTPDownloadDriveBrowser.obterDriver(BrowserEnum.CHROME, version);
-				driver = new ChromeDriver();
+				driver = new ChromeDriver(capabilities);
+					
 				
 			} else if (BrowserEnum.IE.toString().equals(browser)) {
 				DesiredCapabilities capabilities = DesiredCapabilities.internetExplorer();

@@ -33,7 +33,7 @@ public class ObjetosTelaLoginSicaf {
 	 * Definição Técnica dos locators utilizados na página
 	 * Tela de Login Intranet do SIARE
 	 */	
-	static By validacaoTituloCorretoLogin = By.id("boxFooterg");
+	static By validacaoTituloCorretoLogin = By.id("boxFooter");
 	static By cpfField = By.name("login");
 	static By senhaField = By.name("senhaAtual");
 	static By confirmarFieldLogin = By.name("Confirmar");

@@ -29,7 +29,7 @@ public class ObjetosTelaLoginSol {
 	 * Definição Técnica dos locators utilizados na página
 	 * Tela de Login Internet do SIARE
 	 */	
-	static By validacaoTituloCorretoLogin = By.id("boxFooterg");
+	static By validacaoTituloCorretoLogin = By.id("boxFooter");
 	
 	static By selecionarTipoDeUsuario = By.name("cmbDominio");
 	
@@ -48,6 +48,8 @@ public class ObjetosTelaLoginSol {
 	
 	static By preencherCampoCPF = By.name("login");
 	
+	static By preencherCampoIdentificacao = By.name("dominio");
+	
 	static By preencherSenhaAtual = By.name("senhaAtual");
 	
 	static By comandoConfirmarLoginInternet = By.name("Confirmar");
@@ -56,6 +58,7 @@ public class ObjetosTelaLoginSol {
 	 * Validação do Titulo da tela de Login Internet
 	 */
 	public static void tituloPaginaLoginCorretoInternet(String expectedTitle){
+		wait.until(ExpectedConditions.visibilityOfElementLocated(validacaoTituloCorretoLogin));
 		assertThat("Título Incorreto",  driver.findElement(validacaoTituloCorretoLogin).getText(), is(expectedTitle));
 	}
 	
@@ -77,22 +80,31 @@ public class ObjetosTelaLoginSol {
 //		driver.findElement(selecionarCERM_TFRMPessoaJuridica).click(); // TFRM CNPJ
 //		driver.findElement(selecionarVAFEspecial).click(); // VAF IE
 //		driver.findElement(selecionarContribuinteInterestadual).click(); // Contribuinte Interestadual
-		wait.equals(5000);
+//		wait.equals(50000);
 	}
 	
 	/**
 	 * Digita CPF na tela de Login Internet
 	 */
-	public static void performSearchCpf(String searchTextCpf) { 
+	public static void preencheCampoCpf(String searchTextCpf) { 
 		Utils.isClickable(preencherCampoCPF);
 		driver.findElement(preencherCampoCPF).clear();
 		driver.findElement(preencherCampoCPF).sendKeys(searchTextCpf);
 	}
 	
 	/**
+	 * Digita a Identificação na tela de Login Internet
+	 */
+	public static void preencheCampoIdentificacao(String searchTextSenha) { 
+		Utils.isClickable(preencherCampoIdentificacao);
+		driver.findElement(preencherCampoIdentificacao).clear();
+		driver.findElement(preencherCampoIdentificacao).sendKeys(searchTextSenha);
+	}
+	
+	/**
 	 * Digita a senha na tela de Login Internet
 	 */
-	public static void performSearchSenha(String searchTextSenha) { 
+	public static void preencheCampoSenha(String searchTextSenha) { 
 		Utils.isClickable(preencherSenhaAtual);
 		driver.findElement(preencherSenhaAtual).clear();
 		driver.findElement(preencherSenhaAtual).sendKeys(searchTextSenha);
