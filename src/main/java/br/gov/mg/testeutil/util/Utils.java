@@ -2,7 +2,7 @@ package br.gov.mg.testeutil.util;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Date;
+//import java.util.Date;
 
 import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.By;
@@ -95,10 +95,10 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 		 */
 		public static void takeScreenshot(String fileName){
 			File scrFile = ((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);
-		    Date data = new Date();
+//		    Date data = new Date();
 		    try {
-//				FileUtils.copyFile(scrFile, new File("Z:\\SeleniumScreenShots\\"+fileName+".jpeg"),true);
-			    FileUtils.copyFile(scrFile, new File("Z:\\SeleniumScreenShots\\"+fileName+" - "+data.getTime()+".jpeg"),true);
+				FileUtils.copyFile(scrFile, new File("Z:\\SeleniumScreenShots\\"+fileName+".jpeg"),true);
+//			    FileUtils.copyFile(scrFile, new File("Z:\\SeleniumScreenShots\\"+fileName+" - "+data.getTime()+".jpeg"),true);
 			} catch (IOException e) {
 				e.printStackTrace();
 			}

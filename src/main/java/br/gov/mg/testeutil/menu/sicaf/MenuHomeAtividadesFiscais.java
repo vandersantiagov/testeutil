@@ -15,6 +15,7 @@ public class MenuHomeAtividadesFiscais {
 		 * Instancia privada do webDriver que vira da suite de teste
 		 */
 		private static final WebDriver driver;
+		@SuppressWarnings("unused")
 		private static final WebDriverWait wait;
 		
 		/**
