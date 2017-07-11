@@ -13,7 +13,7 @@ import org.openqa.selenium.remote.DesiredCapabilities;
  * Classe Utils para o Selenium
  * Identifica qual o browser escolhido no config.properties e inicializa o webdriver correspondente
  */
-public class Selenium {
+public class SeleniumSicaf {
 	
 private static WebDriver driver = null;
 	
@@ -24,8 +24,8 @@ private static WebDriver driver = null;
 	 * @return retorna inst�ncia do WebDriver
 	 */
 	public static WebDriver getDriver() {
-		String browser = Property.BROWSER_NAME;
-		String version = Property.BROWSER_VERSION;
+		String browser = PropertySicaf.BROWSER_NAME;
+		String version = PropertySicaf.BROWSER_VERSION;
 		if (driver == null) {
 			if (BrowserEnum.CHROME.toString().equals(browser)) {
 				DesiredCapabilities capabilities = new DesiredCapabilities();

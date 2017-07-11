@@ -8,7 +8,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-import br.gov.mg.testeutil.util.sicaf.Selenium;
+import br.gov.mg.testeutil.util.sicaf.SeleniumSicaf;
 import br.gov.mg.testeutil.util.sicaf.Utils;
 
 
@@ -25,7 +25,7 @@ public class ObjetosTelaLoginSicaf {
 	 * Construtor que ira adicionar a instancia do WebDriver para utilizacao dos metodos
 	 */
 	static {
-		driver = Selenium.getDriver();
+		driver = SeleniumSicaf.getDriver();
 		wait = new WebDriverWait(driver, 10);
 	}
 	

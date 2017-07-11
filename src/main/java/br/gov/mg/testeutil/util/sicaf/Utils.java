@@ -23,7 +23,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 		private static final WebDriverWait wait;
 		
 		static{
-			driver = Selenium.getDriver();
+			driver = SeleniumSicaf.getDriver();
 			wait = new WebDriverWait(driver, 10);
 		}
 
