@@ -26,7 +26,7 @@ public class ObjetosTelaLoginSol {
 		wait = new WebDriverWait(driver, 10);
 	}
 	/**
-	 * Definição Técnica dos locators utilizados na página
+	 * Definiï¿½ï¿½o Tï¿½cnica dos locators utilizados na pï¿½gina
 	 * Tela de Login Internet do SIARE
 	 */	
 	static By validacaoTituloCorretoLogin = By.id("boxFooter");
@@ -55,11 +55,11 @@ public class ObjetosTelaLoginSol {
 	static By comandoConfirmarLoginInternet = By.name("Confirmar");
 	
 	/**
-	 * Validação do Titulo da tela de Login Internet
+	 * Validaï¿½ï¿½o do Titulo da tela de Login Internet
 	 */
 	public static void tituloPaginaLoginCorretoInternet(String expectedTitle){
 		wait.until(ExpectedConditions.visibilityOfElementLocated(validacaoTituloCorretoLogin));
-		assertThat("Título Incorreto",  driver.findElement(validacaoTituloCorretoLogin).getText(), is(expectedTitle));
+		assertThat("Texto Incorreto!",  driver.findElement(validacaoTituloCorretoLogin).getText(), is(expectedTitle));
 	}
 	
 	/**
@@ -68,7 +68,7 @@ public class ObjetosTelaLoginSol {
 	 */
 	public static void comboTipoIdentificacaoSujeitoPassivo() throws InterruptedException{
 		driver.findElement(selecionarTipoDeUsuario).click();
-		driver.findElement(selecionarIE).click(); // Inscrição Estadual
+		driver.findElement(selecionarIE).click(); // Inscriï¿½ï¿½o Estadual
 //		driver.findElement(selecionarProtocolo).click(); // Protocolo
 //		driver.findElement(selecionarCPF).click(); // CPF
 //		driver.findElement(selecionarCNPJ).click(); // CNPJ
@@ -93,7 +93,7 @@ public class ObjetosTelaLoginSol {
 	}
 	
 	/**
-	 * Digita a Identificação na tela de Login Internet
+	 * Digita a Identificaï¿½ï¿½o na tela de Login Internet
 	 */
 	public static void preencheCampoIdentificacao(String searchTextSenha) { 
 		Utils.isClickable(preencherCampoIdentificacao);
