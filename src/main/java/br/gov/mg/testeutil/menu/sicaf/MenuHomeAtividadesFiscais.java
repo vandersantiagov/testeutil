@@ -6,8 +6,9 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 //import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import br.gov.mg.testeutil.util.Selenium;
-import br.gov.mg.testeutil.util.Utils;
+
+import br.gov.mg.testeutil.util.sicaf.Selenium;
+import br.gov.mg.testeutil.util.sicaf.Utils;
 
 public class MenuHomeAtividadesFiscais {
 		
@@ -27,7 +28,7 @@ public class MenuHomeAtividadesFiscais {
 		}
 		
 		/**
-		 * Definição Técnica dos locators utilizados na página
+		 * Definiï¿½ï¿½o Tï¿½cnica dos locators utilizados na pï¿½gina
 		 * Tela Home do Intranet do SIARE
 		 * Acesso ao menu Atividadades Fiscais
 		 */
@@ -35,20 +36,20 @@ public class MenuHomeAtividadesFiscais {
 		static By menuPrincipalVertical = By.linkText("Home");
 		static By submenuPrincipalVertical = By.linkText("Home");
 		static By subMenuVerticalAtividadesFiscais = By.linkText("Atividades Fiscais");
-		static By subMenuVerticalInclusaoAtividadesFiscais = By.linkText("Inclusão de Documento de Início de Ação Fiscal");
+		static By subMenuVerticalInclusaoAtividadesFiscais = By.linkText("Inclusï¿½o de Documento de Inï¿½cio de Aï¿½ï¿½o Fiscal");
 		
-		static By subMenuVerticalManutencaoAtividadesFiscais = By.linkText("Manutenção de Documento Início de Ação Fiscal");
+		static By subMenuVerticalManutencaoAtividadesFiscais = By.linkText("Manutenï¿½ï¿½o de Documento Inï¿½cio de Aï¿½ï¿½o Fiscal");
 		
-		static By subMenuVerticalRecebimentoDIAF = By.linkText("Recebimento de Documento de Início de Ação Fiscal");
+		static By subMenuVerticalRecebimentoDIAF = By.linkText("Recebimento de Documento de Inï¿½cio de Aï¿½ï¿½o Fiscal");
 		static By subMenuVerticalInformarRecebimento = By.linkText("Informar Recebimento");
 		static By subMenuVerticalExluirRecebimento = By.linkText("Excluir Recebimento");
 
 		
 		/**
-		 * Validação do Titulo da tela da Caixa de Serviço
+		 * Validaï¿½ï¿½o do Titulo da tela da Caixa de Serviï¿½o
 		 */
 		public static void tituloPaginaLoginCorreto(String expectedTitle){
-			assertThat("Título Incorreto",  driver.findElement(validacaoTituloCorretoCaixaDeServico).getText(), is(expectedTitle));
+			assertThat("Tï¿½tulo Incorreto",  driver.findElement(validacaoTituloCorretoCaixaDeServico).getText(), is(expectedTitle));
 		}
 		
 		/**
@@ -62,14 +63,14 @@ public class MenuHomeAtividadesFiscais {
 		}	
 			
 		/**
-		 * Clicar no item de subMenu Inclusão DIAF no Menu Vertical HOME
+		 * Clicar no item de subMenu Inclusï¿½o DIAF no Menu Vertical HOME
 		 * 
 		 */
 		public static void subMenuPrincipalVerticalAtivdadesFiscaisInclusao(String subMenuPrincipalVertical){
 			By correctLocator = null;
 			if (subMenuPrincipalVertical.equalsIgnoreCase("Atividades Fiscais")){
 				correctLocator = subMenuVerticalAtividadesFiscais;
-			} else if (subMenuPrincipalVertical.equalsIgnoreCase("Inclusão de Documento de Início de Ação Fiscal")){
+			} else if (subMenuPrincipalVertical.equalsIgnoreCase("Inclusï¿½o de Documento de Inï¿½cio de Aï¿½ï¿½o Fiscal")){
 				correctLocator = subMenuVerticalInclusaoAtividadesFiscais;
 			}
 			Utils.isVisible(correctLocator);
@@ -77,14 +78,14 @@ public class MenuHomeAtividadesFiscais {
 		}
 		
 		/**
-		 * Clicar no item de subMenu Mantutenção DIAF no Menu Vertical HOM
+		 * Clicar no item de subMenu Mantutenï¿½ï¿½o DIAF no Menu Vertical HOM
 		 * 
 		 */
 		public static void subMenuPrincipalVerticalAtivdadesFiscaisManutencao(String subMenuPrincipalVertical){
 			By correctLocator = null;
 			if (subMenuPrincipalVertical.equalsIgnoreCase("Atividades Fiscais")){
 				correctLocator = subMenuVerticalAtividadesFiscais;
-			} else if (subMenuPrincipalVertical.equalsIgnoreCase("Manutenção de Documento Início de Ação Fiscal")){
+			} else if (subMenuPrincipalVertical.equalsIgnoreCase("Manutenï¿½ï¿½o de Documento Inï¿½cio de Aï¿½ï¿½o Fiscal")){
 				correctLocator = subMenuVerticalManutencaoAtividadesFiscais;
 			}
 			Utils.isVisible(correctLocator);
@@ -99,7 +100,7 @@ public class MenuHomeAtividadesFiscais {
 			By correctLocator = null;
 			if (subMenuPrincipalVertical.equalsIgnoreCase("Atividades Fiscais")){
 				correctLocator = subMenuVerticalAtividadesFiscais;
-			} else if (subMenuPrincipalVertical.equalsIgnoreCase("Recebimento de Documento de Início de Ação Fiscal")){
+			} else if (subMenuPrincipalVertical.equalsIgnoreCase("Recebimento de Documento de Inï¿½cio de Aï¿½ï¿½o Fiscal")){
 				correctLocator = subMenuVerticalRecebimentoDIAF;
 			}else if (subMenuPrincipalVertical.equalsIgnoreCase("Informar Recebimento")){
 				correctLocator = subMenuVerticalInformarRecebimento;
@@ -116,7 +117,7 @@ public class MenuHomeAtividadesFiscais {
 			By correctLocator = null;
 			if (subMenuPrincipalVertical.equalsIgnoreCase("Atividades Fiscais")){
 				correctLocator = subMenuVerticalAtividadesFiscais;
-			} else if (subMenuPrincipalVertical.equalsIgnoreCase("Recebimento de Documento de Início de Ação Fiscal")){
+			} else if (subMenuPrincipalVertical.equalsIgnoreCase("Recebimento de Documento de Inï¿½cio de Aï¿½ï¿½o Fiscal")){
 				correctLocator = subMenuVerticalRecebimentoDIAF;
 			}else if (subMenuPrincipalVertical.equalsIgnoreCase("Excluir Recebimento")){
 				correctLocator = subMenuVerticalExluirRecebimento;

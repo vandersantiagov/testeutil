@@ -1,4 +1,4 @@
-package br.gov.mg.testeutil.util;
+package br.gov.mg.testeutil.util.sol;
 
 import java.io.File;
 import java.io.IOException;
@@ -13,7 +13,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 /**
- * Classe com métodos de apoio, que otimizam a codificação das classes de página.
+ * Classe com mï¿½todos de apoio, que otimizam a codificaï¿½ï¿½o das classes de pï¿½gina.
  * @author Antonio Bernardo
  *
  */
@@ -23,12 +23,12 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 		private static final WebDriverWait wait;
 		
 		static{
-			driver = Selenium.getDriver();
+			driver = SeleniumSol.getDriver();
 			wait = new WebDriverWait(driver, 10);
 		}
 
 		/**
-		 * Método para verificar a visibilidade de um elemento utilizando o locator
+		 * Mï¿½todo para verificar a visibilidade de um elemento utilizando o locator
 		 * @param locator
 		 */
 		public static void isVisible(By locator) {
@@ -36,7 +36,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 		}
 		
 		/**
-		 * Método para verificar a visibilidade de um elemento utilizando o ID
+		 * Mï¿½todo para verificar a visibilidade de um elemento utilizando o ID
 		 * @param id
 		 */
 		public static void isVisible(String id) {
@@ -44,7 +44,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 		}
 		
 		/**
-		 * Método para verificar a presença de um elemento utilizando o locator
+		 * Mï¿½todo para verificar a presenï¿½a de um elemento utilizando o locator
 		 * @param locator
 		 */
 		public static void isLocated(By locator) {
@@ -52,7 +52,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 		}
 		
 		/**
-		 * Método para verificar a presença de um elemento utilizando o ID
+		 * Mï¿½todo para verificar a presenï¿½a de um elemento utilizando o ID
 		 * @param id
 		 */
 		public static void isLocated(String id) {
@@ -60,7 +60,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 		}
 		
 		/**
-		 * Método para verificar se um elemento é clicável utilizando o locator
+		 * Mï¿½todo para verificar se um elemento ï¿½ clicï¿½vel utilizando o locator
 		 * @param locator
 		 */
 		public static void isClickable(By locator) {
@@ -68,7 +68,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 		}
 		
 		/**
-		 * Método para verificar se um elemento é clicável utilizando o ID
+		 * Mï¿½todo para verificar se um elemento ï¿½ clicï¿½vel utilizando o ID
 		 * @param id
 		 */
 		public static void isClickable(String id) {
@@ -76,7 +76,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 		}
 		
 		/**
-		 * Método para exluir os arquivo no ScreencShot
+		 * Mï¿½todo para exluir os arquivo no ScreencShot
 		 */
 		
 		public static void deltarArquivosScreenshot (){
@@ -90,7 +90,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 		}
 		
 		/**
-		 * Método para capturar screenshot
+		 * Mï¿½todo para capturar screenshot
 		 * @param fileName - Nome do arquivo
 		 */
 		public static void takeScreenshot(String fileName){

@@ -12,8 +12,8 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.ie.InternetExplorerDriver;
 import org.openqa.selenium.remote.DesiredCapabilities;
 
-import br.gov.mg.testeutil.util.BrowserEnum;
-import br.gov.mg.testeutil.util.FTPDownloadDriveBrowser;
+import br.gov.mg.testeutil.util.sicaf.BrowserEnum;
+import br.gov.mg.testeutil.util.sicaf.FTPDownloadDriveBrowser;
 
 
 

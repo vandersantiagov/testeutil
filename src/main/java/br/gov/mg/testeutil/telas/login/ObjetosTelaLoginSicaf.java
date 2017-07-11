@@ -8,8 +8,8 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-import br.gov.mg.testeutil.util.Selenium;
-import br.gov.mg.testeutil.util.Utils;
+import br.gov.mg.testeutil.util.sicaf.Selenium;
+import br.gov.mg.testeutil.util.sicaf.Utils;
 
 
 
@@ -30,7 +30,7 @@ public class ObjetosTelaLoginSicaf {
 	}
 	
 	/**
-	 * Definição Técnica dos locators utilizados na página
+	 * Definiï¿½ï¿½o Tï¿½cnica dos locators utilizados na pï¿½gina
 	 * Tela de Login Intranet do SIARE
 	 */	
 	static By validacaoTituloCorretoLogin = By.id("boxFooter");
@@ -39,10 +39,10 @@ public class ObjetosTelaLoginSicaf {
 	static By confirmarFieldLogin = By.name("Confirmar");
 	
 	/**
-	 * Validação do Titulo da tela de Login
+	 * Validaï¿½ï¿½o do Titulo da tela de Login
 	 */
 	public static void tituloPaginaLoginCorreto(String expectedTitle){
-		assertThat("Título Incorreto",  driver.findElement(validacaoTituloCorretoLogin).getText(), is(expectedTitle));
+		assertThat("Tï¿½tulo Incorreto",  driver.findElement(validacaoTituloCorretoLogin).getText(), is(expectedTitle));
 	}
 	
 	/**

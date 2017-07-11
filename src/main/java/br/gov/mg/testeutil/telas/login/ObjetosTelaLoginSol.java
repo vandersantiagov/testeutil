@@ -8,8 +8,8 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-import br.gov.mg.testeutil.util.Selenium;
-import br.gov.mg.testeutil.util.Utils;
+import br.gov.mg.testeutil.util.sol.SeleniumSol;
+import br.gov.mg.testeutil.util.sol.Utils;
 
 public class ObjetosTelaLoginSol {
 	/**
@@ -22,7 +22,7 @@ public class ObjetosTelaLoginSol {
 	 * Construtor que ira adicionar a instancia do WebDriver para utilizacao dos metodos
 	 */
 	static {
-		driver = Selenium.getDriver();
+		driver = SeleniumSol.getDriver();
 		wait = new WebDriverWait(driver, 10);
 	}
 	/**

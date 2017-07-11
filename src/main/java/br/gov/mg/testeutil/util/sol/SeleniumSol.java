@@ -1,4 +1,4 @@
-package br.gov.mg.testeutil.util;
+package br.gov.mg.testeutil.util.sol;
 
 import org.openqa.selenium.UnexpectedAlertBehaviour;
 import org.openqa.selenium.WebDriver;
@@ -13,7 +13,7 @@ import org.openqa.selenium.remote.DesiredCapabilities;
  * Classe Utils para o Selenium
  * Identifica qual o browser escolhido no config.properties e inicializa o webdriver correspondente
  */
-public class Selenium {
+public class SeleniumSol {
 	
 private static WebDriver driver = null;
 	
@@ -21,11 +21,11 @@ private static WebDriver driver = null;
 	/**
 	 * Verifica qual o browser escolhido no arquivo de propriedades
 	 * inicializa o driver apropriado e o retorna
-	 * @return retorna instância do WebDriver
+	 * @return retorna instï¿½ncia do WebDriver
 	 */
 	public static WebDriver getDriver() {
-		String browser = Property.BROWSER_NAME;
-		String version = Property.BROWSER_VERSION;
+		String browser = PropertySol.BROWSER_NAME;
+		String version = PropertySol.BROWSER_VERSION;
 		if (driver == null) {
 			if (BrowserEnum.CHROME.toString().equals(browser)) {
 				DesiredCapabilities capabilities = new DesiredCapabilities();
