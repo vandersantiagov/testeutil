@@ -118,4 +118,11 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 				ex.printStackTrace();
 			}
 		}
+		/**
+		 * Método para fehcar o Browser após execução da Suite de teste 
+		 * Utilizar somente na ultima classe de teste do scritp
+		 */
+		public static void fecharBrowser (){
+			driver.quit();
+		}
 }

@@ -32,6 +32,7 @@ private static WebDriver driver = null;
 				capabilities.setCapability(CapabilityType.ACCEPT_SSL_CERTS, true);
 				FTPDownloadDriveBrowser.obterDriver(BrowserEnum.CHROME, version);
 				driver = new ChromeDriver(capabilities);
+				
 					
 				
 			} else if (BrowserEnum.IE.toString().equals(browser)) {
@@ -56,5 +57,4 @@ private static WebDriver driver = null;
 		}
 		return driver;
 	}
-
 }
