@@ -8,8 +8,8 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import br.gov.mg.testeutil.util.Utils;
 import br.gov.mg.testeutil.util.sicaf.SeleniumSicaf;
-import br.gov.mg.testeutil.util.sicaf.Utils;
 
 
 

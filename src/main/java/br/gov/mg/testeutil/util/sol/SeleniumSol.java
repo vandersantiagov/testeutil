@@ -9,6 +9,9 @@ import org.openqa.selenium.phantomjs.PhantomJSDriver;
 import org.openqa.selenium.remote.CapabilityType;
 import org.openqa.selenium.remote.DesiredCapabilities;
 
+import br.gov.mg.testeutil.util.BrowserEnum;
+import br.gov.mg.testeutil.util.FTPDownloadDriveBrowser;
+
 /**
  * Classe Utils para o Selenium
  * Identifica qual o browser escolhido no config.properties e inicializa o webdriver correspondente

@@ -1,4 +1,4 @@
-package br.gov.mg.testeutil.util.sol;
+package br.gov.mg.testeutil.util;
 
 import java.io.BufferedOutputStream;
 import java.io.File;

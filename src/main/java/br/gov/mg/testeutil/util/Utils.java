@@ -1,4 +1,4 @@
-package br.gov.mg.testeutil.util.sicaf;
+package br.gov.mg.testeutil.util;
 
 import java.io.File;
 import java.io.IOException;
@@ -11,6 +11,8 @@ import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+
+import br.gov.mg.testeutil.util.sicaf.SeleniumSicaf;
 
 /**
  * Classe com m�todos de apoio, que otimizam a codifica��o das classes de p�gina.

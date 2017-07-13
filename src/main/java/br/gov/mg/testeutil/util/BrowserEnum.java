@@ -1,4 +1,4 @@
-package br.gov.mg.testeutil.util.sol;
+package br.gov.mg.testeutil.util;
 
 public enum BrowserEnum {
 	FIREFOX("webdriver.gecko.driver"), IE("webdriver.ie.driver"), CHROME("webdriver.chrome.driver"), PHANTOMJS("phantomjs.binary.path");

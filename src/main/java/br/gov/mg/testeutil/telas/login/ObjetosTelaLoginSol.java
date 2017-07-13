@@ -9,7 +9,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import br.gov.mg.testeutil.util.sol.SeleniumSol;
-import br.gov.mg.testeutil.util.sol.Utils;
+import br.gov.mg.testeutil.util.Utils;
 
 public class ObjetosTelaLoginSol {
 	/**
