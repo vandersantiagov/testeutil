@@ -39,10 +39,10 @@ public class ObjetosTelaLoginSicaf {
 	static By confirmarFieldLogin = By.name("Confirmar");
 	
 	/**
-	 * Valida��o do Titulo da tela de Login
+	 * Validação do  Titulo da tela de Login
 	 */
 	public static void tituloPaginaLoginCorreto(String expectedTitle){
-		assertThat("T�tulo Incorreto",  driver.findElement(validacaoTituloCorretoLogin).getText(), is(expectedTitle));
+		assertThat("Título incorreto!",  driver.findElement(validacaoTituloCorretoLogin).getText(), is(expectedTitle));
 	}
 	
 	/**
