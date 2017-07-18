@@ -49,7 +49,8 @@ public class ObjetosTelaLoginSicaf {
 	 * Digita CPF na tela de Login Intranet
 	 */
 	public static void performSearchCpf(String searchTextCpf) { 
-		Utils.isClickable(cpfField);
+		//Utils.isClickable(cpfField);
+		wait.until(ExpectedConditions.visibilityOfElementLocated(cpfField));
 		driver.findElement(cpfField).clear();
 		driver.findElement(cpfField).sendKeys(searchTextCpf);
 	}

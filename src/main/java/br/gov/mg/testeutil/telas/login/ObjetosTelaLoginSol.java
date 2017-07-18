@@ -9,7 +9,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import br.gov.mg.testeutil.util.sol.SeleniumSol;
-import br.gov.mg.testeutil.util.Utils;
+//import br.gov.mg.testeutil.util.Utils;
 
 public class ObjetosTelaLoginSol {
 	/**
@@ -54,6 +54,7 @@ public class ObjetosTelaLoginSol {
 	
 	static By comandoConfirmarLoginInternet = By.name("Confirmar");
 	
+	
 	/**
 	 * Valida��o do Titulo da tela de Login Internet
 	 */
@@ -87,36 +88,50 @@ public class ObjetosTelaLoginSol {
 	 * Digita CPF na tela de Login Internet
 	 */
 	public static void preencheCampoCpf(String searchTextCpf) { 
-		Utils.isClickable(preencherCampoCPF);
+		//Utils.isClickable(preencherCampoCPF);
+		wait.until(ExpectedConditions.visibilityOfElementLocated(preencherCampoCPF));
+		driver.findElement(preencherCampoCPF).click();
 		driver.findElement(preencherCampoCPF).clear();
 		driver.findElement(preencherCampoCPF).sendKeys(searchTextCpf);
-	}
-	
-	/**
-	 * Digita a Identifica��o na tela de Login Internet
-	 */
-	public static void preencheCampoIdentificacao(String searchTextSenha) { 
-		Utils.isClickable(preencherCampoIdentificacao);
-		driver.findElement(preencherCampoIdentificacao).clear();
-		driver.findElement(preencherCampoIdentificacao).sendKeys(searchTextSenha);
 	}
 	
 	/**
 	 * Digita a senha na tela de Login Internet
 	 */
 	public static void preencheCampoSenha(String searchTextSenha) { 
-		Utils.isClickable(preencherSenhaAtual);
+		//Utils.isClickable(preencherSenhaAtual);
+		wait.until(ExpectedConditions.visibilityOfElementLocated(preencherSenhaAtual));
+		driver.findElement(preencherSenhaAtual).click();
 		driver.findElement(preencherSenhaAtual).clear();
 		driver.findElement(preencherSenhaAtual).sendKeys(searchTextSenha);
 	}
 	
 	/**
-	 *
-	 *Clicar no comando Login na tela inical do Internet 
-	 *
+	 * Clica no comando Login Internet
 	 */
-	public static void clickComandoLogin() { 
+	public static void clickComandoLogin () { 
 		wait.until(ExpectedConditions.visibilityOfElementLocated(comandoConfirmarLoginInternet));
 		driver.findElement(comandoConfirmarLoginInternet).click(); 
 	}
+	
+	
+	/**
+	 *
+	 *Clicar no comando Login na tela inical do Intranet 
+	 *
+	 */
+	public static void clickSearchButtonLogin() { 
+		wait.until(ExpectedConditions.visibilityOfElementLocated(comandoConfirmarLoginInternet));
+		driver.findElement(comandoConfirmarLoginInternet).click(); 
+	}
+
+	/**
+	 * Compo identificacao visivel
+	 */
+	public static void preencheCampoIdentificacao(String searchTextIdentificacao){ 
+		wait.until(ExpectedConditions.visibilityOfElementLocated(preencherCampoIdentificacao));
+		driver.findElement(preencherCampoIdentificacao).click();
+		driver.findElement(preencherCampoIdentificacao).clear();
+		driver.findElement(preencherCampoIdentificacao).sendKeys(searchTextIdentificacao);
+		}
 }
