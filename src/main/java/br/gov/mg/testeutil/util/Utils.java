@@ -85,7 +85,7 @@ import br.gov.mg.testeutil.util.sicaf.SeleniumSicaf;
 		File pasta = new File("Z:\\SeleniumScreenShots");    
 		File[] arquivos = pasta.listFiles();    
 		for(File arquivo : arquivos) {
-		    if(arquivo.getName().endsWith("jpeg") || arquivo.getName().endsWith("sql") || arquivo.getName().endsWith("out")) {
+		    if(arquivo.getName().endsWith("jpeg") || arquivo.getName().endsWith("sql") || arquivo.getName().endsWith("out") || arquivo.getName().endsWith("txt")) {
 		        arquivo.delete();
 		    	}
 			}

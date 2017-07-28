@@ -48,7 +48,7 @@ public class ObjetosTelaLoginSol {
 	
 	static By preencherCampoCPF = By.name("login");
 	
-	static By preencherCampoIdentificacao = By.name("dominio");
+	static By preencherCampoIdentificacao = By.name("dominio");//Exibido somente após selecionar o tipo de usuário
 	
 	static By preencherSenhaAtual = By.name("senhaAtual");
 	

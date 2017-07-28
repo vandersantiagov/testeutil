@@ -38,6 +38,8 @@ public class ObjetosTelaLoginSicaf {
 	static By senhaField = By.name("senhaAtual");
 	static By confirmarFieldLogin = By.name("Confirmar");
 	
+	static By escreverArquivo = By.id("buscaRapida");
+	
 	/**
 	 * Validação do  Titulo da tela de Login
 	 */
@@ -48,7 +50,7 @@ public class ObjetosTelaLoginSicaf {
 	/**
 	 * Digita CPF na tela de Login Intranet
 	 */
-	public static void performSearchCpf(String searchTextCpf) { 
+	public static void performSearchCpf (String searchTextCpf) { 
 		//Utils.isClickable(cpfField);
 		wait.until(ExpectedConditions.visibilityOfElementLocated(cpfField));
 		driver.findElement(cpfField).clear();
