@@ -12,7 +12,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-import br.gov.mg.testeutil.util.sicaf.SeleniumSicaf;
+import br.gov.mg.testeutil.util.sol.SeleniumSol;
 
 /**
  * Classe com m�todos de apoio, que otimizam a codifica��o das classes de p�gina.
@@ -25,7 +25,7 @@ public class UtilsSol {
 	private static final WebDriverWait wait;
 	
 	static{
-		driver = SeleniumSicaf.getDriver();
+		driver = SeleniumSol.getDriver();
 		wait = new WebDriverWait(driver, 10);
 	}
 
