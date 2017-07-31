@@ -1,4 +1,4 @@
-package br.gov.mg.testeutil.util;
+package br.gov.mg.testeutil.util.sicaf;
 
 import java.io.File;
 import java.io.IOException;
@@ -12,14 +12,12 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-import br.gov.mg.testeutil.util.sicaf.SeleniumSicaf;
-
 /**
  * Classe com m�todos de apoio, que otimizam a codifica��o das classes de p�gina.
  * @author Antonio Bernardo
  *
  */
-	public abstract class Utils {	
+	public abstract class UtilsSicaf {	
 		
 		private static final WebDriver driver;
 		private static final WebDriverWait wait;

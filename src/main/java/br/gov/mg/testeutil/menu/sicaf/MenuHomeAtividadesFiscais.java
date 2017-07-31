@@ -7,8 +7,8 @@ import org.openqa.selenium.WebDriver;
 //import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-import br.gov.mg.testeutil.util.Utils;
 import br.gov.mg.testeutil.util.sicaf.SeleniumSicaf;
+import br.gov.mg.testeutil.util.sicaf.UtilsSicaf;
 
 public class MenuHomeAtividadesFiscais {
 		
@@ -58,7 +58,7 @@ public class MenuHomeAtividadesFiscais {
 		 */
 		public static void menuPrincipalVertical(){
 //			wait.until(ExpectedConditions.elementToBeClickable(clickSelecaoDocumentoDiaf));
-			Utils.isClickable(menuPrincipalVertical);
+			UtilsSicaf.isClickable(menuPrincipalVertical);
 			driver.findElement(menuPrincipalVertical).click();
 		}	
 			
@@ -73,7 +73,7 @@ public class MenuHomeAtividadesFiscais {
 			} else if (subMenuPrincipalVertical.equalsIgnoreCase("Inclus�o de Documento de In�cio de A��o Fiscal")){
 				correctLocator = subMenuVerticalInclusaoAtividadesFiscais;
 			}
-			Utils.isVisible(correctLocator);
+			UtilsSicaf.isVisible(correctLocator);
 			driver.findElement(correctLocator).click();
 		}
 		
@@ -88,7 +88,7 @@ public class MenuHomeAtividadesFiscais {
 			} else if (subMenuPrincipalVertical.equalsIgnoreCase("Manuten��o de Documento In�cio de A��o Fiscal")){
 				correctLocator = subMenuVerticalManutencaoAtividadesFiscais;
 			}
-			Utils.isVisible(correctLocator);
+			UtilsSicaf.isVisible(correctLocator);
 			driver.findElement(correctLocator).click();
 		}
 		
@@ -105,7 +105,7 @@ public class MenuHomeAtividadesFiscais {
 			}else if (subMenuPrincipalVertical.equalsIgnoreCase("Informar Recebimento")){
 				correctLocator = subMenuVerticalInformarRecebimento;
 			}
-			Utils.isVisible(correctLocator);
+			UtilsSicaf.isVisible(correctLocator);
 			driver.findElement(correctLocator).click();
 		}
 		
@@ -122,7 +122,7 @@ public class MenuHomeAtividadesFiscais {
 			}else if (subMenuPrincipalVertical.equalsIgnoreCase("Excluir Recebimento")){
 				correctLocator = subMenuVerticalExluirRecebimento;
 			}
-			Utils.isVisible(correctLocator);
+			UtilsSicaf.isVisible(correctLocator);
 			driver.findElement(correctLocator).click();
 		}
 }
