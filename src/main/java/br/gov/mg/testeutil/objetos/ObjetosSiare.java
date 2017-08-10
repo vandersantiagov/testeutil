@@ -101,36 +101,34 @@ public class ObjetosSiare {
 	public static void validarTexto(String texto, By campo){
 		assertThat("Título Incorreto!!",  driver.findElement(campo).getText(), is(texto));
 	}
-
 	
 	/**
-	 * Método que seleciona uma opção em um combox/Grid/Menu efetuando um cliques
+	 * Método que efetua a ação de um clique
 	 * 
 	 */
-	 public static void caixaSelecao1Cliques(By ElementoOpcaoClick1){
+	 public static void umClique(By ElementoOpcaoClick1){
 		By correctLocator = null;
 		correctLocator = ElementoOpcaoClick1;
 		driver.findElement(correctLocator).click();
 	 }
 	 
 	/**
-	 * Método que seleciona uma opção em um combox/Grid/Menu efetuando dois cliques
+	 *  Método que efetua a ação de dois cliques
 	 * 
 	 */
-	 public static void caixaSelecao2Cliques(By ElementoOpcaoClick1, By ElementoOpcaoClik2){
+	 public static void doisCliques(By ElementoOpcaoClick1, By ElementoOpcaoClik2){
 		By correctLocator = null;
 		correctLocator = ElementoOpcaoClick1;
 		driver.findElement(correctLocator).click();
 		correctLocator = ElementoOpcaoClik2;
 		driver.findElement(correctLocator).click();
 	 }
-
 		
 	/**
-	 * Método que seleciona uma opção em um combox/Grid/Menu efetuando três cliques
+	 * Método que efetua a ação de três cliques
 	 * 
 	 */
-	 public static void caixaSelecao3Cliques(By ElementoOpcaoClick1, By ElementoOpcaoClik2, By ElementoOpcaoClik3){
+	 public static void tresCliques(By ElementoOpcaoClick1, By ElementoOpcaoClik2, By ElementoOpcaoClik3){
 		By correctLocator = null;
 		correctLocator = ElementoOpcaoClick1;
 		driver.findElement(correctLocator).click();
@@ -141,10 +139,10 @@ public class ObjetosSiare {
 	 }
 		
 	/**
-	 * Método que seleciona uma opção em um combox/Grid/Menu efetuando Quatro cliques
+	 * Método que efetua a ação de quatro cliques
 	 * 
 	 */
-	 public static void caixaSelecao4Cliques(By ElementoOpcaoClick1, By ElementoOpcaoClik2, By ElementoOpcaoClik3, By ElementoOpcaoClik4){
+	 public static void quatroCliques(By ElementoOpcaoClick1, By ElementoOpcaoClik2, By ElementoOpcaoClik3, By ElementoOpcaoClik4){
 		By correctLocator = null;
 		correctLocator = ElementoOpcaoClick1;
 		driver.findElement(correctLocator).click();
@@ -154,30 +152,21 @@ public class ObjetosSiare {
 		driver.findElement(correctLocator).click();
 		correctLocator = ElementoOpcaoClik4;
 		driver.findElement(correctLocator).click();
-	 }		 
+	 }
+	 
 	/**
-	 * Método que insere dado em campo
+	 * Método que insere um valor em um campo
 	 * 
 	 */
-	public static void inserirDadoCampo(String textoAInserir, By nomeElemento) { 
+	public static void inserirDadoNoCampo(String textoAInserir, By nomeElemento) { 
 		wait.until(ExpectedConditions.visibilityOfElementLocated(nomeElemento));
 		driver.findElement(nomeElemento);
 		driver.findElement(nomeElemento).clear();
 		driver.findElement(nomeElemento).sendKeys(textoAInserir);
-	}
-	
-	/**
-	 * Método que clica em um botão
-	 * 
-	 */
-	public static void clickSearchButton(By nomeElemento) { 
-		wait.until(ExpectedConditions.visibilityOfElementLocated(nomeElemento));
-		driver.findElement(nomeElemento).click(); 
-	}
-	
+	}	
 
 	/**
-	 * Método que valida a janela de popup  
+	 * Método que valida uma string em uma janela/popup aberta
 	 * 
 	 */
 	public static void validaJanelaPopUpDetalhamento (String NomePopup){
@@ -188,11 +177,10 @@ public class ObjetosSiare {
 				break;
 			}
 		}
-	}
-	
+	}	
 
 	/**
-	 * Fechar driver após iteração com janela de popup  
+	 * Fechar janela/popup 
 	 * 
 	 */
 	public static void fecharDriverAposJanelaPopUpDetalhamento (){
