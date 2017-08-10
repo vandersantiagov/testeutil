@@ -35,7 +35,7 @@ public class ObjetosSiare {
 	}
 
 	public static void setAmbienteSicaf (int tempoDeEspera){
-		driver = SeleniumSol.getDriver();
+		driver = SeleniumSicaf.getDriver();
 		//wait = new WebDriverWait(driver, tempoDeEspera);
 		driver.navigate().to(PropertySicaf.SITE_ADDRESS);
 		driver.manage().window().maximize();
