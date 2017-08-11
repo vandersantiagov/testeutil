@@ -45,20 +45,6 @@ public class MetodosSiare {
 		driver.manage().window().maximize();
 		
 	}
-
-	
-	/*
-	 * @throws InterruptedException  
-	 * Método de clique no Combobox e seleção de uma opção na lista
-	 */
-	public static void selecionarOpcaoEmCombobox(By combobox, By opcaoCombobox) throws InterruptedException{
-		Actions action = new Actions(driver);
-		driver.findElement(combobox).click(); 	
-		WebElement element = driver.findElement(opcaoCombobox);
-		action.moveToElement(element).build().perform();
-		action.click(element).build().perform();
-		element.click();
-	} 
 	
 	/*
 	public static void setAmbienteSol (WebDriver setDriverAmbienteSol, int tempoDeEspera){
@@ -220,6 +206,72 @@ public class MetodosSiare {
 		}
 	}
 	
+	/**
+	 * Comando de aceitar o alerta de um Javascript
+	 */
+	@SuppressWarnings("unused")
+	public static void aceitarCancelamentoJavaScriptSicaf(String Alert) {
+		wait.until(ExpectedConditions.alertIsPresent());
+		SeleniumSicaf runner;
+		WebDriver driver =  (WebDriver) SeleniumSicaf.getDriver();
+		driver.switchTo().alert().accept();
+	}
+	
+	/**
+	 * Comando de cancelar o alerta de um Javascript
+	 */
+	//Objeto para o Cancelamento da mensagem JavaScritp na tela de Cancelamento AIAF 
+	@SuppressWarnings("unused")
+	public static void cancelarAlertaCancelamentoJavaScriptSicaf(String Alert) {
+		wait.until(ExpectedConditions.alertIsPresent());
+		SeleniumSicaf runner;
+		WebDriver driver =  (WebDriver) SeleniumSicaf.getDriver();
+		driver.switchTo().alert().dismiss();
+	}
+	
+	/**
+	 * Comando de aceitar o alerta de um Javascript
+	 */
+	@SuppressWarnings("unused")
+	public static void aceitarCancelamentoJavaScriptSol(String Alert) {
+		wait.until(ExpectedConditions.alertIsPresent());
+		SeleniumSol runner;
+		WebDriver driver =  (WebDriver) SeleniumSol.getDriver();
+		driver.switchTo().alert().accept();
+	}
+	
+	/**
+	 * Comando de cancelar o alerta de um Javascript
+	 */
+	//Objeto para o Cancelamento da mensagem JavaScritp na tela de Cancelamento AIAF 
+	@SuppressWarnings("unused")
+	public static void cancelarAlertaCancelamentoJavaScriptSol(String Alert) {
+		wait.until(ExpectedConditions.alertIsPresent());
+		SeleniumSol runner;
+		WebDriver driver =  (WebDriver) SeleniumSol.getDriver();
+		driver.switchTo().alert().dismiss();
+	}
+	
+	/**
+	 * Validar a existência do campo na Interface  
+	 */
+	public static void validarCampoVisivelNaInterface(By objetoVisivel ){
+		wait.until(ExpectedConditions.visibilityOfElementLocated(objetoVisivel));
+	}
+	
+	/**
+	 * @throws InterruptedException  
+	 * Método de clique no Combobox e seleção de uma opção na lista
+	 */
+	public static void selecionarOpcaoEmCombobox(By combobox, By opcaoCombobox) throws InterruptedException{
+		Actions action = new Actions(driver);
+		driver.findElement(combobox).click(); 	
+		WebElement element = driver.findElement(opcaoCombobox);
+		action.moveToElement(element).build().perform();
+		action.click(element).build().perform();
+		element.click();
+	}  
+
 	/*
 		public static void campocheckBoxUtilizaPEDNao() throws InterruptedException{
 			wait.until(ExpectedConditions.visibilityOfElementLocated(checkBoxUtilizaPEDNao));
