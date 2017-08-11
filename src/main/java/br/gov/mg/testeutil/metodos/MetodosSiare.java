@@ -9,6 +9,8 @@ import java.util.Set;
 import org.junit.BeforeClass;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -43,6 +45,20 @@ public class MetodosSiare {
 		driver.manage().window().maximize();
 		
 	}
+
+	
+	/*
+	 * @throws InterruptedException  
+	 * Método de clique no Combobox e seleção de uma opção na lista
+	 */
+	public static void selecionarOpcaoEmCombobox(By combobox, By opcaoCombobox) throws InterruptedException{
+		Actions action = new Actions(driver);
+		driver.findElement(combobox).click(); 	
+		WebElement element = driver.findElement(opcaoCombobox);
+		action.moveToElement(element).build().perform();
+		action.click(element).build().perform();
+		element.click();
+	} 
 	
 	/*
 	public static void setAmbienteSol (WebDriver setDriverAmbienteSol, int tempoDeEspera){
