@@ -197,20 +197,6 @@ public class MetodosSiare {
 	}
 	
 	/**
-	 * Método para exluir os arquivo no ScreencShot
-	 */
-	
-	public static void deltarArquivo(String diretorioDosArquivosSeraoExcuidos){
-	File pasta = new File(diretorioDosArquivosSeraoExcuidos);    
-	File[] arquivos = pasta.listFiles();    
-	for(File arquivo : arquivos) {
-	    if(arquivo.getName().endsWith("jpeg") || arquivo.getName().endsWith("sql") || arquivo.getName().endsWith("out") || arquivo.getName().endsWith("txt") || arquivo.getName().endsWith("pdf")) {
-	        arquivo.delete();
-	    	}
-		}
-	}
-	
-	/**
 	 * Comando de aceitar o alerta de um Javascript
 	 */
 	@SuppressWarnings("unused")
@@ -279,7 +265,7 @@ public class MetodosSiare {
 	/**
 	* Método para exluir os arquivo na Subpasta do diretório ScreencShot 
 	*/
-	public static void deltarArquivosDaSubpasta(String subPasta){
+	public static void deletarArquivosDaSubpasta(String subPasta){
 	File pasta = new File("Z:\\SeleniumScreenShots\\"+subPasta+"\\");    
 	File[] arquivos = pasta.listFiles();    
 	for(File arquivo : arquivos) {
