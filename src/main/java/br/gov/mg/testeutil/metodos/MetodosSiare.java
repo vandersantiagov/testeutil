@@ -4,10 +4,14 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.Set;
 
+import org.apache.commons.io.FileUtils;
 import org.junit.BeforeClass;
 import org.openqa.selenium.By;
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
@@ -270,7 +274,33 @@ public class MetodosSiare {
 		action.moveToElement(element).build().perform();
 		action.click(element).build().perform();
 		element.click();
-	}  
+	}
+	
+	/**
+	* Método para exluir os arquivo na Subpasta do diretório ScreencShot 
+	*/
+	public static void deltarArquivosDaSubpasta(String subPasta){
+	File pasta = new File("Z:\\SeleniumScreenShots\\"+subPasta+"\\");    
+	File[] arquivos = pasta.listFiles();    
+	for(File arquivo : arquivos) {
+	    if(arquivo.getName().endsWith("jpeg") || arquivo.getName().endsWith("sql") || arquivo.getName().endsWith("out") || arquivo.getName().endsWith("txt") || arquivo.getName().endsWith("pdf")) {
+	        arquivo.delete();
+	    	}
+		}
+	}
+	
+	/**
+	* Método para criar uma subpasta no diretório ScreencShot e capturar Print. 
+	* @param fileName - Nome do arquivo
+	*/
+	public static void capturaScreenDaTela(String subPasta, String fileName){
+	File scrFile = ((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);
+		 try {
+			FileUtils.copyFile(scrFile, new File("Z:\\SeleniumScreenShots\\"+subPasta+"\\"+fileName+".jpeg"),true);
+		} catch (IOException e) {
+		e.printStackTrace();
+		}
+	}
 
 	/*
 		public static void campocheckBoxUtilizaPEDNao() throws InterruptedException{
