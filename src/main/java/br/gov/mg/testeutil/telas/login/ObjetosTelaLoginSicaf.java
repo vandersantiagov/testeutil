@@ -33,12 +33,12 @@ public class ObjetosTelaLoginSicaf {
 	 * Defini��o T�cnica dos locators utilizados na p�gina
 	 * Tela de Login Intranet do SIARE
 	 */	
-	static By validacaoTituloCorretoLogin = By.id("boxFooter");
-	static By cpfField = By.name("login");
-	static By senhaField = By.name("senhaAtual");
-	static By confirmarFieldLogin = By.name("Confirmar");
+	public static By validacaoTituloCorretoLogin = By.id("boxFooter");
+	public static By cpfField = By.name("login");
+	public static By senhaField = By.name("senhaAtual");
+	public static By confirmarFieldLogin = By.name("Confirmar");
 	
-	static By escreverArquivo = By.id("buscaRapida");
+	public static By escreverArquivo = By.id("buscaRapida");
 	
 	/**
 	 * Validação do  Titulo da tela de Login
