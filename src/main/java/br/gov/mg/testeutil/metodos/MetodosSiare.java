@@ -23,6 +23,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+
 import br.gov.mg.testeutil.util.sicaf.PropertySicaf;
 import br.gov.mg.testeutil.util.sicaf.SeleniumSicaf;
 import br.gov.mg.testeutil.util.sol.PropertySol;
@@ -367,7 +368,23 @@ public class MetodosSiare {
 	} catch (FileNotFoundException ex){
 		
 	}
-  }
+}
+/*	public static void criarArquivoPDF(String criarArquivo){
+	 try{
+		Document document = new Document(PageSize.A4, 50, 50, 50, 50);
+		PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(new File(criarArquivo)));
+		document.open();
+		document.add(new Paragraph("Teste arquivo PDF."));
+		document.close();
+		writer.close();
+		} 
+		catch (Exception e) {
+			e.printStackTrace();
+				}
+			}
+		}*/
+	
+
 
 	/*
 		public static void campocheckBoxUtilizaPEDNao() throws InterruptedException{

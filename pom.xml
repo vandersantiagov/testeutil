@@ -53,7 +53,12 @@
 	    	<groupId>com.codeborne</groupId>
 	    	<artifactId>phantomjsdriver</artifactId>
 	    	<version>1.4.0</version>
-		</dependency>	
+		</dependency>
+		<dependency>
+			<groupId>com.lowagie</groupId>
+			<artifactId>itext</artifactId>
+			<version>4.2.1</version>
+		</dependency>		
 	</dependencies>
 	<parent>
 		<groupId>gov.sefmg</groupId>
