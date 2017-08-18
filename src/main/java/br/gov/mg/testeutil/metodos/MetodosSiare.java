@@ -27,7 +27,6 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-
 import br.gov.mg.testeutil.util.sicaf.PropertySicaf;
 import br.gov.mg.testeutil.util.sicaf.SeleniumSicaf;
 import br.gov.mg.testeutil.util.sol.PropertySol;
@@ -35,73 +34,14 @@ import br.gov.mg.testeutil.util.sol.SeleniumSol;
 //import br.gov.mg.testeutil.util.sol.UtilsSol;
 
 public class MetodosSiare {
-	/**
-	 * Instância privada do webDriver que vira da suite de teste
-	 * @Athor Fábio Heller
-	 */
-	private static WebDriver driver;
-	private static WebDriverWait wait;
-	
-	/**
-	 * Construtor que ira adicionar a instancia do WebDriver para utilizacao dos metodos
-	 * @Athor Fábio Heller
-	 */
-	@BeforeClass
-	public static void setAmbienteSol (){
-		driver = SeleniumSol.getDriver();
-		wait = new WebDriverWait(driver, 30);
-		driver.navigate().to(PropertySol.SITE_ADDRESS);
-		driver.manage().window().maximize();
-	}
-	@BeforeClass
-	public static void setAmbienteSicaf (){
-		driver = SeleniumSicaf.getDriver();
-		wait = new WebDriverWait(driver, 30);
-		driver.navigate().to(PropertySicaf.SITE_ADDRESS);
-		driver.manage().window().maximize();
 		
-	}
-	
-	/**
-	 * Construtor que ira fechar a instântica que foi aberta na anotação BeforeClasse
-	 * @Athor Antonio Bernardo
-	 */
-	public static Boolean isAllTestsExecution = true;
-	
-	@AfterClass
-	public static void quitAmbiente() throws Exception {
-		driver.quit();
-	}
-	
 	/*
-	public static void setAmbienteSol (WebDriver setDriverAmbienteSol, int tempoDeEspera){
-		setDriverAmbienteSol = SeleniumSol.getDriver();
-		wait = new WebDriverWait(setDriverAmbienteSol, tempoDeEspera);
-		setDriverAmbienteSol.navigate().to(PropertySol.SITE_ADDRESS);
-		setDriverAmbienteSol.manage().window().maximize();
-	}
-	
+	*****************************METODOS GLOBAIS PARA CHAMADA NAS CLASSES*****************************
+	**/
 
-	public static void setAmbienteSicaf (WebDriver setDriverAmbienteSicaf, int tempoDeEspera){
-		setDriverAmbienteSicaf = SeleniumSol.getDriver();
-		wait = new WebDriverWait(setDriverAmbienteSicaf, tempoDeEspera);
-		setDriverAmbienteSicaf.navigate().to(PropertySicaf.SITE_ADDRESS);
-		setDriverAmbienteSicaf.manage().window().maximize();
-	}
-	
-	/*
-	
-	private static WebDriver driver;
-	private static WebDriverWait wait;
-	
-	
-	static {
-		//driver = SeleniumSicaf.getDriver();
-		wait = new WebDriverWait(driver, 30);
-	}*/
 	/**
-	 * Metodo para instanciar objetos HTML
-	 * @Athor Fábio Heller
+	 * Método para instanciar objetos HTML
+	 * @Author Fábio Heller
 	 */
 	public static By campoID (String nomeElementoID){
 		By cpoIDBy = By.id(nomeElementoID);
@@ -130,7 +70,8 @@ public class MetodosSiare {
 
 	/**
 	 * Método que valida a igualdade entre duas strings
-	 * @Athor Fábio Heller
+	 * Objetivo: Verificar se duas frases são iguais.
+	 * @Author Fábio Heller
 	 */
 	public static void validarTexto(String texto, By campo){
 		assertThat("Título Incorreto!!",  driver.findElement(campo).getText(), is(texto));
@@ -138,7 +79,7 @@ public class MetodosSiare {
 	
 	/**
 	 * Método que efetua a ação de um clique
-	 * @Athor Fábio Heller
+	 * @Author Fábio Heller
 	 */
 	 public static void umClique(By ElementoOpcaoClick1){
 		By correctLocator = null;
@@ -148,7 +89,7 @@ public class MetodosSiare {
 	 
 	/**
 	 *  Método que efetua a ação de dois cliques
-	 * @Athor Fábio Heller
+	 * @Author Fábio Heller
 	 */
 	 public static void doisCliques(By ElementoOpcaoClick1, By ElementoOpcaoClik2){
 		By correctLocator = null;
@@ -160,7 +101,7 @@ public class MetodosSiare {
 		
 	/**
 	 * Método que efetua a ação de três cliques
-	 * @Athor Fábio Heller
+	 * @Author Fábio Heller
 	 */
 	 public static void tresCliques(By ElementoOpcaoClick1, By ElementoOpcaoClik2, By ElementoOpcaoClik3){
 		By correctLocator = null;
@@ -174,7 +115,7 @@ public class MetodosSiare {
 		
 	/**
 	 * Método que efetua a ação de quatro cliques
-	 * @Athor Fábio Heller
+	 * @Author Fábio Heller
 	 */
 	 public static void quatroCliques(By ElementoOpcaoClick1, By ElementoOpcaoClik2, By ElementoOpcaoClik3, By ElementoOpcaoClik4){
 		By correctLocator = null;
@@ -190,7 +131,7 @@ public class MetodosSiare {
 	 
 	/**
 	 * Método que insere um valor em um campo
-	 * @Athor Fábio Heller
+	 * @Author Fábio Heller
 	 */
 	public static void inserirDadoNoCampo(String textoAInserir, By nomeElemento) { 
 		wait.until(ExpectedConditions.visibilityOfElementLocated(nomeElemento));
@@ -201,7 +142,7 @@ public class MetodosSiare {
 
 	/**
 	 * Método que valida uma string em uma janela/popup aberta
-	 * @Athor Fábio Heller
+	 * @Author Fábio Heller
 	 */
 	public static void validaJanelaPopUpDetalhamento (String NomePopup){
 		Set<String> janelas = driver.getWindowHandles();
@@ -215,7 +156,7 @@ public class MetodosSiare {
 
 	/**
 	 * Fechar janela/popup 
-	 * @Athor Fábio Heller
+	 * @Author Fábio Heller
 	 */
 	public static void fecharDriverAposJanelaPopUpDetalhamento (){
 		driver.close();
@@ -223,66 +164,63 @@ public class MetodosSiare {
 	
 	/**
 	 * Comando de aceitar o alerta de um Javascript
-	 * @Athor Antonio Bernardo
+	 * @Author Antonio Bernardo
 	 */
 	@SuppressWarnings("unused")
 	public static void aceitarCancelamentoJavaScriptSicaf(String Alert) {
 		wait.until(ExpectedConditions.alertIsPresent());
 		SeleniumSicaf runner;
-		WebDriver driver =  (WebDriver) SeleniumSicaf.getDriver();
+		WebDriver driver =  (WebDriver ) SeleniumSicaf.getDriver();
 		driver.switchTo().alert().accept();
 	}
 	
 	/**
 	 * Comando de cancelar o alerta de um Javascript
-	 * @Athor Antonio Bernardo
-	 */
-	//Objeto para o Cancelamento da mensagem JavaScritp na tela de Cancelamento AIAF 
+	 * @Author Antonio Bernardo
+	 */ 
 	@SuppressWarnings("unused")
 	public static void cancelarAlertaCancelamentoJavaScriptSicaf(String Alert) {
 		wait.until(ExpectedConditions.alertIsPresent());
 		SeleniumSicaf runner;
-		WebDriver driver =  (WebDriver) SeleniumSicaf.getDriver();
+		WebDriver driver =  (WebDriver ) SeleniumSicaf.getDriver();
 		driver.switchTo().alert().dismiss();
 	}
 	
 	/**
 	 * Comando de aceitar o alerta de um Javascript
-	 * @Athor Antonio Bernardo
+	 * @Author Antonio Bernardo
 	 */
 	@SuppressWarnings("unused")
 	public static void aceitarCancelamentoJavaScriptSol(String Alert) {
 		wait.until(ExpectedConditions.alertIsPresent());
 		SeleniumSol runner;
-		WebDriver driver =  (WebDriver) SeleniumSol.getDriver();
+		WebDriver driver =  (WebDriver ) SeleniumSol.getDriver();
 		driver.switchTo().alert().accept();
 	}
 	
 	/**
 	 * Comando de cancelar o alerta de um Javascript
-	 * @Athor Antonio Bernardo
-	 */
-	//Objeto para o Cancelamento da mensagem JavaScritp na tela de Cancelamento AIAF 
+	 * @Author Antonio Bernardo
+	 */ 
 	@SuppressWarnings("unused")
 	public static void cancelarAlertaCancelamentoJavaScriptSol(String Alert) {
 		wait.until(ExpectedConditions.alertIsPresent());
 		SeleniumSol runner;
-		WebDriver driver =  (WebDriver) SeleniumSol.getDriver();
+		WebDriver driver =  (WebDriver ) SeleniumSol.getDriver();
 		driver.switchTo().alert().dismiss();
 	}
 	
 	/**
 	 * Validar a existência do campo na Interface
-	 * @Athor Antonio Bernardo 
+	 * @Author Antonio Bernardo 
 	 */
 	public static void validarCampoVisivelNaInterface(By objetoVisivel ){
 		wait.until(ExpectedConditions.visibilityOfElementLocated(objetoVisivel));
 	}
 	
 	/**
-	 * @throws InterruptedException  
-	 * Método de clique no Combobox e seleção de uma opção na lista
-	 * @Athor Fábio Heller
+	 * Método que clica em um item da lista de um Combobox
+	 * @Author Fábio Heller
 	 */
 	public static void selecionarOpcaoEmCombobox(By combobox, By opcaoCombobox) throws InterruptedException{
 		Actions action = new Actions(driver);
@@ -294,8 +232,21 @@ public class MetodosSiare {
 	}
 	
 	/**
-	* Método para exluir os arquivo na Subpasta do diretório ScreencShot 
-	* @Athor Antonio Bernardo e Fábio Heller
+	* Método para criar uma subpasta no diretório ScreencShot e capturar Print. 
+	* @param fileName - Nome do arquivo
+	* @Author Antonio Bernardo e Fábio Heller
+	*/
+	public static void capturaScreenDaTela(String subPasta, String fileName){
+	File scrFile = ((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);
+		 try {
+			FileUtils.copyFile(scrFile, new File("Z:\\SeleniumScreenShots\\"+subPasta+"\\"+fileName+".jpeg"),true);
+		} catch (IOException e) {
+		e.printStackTrace();
+		}
+	}
+
+	/**
+	* Método para excluir os arquivo na Subpasta do diretório onde estão sendo gerados os prints.	* @Author Antonio Bernardo e Fábio Heller
 	*/
 	public static void deletarArquivosDaSubpasta(String subPastaProjeto){
 	File pasta = new File("Z:\\Artefatos Selenium Webdriver\\"+subPastaProjeto+"\\");    
@@ -308,6 +259,7 @@ public class MetodosSiare {
 	}
 	
 	/**
+
 	* Método para criar uma subpasta no diretório ScreencShot e capturar Print. 
 	* @param fileName - Nome do arquivo
 	* @Athor Antonio Bernardo e Fábio Heller
@@ -322,8 +274,8 @@ public class MetodosSiare {
 	}
 	/**
 	* Método para Criar o arquivo colocar a informação dentro do arquivo  Arquivo.txt
-	* @param fileName - Nome do arquivo
-	* @Athor Antonio Bernardo e Fábio Heller
+* Por exemplo, copiar o número de um protocolo e colar em um arquivo texto para utilizá-lo posteriormente. (CTRL C + CTRL V)
+	* @Author Antonio Bernardo e Fábio Heller
 	*/
 		
 	public static void escreverEmArquivoTexto(By objetoCopiar, String subPastaProjeto, String nomeDoArquivo){
@@ -345,18 +297,18 @@ public class MetodosSiare {
 	
 	/**
 	* Método para ler o Arquivo.txt que foi criado e inserido um valor
-	* @param fileName - Nome do arquivo
-	* @Athor Antonio Bernardo
+* Por exemplo, copiar o número de um protocolo que está em um arquivo txt e inserir no elemento que receberá a informação
+	* @Author Antonio Bernardo
 	*/
-	public static void lerArquivoTexto(String subPastaProjeto, String nomeDoArquivo, By lerArquivo) throws IOException{
+	public static void lerArquivoTexto(String subPasta, String nomeDoArquivo, By elementoRecebedorValor) throws IOException{
 		@SuppressWarnings("unused")
 		String conteudo = ""; 
 		try{
 			BufferedReader ler = new BufferedReader(new FileReader("Z:\\Artefatos Selenium Webdriver\\"+subPastaProjeto+"\\"+nomeDoArquivo+".txt"));
 			String linha = ler.readLine();
-			wait.until(ExpectedConditions.visibilityOfElementLocated(lerArquivo));
-			driver.findElement(lerArquivo).clear();
-			driver.findElement(lerArquivo).sendKeys(linha);
+			wait.until(ExpectedConditions.visibilityOfElementLocated(elementoRecebedorValor));
+			driver.findElement(elementoRecebedorValor).clear();
+			driver.findElement(elementoRecebedorValor).sendKeys(linha);
 						
 			try{ 
 				linha = ler.readLine();
@@ -489,39 +441,67 @@ public class MetodosSiare {
 	}
 
 
-	/*
-		public static void campocheckBoxUtilizaPEDNao() throws InterruptedException{
-			wait.until(ExpectedConditions.visibilityOfElementLocated(checkBoxUtilizaPEDNao));
-			driver.findElement(checkBoxUtilizaPEDNao).click(); 		
-		}
-		
-		
 
-	public static void ClickcampocheckBox(By nomeElemento, boolean opc) throws InterruptedException{
-		wait.until(ExpectedConditions.visibilityOfElementLocated(nomeElemento));
-		driver.findElement(nomeElemento).equals(opc);
-	}
-		
-		public static void campocheckBoxUtilizaPEDSim() throws InterruptedException{
-			wait.until(ExpectedConditions.visibilityOfElementLocated(checkBoxUtilizaPEDSim));
-			driver.findElement(checkBoxUtilizaPEDSim).click(); 	
-	}
-	
-		/**
-	 * @throws InterruptedException  
-	 * Esse Método é utilizado somente quando o valor que deseja selecionar não é exibido na tela.
-	 * Clique no Combobox Selecionar Municicipo de Belo Horizonte
-	 
-	public static void selecionarMunicipioBeloHorizonte() throws InterruptedException{
-		Actions action = new Actions(driver);
-		driver.findElement(selecionarMunicipiodaOcorrencia).click(); 	
-		WebElement element = driver.findElement(selecionarMunicipioBH);
-		action.moveToElement(element).build().perform();
-		action.click(element).build().perform();
-	} 
-	
+	/**
+	* Método para selecionar submenu quando houver a necessidade de rolar a barra de rolagem
+	* @Author Jacqueline Lucas
 	*/
 	
-	
+    public static void cliqueComBarraDeRolagem(By menu, By submenu){
+        Actions action = new Actions(driver);
+        driver.findElement(menu).click();       
+        WebElement element = driver.findElement(menu);
+        action.moveToElement(element).build().perform();
+        action.click(element).build().perform();
+        
+        driver.findElement(submenu).click();   
+        action.moveToElement(element).build().perform();
+        action.click(element).build().perform();
+ }
 		
+    
+
+	
+	/*
+	*****************************METODOS DEFINIDOS E JÁ UTLIZADOS NO ARCHETYPE*****************************
+	**/
+	/**
+	 * Instância privada do WebDriver que virá da suite de teste
+	 * Objetivo: Definir o objetivo que será utilizado. No caso, o WebDriver 
+	 * @Author Fábio Heller
+	 */
+	private static WebDriver driver;
+	private static WebDriverWait wait;
+	
+	/**
+	 * Construtor que ira adicionar a instância do WebDriver para utilização dos métodos
+	 * @Author Fábio Heller
+	 */
+	@BeforeClass
+	public static void setAmbienteSol (){
+		driver = SeleniumSol.getDriver();
+		wait = new WebDriverWait(driver, 30);
+		driver.navigate().to(PropertySol.SITE_ADDRESS);
+		driver.manage().window().maximize();
+	}
+	@BeforeClass
+	public static void setAmbienteSicaf (){
+		driver = SeleniumSicaf.getDriver();
+		wait = new WebDriverWait(driver, 30);
+		driver.navigate().to(PropertySicaf.SITE_ADDRESS);
+		driver.manage().window().maximize();
+		
+	}
+	
+	/**
+	 * Construtor que irá fechar a instância que foi aberta na anotação BeforeClasse
+	 * @Author Antonio Bernardo
+	 */
+	public static Boolean isAllTestsExecution = true;
+	
+	@AfterClass
+	public static void quitAmbiente() throws Exception {
+		driver.quit();
+	}
 }
+
