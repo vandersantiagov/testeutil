@@ -231,33 +231,7 @@ public class MetodosSiare {
 		element.click();
 	}
 	
-	/**
-	* Método para criar uma subpasta no diretório ScreencShot e capturar Print. 
-	* @param fileName - Nome do arquivo
-	* @Author Antonio Bernardo e Fábio Heller
-	*/
-	public static void capturaScreenDaTela(String subPasta, String fileName){
-	File scrFile = ((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);
-		 try {
-			FileUtils.copyFile(scrFile, new File("Z:\\SeleniumScreenShots\\"+subPasta+"\\"+fileName+".jpeg"),true);
-		} catch (IOException e) {
-		e.printStackTrace();
-		}
-	}
 
-	/**
-	* Método para excluir os arquivo na Subpasta do diretório onde estão sendo gerados os prints.	* @Author Antonio Bernardo e Fábio Heller
-	*/
-	public static void deletarArquivosDaSubpasta(String subPastaProjeto){
-	File pasta = new File("Z:\\Artefatos Selenium Webdriver\\"+subPastaProjeto+"\\");    
-	File[] arquivos = pasta.listFiles();    
-	for(File arquivo : arquivos) {
-	    if(arquivo.getName().endsWith("jpeg") || arquivo.getName().endsWith("sql") || arquivo.getName().endsWith("out") || arquivo.getName().endsWith("txt") || arquivo.getName().endsWith("pdf")) {
-	        arquivo.delete();
-	    	}
-		}
-	}
-	
 	/**
 
 	* Método para criar uma subpasta no diretório ScreencShot e capturar Print. 
@@ -267,11 +241,25 @@ public class MetodosSiare {
 	public static void capturaScreenDaTela(String subPastaProjeto, String fileName){
 	File scrFile = ((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);
 		 try {
-			FileUtils.copyFile(scrFile, new File("Z:\\Artefatos Selenium Webdriver\\"+subPastaProjeto+"\\"+fileName+".jpeg"),true);
+			FileUtils.copyFile(scrFile, new File(diretorioPrincipal+subPastaProjeto+"\\"+fileName+".jpeg"),true);
 		} catch (IOException e) {
 		e.printStackTrace();
 		}
 	}
+
+	/**
+	* Método para excluir os arquivo na Subpasta do diretório onde estão sendo gerados os prints.	* @Author Antonio Bernardo e Fábio Heller
+	*/
+	public static void deletarArquivosDaSubpasta(String subPastaProjeto){
+	File pasta = new File(diretorioPrincipal+subPastaProjeto+"\\");    
+	File[] arquivos = pasta.listFiles();    
+	for(File arquivo : arquivos) {
+	    if(arquivo.getName().endsWith("jpeg") || arquivo.getName().endsWith("sql") || arquivo.getName().endsWith("out") || arquivo.getName().endsWith("txt") || arquivo.getName().endsWith("pdf")) {
+	        arquivo.delete();
+	    	}
+		}
+	}
+	
 	/**
 	* Método para Criar o arquivo colocar a informação dentro do arquivo  Arquivo.txt
 * Por exemplo, copiar o número de um protocolo e colar em um arquivo texto para utilizá-lo posteriormente. (CTRL C + CTRL V)
@@ -280,7 +268,7 @@ public class MetodosSiare {
 		
 	public static void escreverEmArquivoTexto(By objetoCopiar, String subPastaProjeto, String nomeDoArquivo){
 	try{
-		FileWriter canal  = new FileWriter (new File("Z:\\Artefatos Selenium Webdriver\\"+subPastaProjeto+"\\"+nomeDoArquivo+".txt"));
+		FileWriter canal  = new FileWriter (new File(diretorioPrincipal+subPastaProjeto+"\\"+nomeDoArquivo+".txt"));
 		PrintWriter escrever = new PrintWriter(canal);
 		String guardaValor = null;
 		guardaValor = driver.findElement(objetoCopiar).getText();
@@ -300,11 +288,11 @@ public class MetodosSiare {
 * Por exemplo, copiar o número de um protocolo que está em um arquivo txt e inserir no elemento que receberá a informação
 	* @Author Antonio Bernardo
 	*/
-	public static void lerArquivoTexto(String subPasta, String nomeDoArquivo, By elementoRecebedorValor) throws IOException{
+	public static void lerArquivoTexto(String subPastaProjeto, String nomeDoArquivo, By elementoRecebedorValor) throws IOException{
 		@SuppressWarnings("unused")
 		String conteudo = ""; 
 		try{
-			BufferedReader ler = new BufferedReader(new FileReader("Z:\\Artefatos Selenium Webdriver\\"+subPastaProjeto+"\\"+nomeDoArquivo+".txt"));
+			BufferedReader ler = new BufferedReader(new FileReader(diretorioPrincipal+subPastaProjeto+"\\"+nomeDoArquivo+".txt"));
 			String linha = ler.readLine();
 			wait.until(ExpectedConditions.visibilityOfElementLocated(elementoRecebedorValor));
 			driver.findElement(elementoRecebedorValor).clear();
@@ -332,7 +320,7 @@ public class MetodosSiare {
 	public static void criarArquivoPDFEInserirTexto(String subPastaProjeto, String nomeDoArquivo, String inserirTexto){
 	 try{
 		Document document = new Document(PageSize.A4, 50, 50, 50, 50);
-		PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(new File("Z:\\Artefatos Selenium Webdriver\\"+subPastaProjeto+"\\"+nomeDoArquivo+".pdf")));
+		PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(new File(diretorioPrincipal+subPastaProjeto+"\\"+nomeDoArquivo+".pdf")));
 		document.open();
 		document.add(new Paragraph(inserirTexto));
 		document.close();
@@ -349,7 +337,7 @@ public class MetodosSiare {
 	public static void comandoAnexarArquivo(By nomeElemento, String subPastaProjeto, String nomeDoArquivo){
 		wait.until(ExpectedConditions.visibilityOfElementLocated(nomeElemento));
 		WebElement file_input = driver.findElement(nomeElemento);
-		file_input.sendKeys("Z:\\Artefatos Selenium Webdriver\\"+subPastaProjeto+"\\"+nomeDoArquivo+".pdf");
+		file_input.sendKeys(diretorioPrincipal+subPastaProjeto+"\\"+nomeDoArquivo+".pdf");
 	}
 	
 	/**
@@ -465,6 +453,9 @@ public class MetodosSiare {
 	/*
 	*****************************METODOS DEFINIDOS E JÁ UTLIZADOS NO ARCHETYPE*****************************
 	**/
+    
+    public static String diretorioPrincipal = new String ("Z:\\Artefatos Selenium Webdriver\\");
+    
 	/**
 	 * Instância privada do WebDriver que virá da suite de teste
 	 * Objetivo: Definir o objetivo que será utilizado. No caso, o WebDriver 
