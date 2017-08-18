@@ -454,7 +454,7 @@ public class MetodosSiare {
 	*****************************METODOS DEFINIDOS E JÁ UTLIZADOS NO ARCHETYPE*****************************
 	**/
     
-    public static String diretorioPrincipal = new String ("Z:\\Artefatos Selenium Webdriver\\");
+    public static String diretorioPrincipal = new String ("Z:\\ArtefatosWebdriver\\");
     
 	/**
 	 * Instância privada do WebDriver que virá da suite de teste
