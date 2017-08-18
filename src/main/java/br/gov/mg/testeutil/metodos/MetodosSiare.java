@@ -6,12 +6,16 @@ import static org.junit.Assert.assertThat;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Set;
-
+import com.lowagie.text.Document;
+import com.lowagie.text.PageSize;
+import com.lowagie.text.Paragraph;
+import com.lowagie.text.pdf.PdfWriter;
 import org.apache.commons.io.FileUtils;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -293,8 +297,8 @@ public class MetodosSiare {
 	* Método para exluir os arquivo na Subpasta do diretório ScreencShot 
 	* @Athor Antonio Bernardo e Fábio Heller
 	*/
-	public static void deletarArquivosDaSubpasta(String subPasta){
-	File pasta = new File("Z:\\SeleniumScreenShots\\"+subPasta+"\\");    
+	public static void deletarArquivosDaSubpasta(String subPastaProjeto){
+	File pasta = new File("Z:\\Artefatos Selenium Webdriver\\"+subPastaProjeto+"\\");    
 	File[] arquivos = pasta.listFiles();    
 	for(File arquivo : arquivos) {
 	    if(arquivo.getName().endsWith("jpeg") || arquivo.getName().endsWith("sql") || arquivo.getName().endsWith("out") || arquivo.getName().endsWith("txt") || arquivo.getName().endsWith("pdf")) {
@@ -308,10 +312,10 @@ public class MetodosSiare {
 	* @param fileName - Nome do arquivo
 	* @Athor Antonio Bernardo e Fábio Heller
 	*/
-	public static void capturaScreenDaTela(String subPasta, String fileName){
+	public static void capturaScreenDaTela(String subPastaProjeto, String fileName){
 	File scrFile = ((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);
 		 try {
-			FileUtils.copyFile(scrFile, new File("Z:\\SeleniumScreenShots\\"+subPasta+"\\"+fileName+".jpeg"),true);
+			FileUtils.copyFile(scrFile, new File("Z:\\Artefatos Selenium Webdriver\\"+subPastaProjeto+"\\"+fileName+".jpeg"),true);
 		} catch (IOException e) {
 		e.printStackTrace();
 		}
@@ -322,9 +326,9 @@ public class MetodosSiare {
 	* @Athor Antonio Bernardo e Fábio Heller
 	*/
 		
-	public static void escreverEmArquivoTexto(By objetoCopiar, String subpasta, String nomeDoAquivo){
+	public static void escreverEmArquivoTexto(By objetoCopiar, String subPastaProjeto, String nomeDoArquivo){
 	try{
-		FileWriter canal  = new FileWriter (new File("Z:\\SeleniumScreenShots\\"+subpasta+"\\"+nomeDoAquivo+".txt"));
+		FileWriter canal  = new FileWriter (new File("Z:\\Artefatos Selenium Webdriver\\"+subPastaProjeto+"\\"+nomeDoArquivo+".txt"));
 		PrintWriter escrever = new PrintWriter(canal);
 		String guardaValor = null;
 		guardaValor = driver.findElement(objetoCopiar).getText();
@@ -344,11 +348,11 @@ public class MetodosSiare {
 	* @param fileName - Nome do arquivo
 	* @Athor Antonio Bernardo
 	*/
-	public static void lerArquivoTexto(String subPasta, String nomeDoArquivo, By lerArquivo) throws IOException{
+	public static void lerArquivoTexto(String subPastaProjeto, String nomeDoArquivo, By lerArquivo) throws IOException{
 		@SuppressWarnings("unused")
 		String conteudo = ""; 
 		try{
-			BufferedReader ler = new BufferedReader(new FileReader("Z:\\SeleniumScreenShots\\"+subPasta+"\\"+nomeDoArquivo+".txt"));
+			BufferedReader ler = new BufferedReader(new FileReader("Z:\\Artefatos Selenium Webdriver\\"+subPastaProjeto+"\\"+nomeDoArquivo+".txt"));
 			String linha = ler.readLine();
 			wait.until(ExpectedConditions.visibilityOfElementLocated(lerArquivo));
 			driver.findElement(lerArquivo).clear();
@@ -369,12 +373,16 @@ public class MetodosSiare {
 		
 	}
 }
-/*	public static void criarArquivoPDF(String criarArquivo){
+	/**
+	* Método para criar um arquivo .pdf e inserido um valor
+	* @Athor Jacqueline Lucas
+	*/
+	public static void criarArquivoPDFEInserirTexto(String subPastaProjeto, String nomeDoArquivo, String inserirTexto){
 	 try{
 		Document document = new Document(PageSize.A4, 50, 50, 50, 50);
-		PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(new File(criarArquivo)));
+		PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(new File("Z:\\Artefatos Selenium Webdriver\\"+subPastaProjeto+"\\"+nomeDoArquivo+".pdf")));
 		document.open();
-		document.add(new Paragraph("Teste arquivo PDF."));
+		document.add(new Paragraph(inserirTexto));
 		document.close();
 		writer.close();
 		} 
@@ -382,8 +390,103 @@ public class MetodosSiare {
 			e.printStackTrace();
 				}
 			}
-		}*/
+	/**
+	* Método para anexar um arquivo 
+	* @Athor Jacqueline Lucas e Antonio Bernardo
+	*/	
+	public static void comandoAnexarArquivo(By nomeElemento, String subPastaProjeto, String nomeDoArquivo){
+		wait.until(ExpectedConditions.visibilityOfElementLocated(nomeElemento));
+		WebElement file_input = driver.findElement(nomeElemento);
+		file_input.sendKeys("Z:\\Artefatos Selenium Webdriver\\"+subPastaProjeto+"\\"+nomeDoArquivo+".pdf");
+	}
 	
+	/**
+	* Método para acessar o Menu e o Submenu1.
+	* @Athor Jacqueline Lucas 
+	*/	
+	public static void menuSubMenuNivel1(By Menu, By subMenu1){
+		Actions action = new Actions(driver);
+		driver.findElement(Menu).click(); 	
+		WebElement element = driver.findElement(Menu);
+		action.moveToElement(element).build().perform();
+		action.click(element).build().perform();
+		
+		driver.findElement(subMenu1).click(); 	
+		action.moveToElement(element).build().perform();
+		action.click(element).build().perform();
+	}
+	
+	/**
+	* Método para acessar o Menu, Submenu1 e Submenu2  
+	* @Athor Jacqueline Lucas 
+	*/	
+	public static void menuSubMenuNivel2(By Menu, By subMenu1, By subMenu2){
+		Actions action = new Actions(driver);
+		driver.findElement(Menu).click(); 	
+		WebElement element = driver.findElement(Menu);
+		action.moveToElement(element).build().perform();
+		action.click(element).build().perform();
+		
+		driver.findElement(subMenu1).click(); 	
+		action.moveToElement(element).build().perform();
+		action.click(element).build().perform();
+		
+		driver.findElement(subMenu2).click(); 	
+		action.moveToElement(element).build().perform();
+		action.click(element).build().perform();
+	}
+	
+	/**
+	* Método para acessar o Menu, Submenu1, Submenu2 e Submenu3.   
+	* @Athor Jacqueline Lucas 
+	*/	
+	public static void menuSubMenuNivel3(By Menu, By subMenu1, By subMenu2, By subMenu3){
+		Actions action = new Actions(driver);
+		driver.findElement(Menu).click(); 	
+		WebElement element = driver.findElement(Menu);
+		action.moveToElement(element).build().perform();
+		action.click(element).build().perform();
+		
+		driver.findElement(subMenu1).click(); 	
+		action.moveToElement(element).build().perform();
+		action.click(element).build().perform();
+		
+		driver.findElement(subMenu2).click(); 	
+		action.moveToElement(element).build().perform();
+		action.click(element).build().perform();
+
+		driver.findElement(subMenu3).click(); 	
+		action.moveToElement(element).build().perform();
+		action.click(element).build().perform();
+	}
+	
+	/**
+	* Método para acessar o Menu, Submenu1, Submenu2 e Submenu3 e Submenu4.   
+	* @Athor Jacqueline Lucas 
+	*/	
+	public static void menuSubMenuNivel4(By Menu, By subMenu1, By subMenu2, By subMenu3, By subMenu4){
+		Actions action = new Actions(driver);
+		driver.findElement(Menu).click(); 	
+		WebElement element = driver.findElement(Menu);
+		action.moveToElement(element).build().perform();
+		action.click(element).build().perform();
+		
+		driver.findElement(subMenu1).click(); 	
+		action.moveToElement(element).build().perform();
+		action.click(element).build().perform();
+		
+		driver.findElement(subMenu2).click(); 	
+		action.moveToElement(element).build().perform();
+		action.click(element).build().perform();
+
+		driver.findElement(subMenu3).click(); 	
+		action.moveToElement(element).build().perform();
+		action.click(element).build().perform();
+		
+		driver.findElement(subMenu4).click(); 	
+		action.moveToElement(element).build().perform();
+		action.click(element).build().perform();
+	}
 
 
 	/*
