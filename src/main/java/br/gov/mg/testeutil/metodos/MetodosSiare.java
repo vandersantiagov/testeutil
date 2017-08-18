@@ -3,8 +3,13 @@ package br.gov.mg.testeutil.metodos;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.Set;
 
 import org.apache.commons.io.FileUtils;
@@ -27,12 +32,14 @@ import br.gov.mg.testeutil.util.sol.SeleniumSol;
 public class MetodosSiare {
 	/**
 	 * Instância privada do webDriver que vira da suite de teste
+	 * @Athor Fábio Heller
 	 */
 	private static WebDriver driver;
 	private static WebDriverWait wait;
 	
 	/**
 	 * Construtor que ira adicionar a instancia do WebDriver para utilizacao dos metodos
+	 * @Athor Fábio Heller
 	 */
 	@BeforeClass
 	public static void setAmbienteSol (){
@@ -49,6 +56,11 @@ public class MetodosSiare {
 		driver.manage().window().maximize();
 		
 	}
+	
+	/**
+	 * Construtor que ira fechar a instântica que foi aberta na anotação BeforeClasse
+	 * @Athor Antonio Bernardo
+	 */
 	public static Boolean isAllTestsExecution = true;
 	
 	@AfterClass
@@ -84,6 +96,7 @@ public class MetodosSiare {
 	}*/
 	/**
 	 * Metodo para instanciar objetos HTML
+	 * @Athor Fábio Heller
 	 */
 	public static By campoID (String nomeElementoID){
 		By cpoIDBy = By.id(nomeElementoID);
@@ -112,6 +125,7 @@ public class MetodosSiare {
 
 	/**
 	 * Método que valida a igualdade entre duas strings
+	 * @Athor Fábio Heller
 	 */
 	public static void validarTexto(String texto, By campo){
 		assertThat("Título Incorreto!!",  driver.findElement(campo).getText(), is(texto));
@@ -119,7 +133,7 @@ public class MetodosSiare {
 	
 	/**
 	 * Método que efetua a ação de um clique
-	 * 
+	 * @Athor Fábio Heller
 	 */
 	 public static void umClique(By ElementoOpcaoClick1){
 		By correctLocator = null;
@@ -129,7 +143,7 @@ public class MetodosSiare {
 	 
 	/**
 	 *  Método que efetua a ação de dois cliques
-	 * 
+	 * @Athor Fábio Heller
 	 */
 	 public static void doisCliques(By ElementoOpcaoClick1, By ElementoOpcaoClik2){
 		By correctLocator = null;
@@ -141,7 +155,7 @@ public class MetodosSiare {
 		
 	/**
 	 * Método que efetua a ação de três cliques
-	 * 
+	 * @Athor Fábio Heller
 	 */
 	 public static void tresCliques(By ElementoOpcaoClick1, By ElementoOpcaoClik2, By ElementoOpcaoClik3){
 		By correctLocator = null;
@@ -155,7 +169,7 @@ public class MetodosSiare {
 		
 	/**
 	 * Método que efetua a ação de quatro cliques
-	 * 
+	 * @Athor Fábio Heller
 	 */
 	 public static void quatroCliques(By ElementoOpcaoClick1, By ElementoOpcaoClik2, By ElementoOpcaoClik3, By ElementoOpcaoClik4){
 		By correctLocator = null;
@@ -171,7 +185,7 @@ public class MetodosSiare {
 	 
 	/**
 	 * Método que insere um valor em um campo
-	 * 
+	 * @Athor Fábio Heller
 	 */
 	public static void inserirDadoNoCampo(String textoAInserir, By nomeElemento) { 
 		wait.until(ExpectedConditions.visibilityOfElementLocated(nomeElemento));
@@ -182,7 +196,7 @@ public class MetodosSiare {
 
 	/**
 	 * Método que valida uma string em uma janela/popup aberta
-	 * 
+	 * @Athor Fábio Heller
 	 */
 	public static void validaJanelaPopUpDetalhamento (String NomePopup){
 		Set<String> janelas = driver.getWindowHandles();
@@ -196,7 +210,7 @@ public class MetodosSiare {
 
 	/**
 	 * Fechar janela/popup 
-	 * 
+	 * @Athor Fábio Heller
 	 */
 	public static void fecharDriverAposJanelaPopUpDetalhamento (){
 		driver.close();
@@ -204,6 +218,7 @@ public class MetodosSiare {
 	
 	/**
 	 * Comando de aceitar o alerta de um Javascript
+	 * @Athor Antonio Bernardo
 	 */
 	@SuppressWarnings("unused")
 	public static void aceitarCancelamentoJavaScriptSicaf(String Alert) {
@@ -215,6 +230,7 @@ public class MetodosSiare {
 	
 	/**
 	 * Comando de cancelar o alerta de um Javascript
+	 * @Athor Antonio Bernardo
 	 */
 	//Objeto para o Cancelamento da mensagem JavaScritp na tela de Cancelamento AIAF 
 	@SuppressWarnings("unused")
@@ -227,6 +243,7 @@ public class MetodosSiare {
 	
 	/**
 	 * Comando de aceitar o alerta de um Javascript
+	 * @Athor Antonio Bernardo
 	 */
 	@SuppressWarnings("unused")
 	public static void aceitarCancelamentoJavaScriptSol(String Alert) {
@@ -238,6 +255,7 @@ public class MetodosSiare {
 	
 	/**
 	 * Comando de cancelar o alerta de um Javascript
+	 * @Athor Antonio Bernardo
 	 */
 	//Objeto para o Cancelamento da mensagem JavaScritp na tela de Cancelamento AIAF 
 	@SuppressWarnings("unused")
@@ -249,7 +267,8 @@ public class MetodosSiare {
 	}
 	
 	/**
-	 * Validar a existência do campo na Interface  
+	 * Validar a existência do campo na Interface
+	 * @Athor Antonio Bernardo 
 	 */
 	public static void validarCampoVisivelNaInterface(By objetoVisivel ){
 		wait.until(ExpectedConditions.visibilityOfElementLocated(objetoVisivel));
@@ -258,6 +277,7 @@ public class MetodosSiare {
 	/**
 	 * @throws InterruptedException  
 	 * Método de clique no Combobox e seleção de uma opção na lista
+	 * @Athor Fábio Heller
 	 */
 	public static void selecionarOpcaoEmCombobox(By combobox, By opcaoCombobox) throws InterruptedException{
 		Actions action = new Actions(driver);
@@ -270,6 +290,7 @@ public class MetodosSiare {
 	
 	/**
 	* Método para exluir os arquivo na Subpasta do diretório ScreencShot 
+	* @Athor Antonio Bernardo e Fábio Heller
 	*/
 	public static void deletarArquivosDaSubpasta(String subPasta){
 	File pasta = new File("Z:\\SeleniumScreenShots\\"+subPasta+"\\");    
@@ -284,6 +305,7 @@ public class MetodosSiare {
 	/**
 	* Método para criar uma subpasta no diretório ScreencShot e capturar Print. 
 	* @param fileName - Nome do arquivo
+	* @Athor Antonio Bernardo e Fábio Heller
 	*/
 	public static void capturaScreenDaTela(String subPasta, String fileName){
 	File scrFile = ((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);
@@ -293,6 +315,59 @@ public class MetodosSiare {
 		e.printStackTrace();
 		}
 	}
+	/**
+	* Método para Criar o arquivo colocar a informação dentro do arquivo  Arquivo.txt
+	* @param fileName - Nome do arquivo
+	* @Athor Antonio Bernardo e Fábio Heller
+	*/
+		
+	public static void escreverEmArquivoTexto(By objetoCopiar, String subpasta, String nomeDoAquivo){
+	try{
+		FileWriter canal  = new FileWriter (new File("Z:\\SeleniumScreenShots\\"+subpasta+"\\"+nomeDoAquivo+".txt"));
+		PrintWriter escrever = new PrintWriter(canal);
+		String guardaValor = null;
+		guardaValor = driver.findElement(objetoCopiar).getText();
+		escrever.println (guardaValor);
+		escrever.close();
+		}
+		catch (Exception ex){
+			ex.printStackTrace();
+		}
+	}
+	public static WebDriverWait getWait() {
+		return wait;
+	}
+	
+	/**
+	* Método para ler o Arquivo.txt que foi criado e inserido um valor
+	* @param fileName - Nome do arquivo
+	* @Athor Antonio Bernardo
+	*/
+	public static void lerArquivoTexto(String subPasta, String nomeDoArquivo, By lerArquivo) throws IOException{
+		@SuppressWarnings("unused")
+		String conteudo = ""; 
+		try{
+			BufferedReader ler = new BufferedReader(new FileReader("Z:\\SeleniumScreenShots\\"+subPasta+"\\"+nomeDoArquivo+".txt"));
+			String linha = ler.readLine();
+			wait.until(ExpectedConditions.visibilityOfElementLocated(lerArquivo));
+			driver.findElement(lerArquivo).clear();
+			driver.findElement(lerArquivo).sendKeys(linha);
+						
+			try{ 
+				linha = ler.readLine();
+				while (linha != null){
+					conteudo += linha+"\r\n";
+					linha =ler.readLine();
+				}
+				ler.close();
+			
+			}catch (IOException ex){
+				System.out.println("Erro: Não foi possivel ler arquivo!");
+			}
+	} catch (FileNotFoundException ex){
+		
+	}
+  }
 
 	/*
 		public static void campocheckBoxUtilizaPEDNao() throws InterruptedException{
