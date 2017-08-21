@@ -11,6 +11,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.List;
 import java.util.Set;
 import com.lowagie.text.Document;
 import com.lowagie.text.PageSize;
@@ -428,13 +429,10 @@ public class MetodosSiare {
 		action.click(element).build().perform();
 	}
 
-
-
 	/**
 	* Método para selecionar submenu quando houver a necessidade de rolar a barra de rolagem
 	* @Author Jacqueline Lucas
-	*/
-	
+	*/	
     public static void cliqueComBarraDeRolagem(By menu, By submenu){
         Actions action = new Actions(driver);
         driver.findElement(menu).click();       
@@ -446,10 +444,24 @@ public class MetodosSiare {
         action.moveToElement(element).build().perform();
         action.click(element).build().perform();
  }
-		
-    
-
 	
+	/**
+	* Método para clicar em um campo checkbox
+	* esse método irá setar o elemento da tela conforme o value seja (true,false,0,1,2,3...)
+	* @Author Jacqueline Lucas
+	*/		
+    public static void clickCampoCheckBox(By nomeCampo, String valueDoCampo) throws InterruptedException{
+        final List<WebElement> rdBtn_Campo = driver.findElements((nomeCampo));
+        int size = rdBtn_Campo.size();
+        for (int i=0; i< size; i++)
+        {
+               String sValue = rdBtn_Campo.get(i).getAttribute("value"); 
+               if (sValue.equalsIgnoreCase(valueDoCampo))
+               {
+                      rdBtn_Campo.get(i).click();
+               }
+        }
+    }
 	/*
 	*****************************METODOS DEFINIDOS E JÁ UTLIZADOS NO ARCHETYPE*****************************
 	**/
