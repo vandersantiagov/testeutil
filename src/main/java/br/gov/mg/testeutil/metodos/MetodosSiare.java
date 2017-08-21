@@ -32,6 +32,7 @@ import br.gov.mg.testeutil.util.sicaf.PropertySicaf;
 import br.gov.mg.testeutil.util.sicaf.SeleniumSicaf;
 import br.gov.mg.testeutil.util.sol.PropertySol;
 import br.gov.mg.testeutil.util.sol.SeleniumSol;
+import java.util.List;
 //import br.gov.mg.testeutil.util.sol.UtilsSol;
 
 public class MetodosSiare {
