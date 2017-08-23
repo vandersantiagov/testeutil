@@ -252,18 +252,23 @@ public class MetodosSiare {
 	* Método para excluir os arquivo na Subpasta do diretório onde estão sendo gerados os prints.	* @Author Antonio Bernardo e Fábio Heller
 	*/
 	public static void deletarArquivosDaSubpasta(String subPastaProjeto){
-	File pasta = new File(diretorioPrincipal+subPastaProjeto+"\\");    
-	File[] arquivos = pasta.listFiles();    
-	for(File arquivo : arquivos) {
+	try {
+		File pasta = new File(diretorioPrincipal+subPastaProjeto+"\\");    
+		File[] arquivos = pasta.listFiles();    
+		for(File arquivo : arquivos) {
 	    if(arquivo.getName().endsWith("jpeg") || arquivo.getName().endsWith("sql") || arquivo.getName().endsWith("out") || arquivo.getName().endsWith("txt") || arquivo.getName().endsWith("pdf")) {
 	        arquivo.delete();
 	    	}
 		}
+		}catch (NullPointerException ex){
+			System.out.println("Diretorio e/ou subpastas inexistentes!");
+		}catch (Exception ex){
+			
+		}
 	}
-	
 	/**
 	* Método para Criar o arquivo colocar a informação dentro do arquivo  Arquivo.txt
-* Por exemplo, copiar o número de um protocolo e colar em um arquivo texto para utilizá-lo posteriormente. (CTRL C + CTRL V)
+	* Por exemplo, copiar o número de um protocolo e colar em um arquivo texto para utilizá-lo posteriormente. (CTRL C + CTRL V)
 	* @Author Antonio Bernardo e Fábio Heller
 	*/
 		
@@ -462,6 +467,10 @@ public class MetodosSiare {
                }
         }
     }
+    public static void aguardarOProximoPasso(int valorEmMilisegundos) throws InterruptedException{
+    	Thread.sleep(valorEmMilisegundos);
+    }
+    	
 	/*
 	*****************************METODOS DEFINIDOS E JÁ UTLIZADOS NO ARCHETYPE*****************************
 	**/
