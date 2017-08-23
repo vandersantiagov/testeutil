@@ -467,6 +467,10 @@ public class MetodosSiare {
                }
         }
     }
+	/**
+	 * Método para um tempo para o 
+	 * @Author Antonio Bernardo
+	 */
     public static void aguardarOProximoPasso(int valorEmMilisegundos) throws InterruptedException{
     	Thread.sleep(valorEmMilisegundos);
     }
