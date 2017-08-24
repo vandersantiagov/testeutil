@@ -11,6 +11,9 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 import com.lowagie.text.Document;
@@ -474,6 +477,36 @@ public class MetodosSiare {
     public static void aguardarOProximoPasso(int valorEmMilisegundos) throws InterruptedException{
     	Thread.sleep(valorEmMilisegundos);
     }
+    
+
+	/**
+	* Método para capturar a data atual do sistema e acrescentar ou diminuir em dias a data capturada
+	* set true com mascara ("dd/MM/yyyy") // set false sem mascara ("ddMMyyyy")
+	* @Author Rogerio Cesar e Fabio Heller
+	*/		    
+	@SuppressWarnings("deprecation")
+	public static String retornaDataAtualOuPosteriorOuAnteriorDaDataAtualDoSistema(int dias, boolean comMascara) {
+           DateFormat dateFormat = new SimpleDateFormat("ddMMyyyy");	
+		if (comMascara){
+			dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+		}else{
+	        dateFormat = new SimpleDateFormat("ddMMyyyy");
+		}
+    	   Date data = new Date();
+    	   data.setDate(data.getDate()+dias);
+    	   return dateFormat.format(data);
+    	}
+	
+
+	/**
+	* Método para capturar a hora atual do sistema
+	* @Author Fábio Heller
+	*/	
+	public static String retornaHoraAtualDoSistema() {
+           DateFormat dateFormat = new SimpleDateFormat("HHmmss");	
+    	   Date data = new Date();
+    	   return dateFormat.format(data);
+    	}
     	
 	/*
 	*****************************METODOS DEFINIDOS E JÁ UTLIZADOS NO ARCHETYPE*****************************
