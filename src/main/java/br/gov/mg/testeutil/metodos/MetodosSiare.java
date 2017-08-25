@@ -224,6 +224,7 @@ public class MetodosSiare {
 	
 	/**
 	 * Método que clica em um item da lista de um Combobox
+	 * @throws InterruptedException  
 	 * @Author Fábio Heller
 	 */
 	public static void selecionarOpcaoEmCombobox(By combobox, By opcaoCombobox) throws InterruptedException{
@@ -273,18 +274,42 @@ public class MetodosSiare {
 	* Método para Criar o arquivo colocar a informação dentro do arquivo  Arquivo.txt
 	* Por exemplo, copiar o número de um protocolo e colar em um arquivo texto para utilizá-lo posteriormente. (CTRL C + CTRL V)
 	* @Author Antonio Bernardo e Fábio Heller
+	* Atualizado dia 25/08/2017 - Antonio Bernardo
 	*/
 		
 	public static void escreverEmArquivoTexto(By objetoCopiar, String subPastaProjeto, String nomeDoArquivo){
 	try{
+		boolean success = (new File(diretorioPrincipal+subPastaProjeto)).mkdirs();
+		if (!success) {
+		// Falha no momento de criar o diretório
+		}
 		FileWriter canal  = new FileWriter (new File(diretorioPrincipal+subPastaProjeto+"\\"+nomeDoArquivo+".txt"));
 		PrintWriter escrever = new PrintWriter(canal);
 		String guardaValor = null;
 		guardaValor = driver.findElement(objetoCopiar).getText();
-		escrever.println (guardaValor);
+		String str = guardaValor;
+	    while (str.indexOf("-") != -1) {
+		      if (str.indexOf("-") != 0) {
+		        str = str.substring(0, str.indexOf("-")) +
+		            str.substring(str.indexOf("-") + 1);
+		      }
+		      else {
+		        str = str.substring(str.indexOf("-") + 1);
+		      }
+		    }
+		    while (str.indexOf(".") != -1) {
+		      if (str.indexOf(".") != 0) {
+		        str = str.substring(0, str.indexOf(".")) +
+		            str.substring(str.indexOf(".") + 1);
+		      }
+		      else {
+		        str = str.substring(str.indexOf(".") + 1);
+		      }
+		    }
+		escrever.println (str);
 		escrever.close();
 		}
-		catch (Exception ex){
+	catch (Exception ex){
 			ex.printStackTrace();
 		}
 	}
