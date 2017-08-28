@@ -380,14 +380,12 @@ public class MetodosSiare {
 	*/	
 	public static void menuSubMenuNivel1(By Menu, By subMenu1){
 		Actions action = new Actions(driver);
+		WebElement element = driver.findElement(Menu);		
+		action.moveToElement(element).build().perform();
 		driver.findElement(Menu).click(); 	
-		WebElement element = driver.findElement(Menu);
+		action.click(element).build().perform();		
 		action.moveToElement(element).build().perform();
-		action.click(element).build().perform();
-		
-		driver.findElement(subMenu1).click(); 	
-		action.moveToElement(element).build().perform();
-		action.click(element).build().perform();
+		driver.findElement(subMenu1).click(); 
 	}
 	
 	/**
@@ -396,18 +394,15 @@ public class MetodosSiare {
 	*/	
 	public static void menuSubMenuNivel2(By Menu, By subMenu1, By subMenu2){
 		Actions action = new Actions(driver);
+		WebElement element = driver.findElement(Menu);		
+		action.moveToElement(element).build().perform();		
 		driver.findElement(Menu).click(); 	
-		WebElement element = driver.findElement(Menu);
+		action.click(element).build().perform();		
 		action.moveToElement(element).build().perform();
-		action.click(element).build().perform();
-		
-		driver.findElement(subMenu1).click(); 	
+		driver.findElement(subMenu1).click(); 		
+		element = driver.findElement(subMenu1);
 		action.moveToElement(element).build().perform();
-		action.click(element).build().perform();
-		
-		driver.findElement(subMenu2).click(); 	
-		action.moveToElement(element).build().perform();
-		action.click(element).build().perform();
+		driver.findElement(subMenu2).click(); 
 	}
 	
 	/**
@@ -416,22 +411,18 @@ public class MetodosSiare {
 	*/	
 	public static void menuSubMenuNivel3(By Menu, By subMenu1, By subMenu2, By subMenu3){
 		Actions action = new Actions(driver);
+		WebElement element = driver.findElement(Menu);		
+		action.moveToElement(element).build().perform();		
 		driver.findElement(Menu).click(); 	
-		WebElement element = driver.findElement(Menu);
+		action.click(element).build().perform();		
 		action.moveToElement(element).build().perform();
-		action.click(element).build().perform();
-		
-		driver.findElement(subMenu1).click(); 	
+		driver.findElement(subMenu1).click(); 		
+		element = driver.findElement(subMenu1);
 		action.moveToElement(element).build().perform();
-		action.click(element).build().perform();
-		
-		driver.findElement(subMenu2).click(); 	
+		driver.findElement(subMenu2).click(); 		
+		element = driver.findElement(subMenu2);
 		action.moveToElement(element).build().perform();
-		action.click(element).build().perform();
-
-		driver.findElement(subMenu3).click(); 	
-		action.moveToElement(element).build().perform();
-		action.click(element).build().perform();
+		driver.findElement(subMenu3).click(); 
 	}
 	
 	/**
@@ -440,43 +431,22 @@ public class MetodosSiare {
 	*/	
 	public static void menuSubMenuNivel4(By Menu, By subMenu1, By subMenu2, By subMenu3, By subMenu4){
 		Actions action = new Actions(driver);
+		WebElement element = driver.findElement(Menu);		
+		action.moveToElement(element).build().perform();		
 		driver.findElement(Menu).click(); 	
-		WebElement element = driver.findElement(Menu);
+		action.click(element).build().perform();		
 		action.moveToElement(element).build().perform();
-		action.click(element).build().perform();
-		
-		driver.findElement(subMenu1).click(); 	
+		driver.findElement(subMenu1).click(); 		
+		element = driver.findElement(subMenu1);
 		action.moveToElement(element).build().perform();
-		action.click(element).build().perform();
-		
-		driver.findElement(subMenu2).click(); 	
+		driver.findElement(subMenu2).click(); 		
+		element = driver.findElement(subMenu2);
 		action.moveToElement(element).build().perform();
-		action.click(element).build().perform();
-
 		driver.findElement(subMenu3).click(); 	
+		element = driver.findElement(subMenu3);
 		action.moveToElement(element).build().perform();
-		action.click(element).build().perform();
-		
-		driver.findElement(subMenu4).click(); 	
-		action.moveToElement(element).build().perform();
-		action.click(element).build().perform();
+		driver.findElement(subMenu4).click(); 
 	}
-
-	/**
-	* Método para selecionar submenu quando houver a necessidade de rolar a barra de rolagem
-	* @Author Jacqueline Lucas
-	*/	
-    public static void cliqueComBarraDeRolagem(By menu, By submenu){
-        Actions action = new Actions(driver);
-        driver.findElement(menu).click();       
-        WebElement element = driver.findElement(menu);
-        action.moveToElement(element).build().perform();
-        action.click(element).build().perform();
-        
-        driver.findElement(submenu).click();   
-        action.moveToElement(element).build().perform();
-        action.click(element).build().perform();
- }
 	
 	/**
 	* Método para clicar em um campo checkbox
