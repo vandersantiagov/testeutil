@@ -234,8 +234,7 @@ public class MetodosSiare {
 		action.moveToElement(element).build().perform();
 		action.click(element).build().perform();
 		element.click();
-	}
-	
+	}	
 
 	/**
 
@@ -244,8 +243,8 @@ public class MetodosSiare {
 	* @Athor Antonio Bernardo e Fábio Heller
 	*/
 	public static void capturaScreenDaTela(String subPastaProjeto, String fileName){
-	File scrFile = ((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);
-		 try {
+		File scrFile = ((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);
+		try {
 			FileUtils.copyFile(scrFile, new File(diretorioPrincipal+subPastaProjeto+"\\"+fileName+".jpeg"),true);
 		} catch (IOException e) {
 		e.printStackTrace();
@@ -256,20 +255,21 @@ public class MetodosSiare {
 	* Método para excluir os arquivo na Subpasta do diretório onde estão sendo gerados os prints.	* @Author Antonio Bernardo e Fábio Heller
 	*/
 	public static void deletarArquivosDaSubpasta(String subPastaProjeto){
-	try {
-		File pasta = new File(diretorioPrincipal+subPastaProjeto+"\\");    
-		File[] arquivos = pasta.listFiles();    
-		for(File arquivo : arquivos) {
-	    if(arquivo.getName().endsWith("jpeg") || arquivo.getName().endsWith("sql") || arquivo.getName().endsWith("out") || arquivo.getName().endsWith("txt") || arquivo.getName().endsWith("pdf")) {
-	        arquivo.delete();
-	    	}
-		}
+		try {
+			File pasta = new File(diretorioPrincipal+subPastaProjeto+"\\");    
+			File[] arquivos = pasta.listFiles();    
+			for(File arquivo : arquivos) {
+		    if(arquivo.getName().endsWith("jpeg") || arquivo.getName().endsWith("sql") || arquivo.getName().endsWith("out") || arquivo.getName().endsWith("txt") || arquivo.getName().endsWith("pdf")) {
+		        arquivo.delete();
+		    	}
+			}
 		}catch (NullPointerException ex){
 			System.out.println("Diretorio e/ou subpastas inexistentes!");
 		}catch (Exception ex){
 			
 		}
 	}
+	
 	/**
 	* Método para Criar o arquivo colocar a informação dentro do arquivo  Arquivo.txt
 	* Por exemplo, copiar o número de um protocolo e colar em um arquivo texto para utilizá-lo posteriormente. (CTRL C + CTRL V)
@@ -313,9 +313,6 @@ public class MetodosSiare {
 			ex.printStackTrace();
 		}
 	}
-	public static WebDriverWait getWait() {
-		return wait;
-	}
 	
 	/**
 	* Método para ler o Arquivo.txt que foi criado e inserido um valor
@@ -343,27 +340,28 @@ public class MetodosSiare {
 			}catch (IOException ex){
 				System.out.println("Erro: Não foi possivel ler arquivo!");
 			}
-	} catch (FileNotFoundException ex){
-		
+		} catch (FileNotFoundException ex){
+			
+		}
 	}
-}
 	/**
 	* Método para criar um arquivo .pdf e inserido um valor
 	* @Athor Jacqueline Lucas
 	*/
 	public static void criarArquivoPDFEInserirTexto(String subPastaProjeto, String nomeDoArquivo, String inserirTexto){
-	 try{
-		Document document = new Document(PageSize.A4, 50, 50, 50, 50);
-		PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(new File(diretorioPrincipal+subPastaProjeto+"\\"+nomeDoArquivo+".pdf")));
-		document.open();
-		document.add(new Paragraph(inserirTexto));
-		document.close();
-		writer.close();
-		} 
-		catch (Exception e) {
-			e.printStackTrace();
-				}
+		 try{
+			Document document = new Document(PageSize.A4, 50, 50, 50, 50);
+			PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(new File(diretorioPrincipal+subPastaProjeto+"\\"+nomeDoArquivo+".pdf")));
+			document.open();
+			document.add(new Paragraph(inserirTexto));
+			document.close();
+			writer.close();
+			} 
+			catch (Exception e) {
+				e.printStackTrace();
 			}
+		}
+	
 	/**
 	* Método para anexar um arquivo 
 	* @Athor Jacqueline Lucas e Antonio Bernardo
@@ -465,14 +463,14 @@ public class MetodosSiare {
                }
         }
     }
+    
 	/**
 	 * Método para um tempo para o 
 	 * @Author Antonio Bernardo
 	 */
     public static void aguardarOProximoPasso(int valorEmMilisegundos) throws InterruptedException{
     	Thread.sleep(valorEmMilisegundos);
-    }
-    
+    }    
 
 	/**
 	* Método para capturar a data atual do sistema e acrescentar ou diminuir em dias a data capturada
@@ -491,7 +489,6 @@ public class MetodosSiare {
     	   data.setDate(data.getDate()+dias);
     	   return dateFormat.format(data);
     	}
-	
 
 	/**
 	* Método para capturar a hora atual do sistema
@@ -502,7 +499,24 @@ public class MetodosSiare {
     	   Date data = new Date();
     	   return dateFormat.format(data);
     	}
-    	
+	
+    /**
+    * Método que efetua a ação de um clique em uma opção existente em Tela
+    * String texto = título da tela modal
+    * By campo = passar um elemento para validar o título da tela Modal 
+    * By ElementoOpcaoClick1 = passar o elemento que vai receber a ação click int
+    * int tempo = tempo de espera do carregamento DOM
+    * 
+     * @Author Jacqueline Lucas
+    */
+    public static void modalValidareClicar(String texto, By campo, By ElementoOpcaoClick1, int tempo) throws InterruptedException{
+         Thread.sleep(tempo);
+         validarTexto(texto, campo);
+         By correctLocator = null;
+         correctLocator = ElementoOpcaoClick1;
+         driver.findElement(correctLocator).click();
+    }
+
 	/*
 	*****************************METODOS DEFINIDOS E JÁ UTLIZADOS NO ARCHETYPE*****************************
 	**/
@@ -546,6 +560,10 @@ public class MetodosSiare {
 	@AfterClass
 	public static void quitAmbiente() throws Exception {
 		driver.quit();
+	}
+	
+	public static WebDriverWait getWait() {
+		return wait;
 	}
 }
 
