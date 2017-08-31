@@ -31,11 +31,17 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+
+import br.gov.mg.testeutil.objetos.ObjetosMetodosComuns;
+import br.gov.mg.testeutil.telas.login.ObjetosTelaLoginSicaf;
 import br.gov.mg.testeutil.util.sicaf.PropertySicaf;
 import br.gov.mg.testeutil.util.sicaf.SeleniumSicaf;
 import br.gov.mg.testeutil.util.sol.PropertySol;
 import br.gov.mg.testeutil.util.sol.SeleniumSol;
 //import br.gov.mg.testeutil.util.sol.UtilsSol;
+//import gov.sefmg.CopiarColar.objetos.sicaf.ObjetosConsultaProtocolo;
+//import gov.sefmg.CopiarColar.objetos.sicaf.ObjetosCopiarEColarValores;
+
 
 public class MetodosSiare {
 		
@@ -516,6 +522,248 @@ public class MetodosSiare {
          correctLocator = ElementoOpcaoClick1;
          driver.findElement(correctLocator).click();
     }
+    
+	/**
+	 * Método para Criar o arquivo colocar a informação dentro do arquivo
+	 * Arquivo .txt (Esse método só vai preencher se o campo a qual for
+	 * recuperado tiver o valor, caso o campo não tiver o valor foi vazio, o
+	 * método vai tentar novamente daqui 30 segundos) Por exemplo, copiar o
+	 * responsável pelo Protocolo Gerado até que o mesmo protocolo caia na caixa
+	 * do Servidor Resposável. (CTRL C + CTRL V)
+	 * 
+	 * @Author Antonio Bernardo e Fábio Heller Atualizado dia 28/08/2017 -
+	 *         Antonio Bernardo
+	 */
+
+	public static void escreverEmArquivoTextoCasoNaoEncontradoValorNoObjeto(By objetoCopiar, String subPastaProjeto,
+			String nomeDoArquivo, By elementoPesquisar, By consultaCampoProtocolo, By priorizarCampoProtocolo) {
+		String dadoDoRetornoDoArquivo = "";
+		try {
+			boolean success = (new File(diretorioPrincipal + subPastaProjeto)).mkdirs();
+			if (!success) {
+				// Falha no momento de criar o diretório
+			}
+			boolean achou = false;
+			do {
+				FileWriter canal = new FileWriter(
+						new File(diretorioPrincipal + subPastaProjeto + "\\" + nomeDoArquivo + ".txt"));
+				PrintWriter escrever = new PrintWriter(canal);
+				String guardaValor = null;
+				int contador = 0, limiteDoContador = 15;
+				guardaValor = driver.findElement(objetoCopiar).getText();
+				String str = guardaValor;
+				if (!str.equals("")) {
+					while (str.indexOf("-") != -1) {
+						if (str.indexOf("-") != 0) {
+							str = str.substring(0, str.indexOf("-")) + str.substring(str.indexOf("-") + 1);
+						} else {
+							str = str.substring(str.indexOf("-") + 1);
+						}
+					}
+					while (str.indexOf(".") != -1) {
+						if (str.indexOf(".") != 0) {
+							str = str.substring(0, str.indexOf(".")) + str.substring(str.indexOf(".") + 1);
+						} else {
+							str = str.substring(str.indexOf(".") + 1);
+						}
+					}
+					escrever.println(str);
+					escrever.close();
+					achou = true;
+				} else {
+					// codificar a estrutura caso não seja encontrado o
+					// responsavel pelo protocolo
+					MetodosSiare.umClique(elementoPesquisar);
+					System.out.println("Aguardando o protocolo cair para um Servidor Responsável...");
+					Thread.sleep(20000);
+					contador++;
+				}
+				if (contador == limiteDoContador) {
+					// metodo que ira priorizar o protocolo
+					dadoDoRetornoDoArquivo = driver.findElement(consultaCampoProtocolo).getAttribute("value");
+					System.out.println("Priorizar Protocolo.");
+					MetodosSiare.umClique(ObjetosMetodosComuns.linkHomeSiare);
+					MetodosSiare.validarTexto("Suas tarefas para o momento :",
+							ObjetosMetodosComuns.textoValidarTituloHome);
+					MetodosSiare.tresCliques(ObjetosMetodosComuns.menuAdiministracaoDeServico,
+							ObjetosMetodosComuns.subMenuServico, ObjetosMetodosComuns.subMenuPriorizacao);
+					MetodosSiare.validarTexto("Manutenção de Priorização de Serviços",
+							ObjetosMetodosComuns.textoValidarTituloHome);
+					MetodosSiare.inserirDadoNoCampo(dadoDoRetornoDoArquivo, priorizarCampoProtocolo);
+					MetodosSiare.umClique(ObjetosMetodosComuns.comandoPesquisar);
+					MetodosSiare.validarTexto("Manutenção de Priorização de Serviços",
+							ObjetosMetodosComuns.textoValidarTituloHome);
+					MetodosSiare.umClique(ObjetosMetodosComuns.selecionarProtocoloPesquisado);
+					MetodosSiare.umClique(ObjetosMetodosComuns.linkPriorizar);
+					MetodosSiare.validarTexto("Priorizar Serviços", ObjetosMetodosComuns.textoValidarTituloHome);
+					MetodosSiare.umClique(ObjetosMetodosComuns.comandoPriorizar);
+					MetodosSiare.aguardarOProximoPasso(3000);
+					MetodosSiare.validarTexto("Solicitação efetuada com sucesso.",
+							ObjetosMetodosComuns.mensagemDeSucesso);
+					MetodosSiare.umClique(ObjetosMetodosComuns.linkSairSiareSICAF);
+					logarComAdministrador();
+					escreverEmArquivoTextoCasoNaoEncontradoValorNoObjeto(objetoCopiar, subPastaProjeto, nomeDoArquivo,
+							elementoPesquisar, consultaCampoProtocolo, priorizarCampoProtocolo);
+
+				}
+			} while (!achou);
+
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+	}
+
+	/**
+	 * Método para logar com o Administrador Siare e ir até o Consulta de Histório de Protocolo 
+	 * @author Antonio Benardo 
+	 * @throws IOException
+	 */
+	public static void logarComAdministrador() throws IOException {
+		// Logar com o administrador para consulatar o Protocolo
+		ObjetosTelaLoginSicaf.tituloPaginaLoginCorreto(
+				"SEF/MG - Rodovia Papa João Paulo II, nº 4001. Edifício Gerais.  7º andar.  Bairro Serra Verde - "
+						+ "Belo Horizonte-MG. CEP 31.630-901");
+		ObjetosTelaLoginSicaf.performSearchCpf("88888888888");
+		ObjetosTelaLoginSicaf.performSearchSenha("12345678");
+		ObjetosTelaLoginSicaf.clickSearchButtonLogin();
+		// Acessar a tela de consluta de protocolo
+		MetodosSiare.umClique(ObjetosMetodosComuns.abaConultaSiareSICAF);
+		MetodosSiare.validarTexto("Principais Consultas", ObjetosMetodosComuns.textoTituloDaAbaConsulta);
+		MetodosSiare.doisCliques(ObjetosMetodosComuns.menuAdiministracaoDeServico,
+				ObjetosMetodosComuns.subMenuHistoricoDeServicoPorProtocolo);
+		MetodosSiare.validarTexto("Consultar Histórico de Serviço por Protocolo",
+				ObjetosMetodosComuns.textoTituloDaAbaConsulta);
+	}
+
+	/**
+	 * Método para preenhcer o Check da tela de Consulta de Histório de Protocolo
+	 * @author Antonio Bernardo
+	 */
+	public static void metodoCheckNosCampos() {
+		// Marcar os campos com Checkbox da tela de Consulta de protocolo e
+		// realizar a pesquisar
+		MetodosSiare.umClique(ObjetosMetodosComuns.checkOcorrencia);
+		MetodosSiare.umClique(ObjetosMetodosComuns.checkPriorizacao);
+		MetodosSiare.umClique(ObjetosMetodosComuns.checkRedirecionamento);
+		MetodosSiare.umClique(ObjetosMetodosComuns.checkRegistroEntrega);
+		MetodosSiare.umClique(ObjetosMetodosComuns.checkSuspensao);
+		MetodosSiare.umClique(ObjetosMetodosComuns.checkTramitacao);
+		MetodosSiare.umClique(ObjetosMetodosComuns.checkTransferencia);
+		MetodosSiare.doisCliques(ObjetosMetodosComuns.comboPendencia, ObjetosMetodosComuns.selecionarOpcaoTodas);
+		MetodosSiare.umClique(ObjetosMetodosComuns.comandoPesquisar);
+	}
+
+	/**
+	 * Método para Consluta o responsável pelo o Protoclo Gerado na tela de Servidores na Aba Controle de Acesso
+	 * Recupera o CPF do Responsável pela protocolo para logar no SIARE.
+	 * @author Antonio Bernardo
+	 */
+
+	public static void metodoConsultaOResponsavelPeloProtocolo() {
+		// Pegar o numero do CPF para logar e executar o protorolo
+		MetodosSiare.umClique(ObjetosMetodosComuns.linkControleDeAcesso);
+		MetodosSiare.doisCliques(ObjetosMetodosComuns.menuCadastroControleDeAcesso,
+				ObjetosMetodosComuns.subMenuServidorControleDeAcesso);
+	}
+
+	/**
+	 *Método para  Pesquisar o Responsável depois do preenchimento do CPF realizado pelo outro Método de Ler arquivo.
+	 *@author Antonio Bernardo  
+	 */
+	public static void metodoParaRecuperarOResponsavelPeloProcolo() {
+		// Criar o arquivo para guardar o CPF do Responsável pelo responsável
+		MetodosSiare.umClique(ObjetosMetodosComuns.comandoPesquisaServidores);
+
+	}
+
+	/**
+	 * Método para Criar o arquivo colocar a informação dentro do arquivo
+	 * Arquivo.txt Por exemplo, copiar o número de um protocolo e colar em um
+	 * arquivo texto para utilizá-lo posteriormente. (CTRL C + CTRL V)
+	 * 
+	 * @Author Antonio Bernardo e Fábio Heller Atualizado dia 25/08/2017 -
+	 *         Antonio Bernardo
+	 */
+
+	public static void escreverEmArquivoTextoComFormatacao(By objetoCopiar, String subPastaProjeto,
+			String nomeDoArquivo) {
+		try {
+			boolean success = (new File(diretorioPrincipal + subPastaProjeto)).mkdirs();
+			if (!success) {
+				// Falha no momento de criar o diretório
+			}
+			FileWriter canal = new FileWriter(
+					new File(diretorioPrincipal + subPastaProjeto + "\\" + nomeDoArquivo + ".txt"));
+			PrintWriter escrever = new PrintWriter(canal);
+			String guardaValor = null;
+			guardaValor = driver.findElement(objetoCopiar).getText();
+			escrever.println(guardaValor);
+			escrever.close();
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+	}
+	public static WebDriverWait getWait1() {
+		return wait;
+}
+	/**
+	 * Método para comparar os protocolo com formatção na caixa de serviço e suspendento até achar o protocolo gerado e clicar no comando executar.
+	 * @author Antonio Bernardo e Fábio Heller
+	 * 
+	 * @param subPastaDiretorio
+	 * @param nomeDoArquivoComFormatacao
+	 * @param checkCaixaDeServico
+	 * @param linkExecutarProtocolo
+	 * @param linkSuspenderProtocolo
+	 * @throws IOException
+	 * @throws InterruptedException
+	 */
+	public static void compararProtocoloGeradoComACaixaDeServicoDoServidorResponsavel(String subPastaDiretorio,
+			String nomeDoArquivoComFormatacao,  By checkCaixaDeServico, By linkExecutarProtocolo,
+			By linkSuspenderProtocolo) throws IOException, InterruptedException {
+		String protocoloCaixaDeServicoGravadoEmArquivo = MetodosSiare.lerArquivoTextoERetornaDadoDaPrimeiraLinha(
+				subPastaDiretorio + "\\", nomeDoArquivoComFormatacao),
+				protocoloCaixaDeServico = driver.findElement(ObjetosMetodosComuns.protocoloCaixaDeServico).getText();
+		boolean achou = false;
+		MetodosSiare.lerArquivoTextoERetornaDadoDaPrimeiraLinha(subPastaDiretorio + "\\",
+				nomeDoArquivoComFormatacao);
+		do {
+			if (protocoloCaixaDeServicoGravadoEmArquivo.equals(protocoloCaixaDeServico)) {
+				// codificar a estrutura quando o protocolo for encontrado
+				MetodosSiare.umClique(checkCaixaDeServico);
+				MetodosSiare.umClique(linkExecutarProtocolo);
+				achou = true;
+			} else {
+				// inserir o metodo que ira susoender o protocolo
+				MetodosSiare.umClique(checkCaixaDeServico);
+				MetodosSiare.umClique(linkSuspenderProtocolo);
+				MetodosSiare.validarTexto("Suspender Serviço", ObjetosMetodosComuns.textoTituloDaAbaConsulta);
+				MetodosSiare.doisCliques(ObjetosMetodosComuns.comboMotivoDaSuspensao, ObjetosMetodosComuns.selecionarOpcaoTipoDeSuspensao);
+				MetodosSiare.umClique(ObjetosMetodosComuns.comandoConfirmarSuspensaoProtocolo);
+				MetodosSiare.aguardarOProximoPasso(3000);
+				protocoloCaixaDeServico = driver.findElement(ObjetosMetodosComuns.protocoloCaixaDeServico).getText();
+			}
+		} while (!achou);
+
+	}
+
+	/**
+	* Método para ler o Arquivo.txt que foi criado e inserido um valor
+* Por exemplo, copiar o número de um protocolo que está em um arquivo txt e inserir no elemento que receberá a informação
+	* @Author Antonio Bernardo
+	*/
+	public static String lerArquivoTextoERetornaDadoDaPrimeiraLinha(String subPastaProjeto, String nomeDoArquivo) throws IOException{
+		BufferedReader ler = new BufferedReader(new FileReader(diretorioPrincipal+subPastaProjeto+"\\"+nomeDoArquivo+".txt"));
+		String linha = null;
+		try{
+			linha = ler.readLine();
+			ler.close();
+			
+			}catch (IOException ex){
+				System.out.println("Erro: Não foi possivel ler arquivo!");
+			}
+		return linha;
+	}
 
 	/*
 	*****************************METODOS DEFINIDOS E JÁ UTLIZADOS NO ARCHETYPE*****************************
