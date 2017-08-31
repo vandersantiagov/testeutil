@@ -614,8 +614,10 @@ public class MetodosSiare {
 	}
 
 	/**
-	 * Método para logar com o Administrador Siare e ir até o Consulta de Histório de Protocolo 
-	 * @author Antonio Benardo 
+	 * Método para logar com o Administrador Siare e ir até o Consulta de
+	 * Histório de Protocolo
+	 * 
+	 * @author Antonio Benardo
 	 * @throws IOException
 	 */
 	public static void logarComAdministrador() throws IOException {
@@ -636,7 +638,9 @@ public class MetodosSiare {
 	}
 
 	/**
-	 * Método para preenhcer o Check da tela de Consulta de Histório de Protocolo
+	 * Método para preenhcer o Check da tela de Consulta de Histório de
+	 * Protocolo
+	 * 
 	 * @author Antonio Bernardo
 	 */
 	public static void metodoCheckNosCampos() {
@@ -654,8 +658,10 @@ public class MetodosSiare {
 	}
 
 	/**
-	 * Método para Consluta o responsável pelo o Protoclo Gerado na tela de Servidores na Aba Controle de Acesso
-	 * Recupera o CPF do Responsável pela protocolo para logar no SIARE.
+	 * Método para Consluta o responsável pelo o Protoclo Gerado na tela de
+	 * Servidores na Aba Controle de Acesso Recupera o CPF do Responsável pela
+	 * protocolo para logar no SIARE.
+	 * 
 	 * @author Antonio Bernardo
 	 */
 
@@ -667,8 +673,10 @@ public class MetodosSiare {
 	}
 
 	/**
-	 *Método para  Pesquisar o Responsável depois do preenchimento do CPF realizado pelo outro Método de Ler arquivo.
-	 *@author Antonio Bernardo  
+	 * Método para Pesquisar o Responsável depois do preenchimento do CPF
+	 * realizado pelo outro Método de Ler arquivo.
+	 * 
+	 * @author Antonio Bernardo
 	 */
 	public static void metodoParaRecuperarOResponsavelPeloProcolo() {
 		// Criar o arquivo para guardar o CPF do Responsável pelo responsável
@@ -703,11 +711,15 @@ public class MetodosSiare {
 			ex.printStackTrace();
 		}
 	}
+
 	public static WebDriverWait getWait1() {
 		return wait;
-}
+	}
+
 	/**
-	 * Método para comparar os protocolo com formatção na caixa de serviço e suspendento até achar o protocolo gerado e clicar no comando executar.
+	 * Método para comparar os protocolo com formatção na caixa de serviço e
+	 * suspendento até achar o protocolo gerado e clicar no comando executar.
+	 * 
 	 * @author Antonio Bernardo e Fábio Heller
 	 * 
 	 * @param subPastaDiretorio
@@ -719,14 +731,13 @@ public class MetodosSiare {
 	 * @throws InterruptedException
 	 */
 	public static void compararProtocoloGeradoComACaixaDeServicoDoServidorResponsavel(String subPastaDiretorio,
-			String nomeDoArquivoComFormatacao,  By checkCaixaDeServico, By linkExecutarProtocolo,
+			String nomeDoArquivoComFormatacao, By checkCaixaDeServico, By linkExecutarProtocolo,
 			By linkSuspenderProtocolo) throws IOException, InterruptedException {
-		String protocoloCaixaDeServicoGravadoEmArquivo = MetodosSiare.lerArquivoTextoERetornaDadoDaPrimeiraLinha(
-				subPastaDiretorio + "\\", nomeDoArquivoComFormatacao),
+		String protocoloCaixaDeServicoGravadoEmArquivo = MetodosSiare
+				.lerArquivoTextoERetornaDadoDaPrimeiraLinha(subPastaDiretorio + "\\", nomeDoArquivoComFormatacao),
 				protocoloCaixaDeServico = driver.findElement(ObjetosMetodosComuns.protocoloCaixaDeServico).getText();
 		boolean achou = false;
-		MetodosSiare.lerArquivoTextoERetornaDadoDaPrimeiraLinha(subPastaDiretorio + "\\",
-				nomeDoArquivoComFormatacao);
+		MetodosSiare.lerArquivoTextoERetornaDadoDaPrimeiraLinha(subPastaDiretorio + "\\", nomeDoArquivoComFormatacao);
 		do {
 			if (protocoloCaixaDeServicoGravadoEmArquivo.equals(protocoloCaixaDeServico)) {
 				// codificar a estrutura quando o protocolo for encontrado
@@ -738,7 +749,8 @@ public class MetodosSiare {
 				MetodosSiare.umClique(checkCaixaDeServico);
 				MetodosSiare.umClique(linkSuspenderProtocolo);
 				MetodosSiare.validarTexto("Suspender Serviço", ObjetosMetodosComuns.textoTituloDaAbaConsulta);
-				MetodosSiare.doisCliques(ObjetosMetodosComuns.comboMotivoDaSuspensao, ObjetosMetodosComuns.selecionarOpcaoTipoDeSuspensao);
+				MetodosSiare.doisCliques(ObjetosMetodosComuns.comboMotivoDaSuspensao,
+						ObjetosMetodosComuns.selecionarOpcaoTipoDeSuspensao);
 				MetodosSiare.umClique(ObjetosMetodosComuns.comandoConfirmarSuspensaoProtocolo);
 				MetodosSiare.aguardarOProximoPasso(3000);
 				protocoloCaixaDeServico = driver.findElement(ObjetosMetodosComuns.protocoloCaixaDeServico).getText();
@@ -748,20 +760,24 @@ public class MetodosSiare {
 	}
 
 	/**
-	* Método para ler o Arquivo.txt que foi criado e inserido um valor
-* Por exemplo, copiar o número de um protocolo que está em um arquivo txt e inserir no elemento que receberá a informação
-	* @Author Antonio Bernardo
-	*/
-	public static String lerArquivoTextoERetornaDadoDaPrimeiraLinha(String subPastaProjeto, String nomeDoArquivo) throws IOException{
-		BufferedReader ler = new BufferedReader(new FileReader(diretorioPrincipal+subPastaProjeto+"\\"+nomeDoArquivo+".txt"));
+	 * Método para ler o Arquivo.txt que foi criado e inserido um valor Por
+	 * exemplo, copiar o número de um protocolo que está em um arquivo txt e
+	 * inserir no elemento que receberá a informação
+	 * 
+	 * @Author Antonio Bernardo
+	 */
+	public static String lerArquivoTextoERetornaDadoDaPrimeiraLinha(String subPastaProjeto, String nomeDoArquivo)
+			throws IOException {
+		BufferedReader ler = new BufferedReader(
+				new FileReader(diretorioPrincipal + subPastaProjeto + "\\" + nomeDoArquivo + ".txt"));
 		String linha = null;
-		try{
+		try {
 			linha = ler.readLine();
 			ler.close();
-			
-			}catch (IOException ex){
-				System.out.println("Erro: Não foi possivel ler arquivo!");
-			}
+
+		} catch (IOException ex) {
+			System.out.println("Erro: Não foi possivel ler arquivo!");
+		}
 		return linha;
 	}
 
