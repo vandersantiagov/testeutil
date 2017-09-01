@@ -77,15 +77,21 @@ public class MetodosSiare {
 		By cpoCssSelectorBy = By.linkText(nomeElementocssSelector);
 		return cpoCssSelectorBy;
 	}
-
+	
 	/**
 	 * Método que valida a igualdade entre duas strings
 	 * Objetivo: Verificar se duas frases são iguais.
 	 * @Author Fábio Heller
 	 */
-	public static void validarTexto(String texto, By campo){
-		assertThat("Título Incorreto!!",  driver.findElement(campo).getText(), is(texto));
+	public static boolean validarTexto(String texto, By campo){
+		boolean achou = false;
+		if(driver.findElement(campo).getText().equals(texto))
+		 achou = true;
+		else
+			assertThat("Título Incorreto!!",  driver.findElement(campo).getText(), is(texto));
+		return achou;
 	}
+
 	
 	/**
 	 * Método que efetua a ação de um clique
@@ -628,6 +634,16 @@ public class MetodosSiare {
 		ObjetosTelaLoginSicaf.performSearchCpf("88888888888");
 		ObjetosTelaLoginSicaf.performSearchSenha("12345678");
 		ObjetosTelaLoginSicaf.clickSearchButtonLogin();
+		
+	}
+	/**
+	 * Método para acessar a tela Consulta Histórico de Protocolo
+	 * Histório de Protocolo
+	 * @author Antonio Benardo
+	 * @throws IOException
+	 */
+	
+	public static void acessarMenuconsultaDeHistoriocoProtocolo()throws IOException{
 		// Acessar a tela de consluta de protocolo
 		MetodosSiare.umClique(ObjetosMetodosComuns.abaConultaSiareSICAF);
 		MetodosSiare.validarTexto("Principais Consultas", ObjetosMetodosComuns.textoTituloDaAbaConsulta);

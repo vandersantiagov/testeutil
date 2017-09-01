@@ -54,8 +54,16 @@ private static WebDriver driver = null;
 				driver = new PhantomJSDriver(desiredCapabilities);
 							
 			}else  if (BrowserEnum.FIREFOX.toString().equals(browser)){
+				new DesiredCapabilities();
+				DesiredCapabilities capabilities = DesiredCapabilities.firefox();
+				// capabilities.setCapability(CapabilityType.ACCEPT_SSL_CERTS,
+				// true);
+				capabilities.setCapability("marionette", true);
 				FTPDownloadDriveBrowser.obterDriver(BrowserEnum.FIREFOX, version);
-				driver = new FirefoxDriver(); 
+				driver = new FirefoxDriver(capabilities);
+				
+				/*FTPDownloadDriveBrowser.obterDriver(BrowserEnum.FIREFOX, version);
+				driver = new FirefoxDriver();*/ 
 			}
 		}
 		return driver;
