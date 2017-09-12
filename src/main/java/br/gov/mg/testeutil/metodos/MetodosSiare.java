@@ -796,6 +796,175 @@ public class MetodosSiare {
 		}
 		return linha;
 	}
+	
+	/**
+	 *  Método que que retorna o texto de um xpath de acordo com o parâmetro informado no método.
+	 *  Utilizado na chamada dos métodos (solCaixadeServicosSolicitadosEncontrarProtocolo e sicafCaixaDeTarefasEncontrarProtocolo)
+	 *  a chamada do .gettext no proprio método estava ocasionando erro, daí a necessidade de criar um método a parte.
+	 * @Author Fábio Heller
+	 */ 	
+	public static String textoDoElemento(By campo){
+		String textoDoElelemto = driver.findElement(campo).getText();
+		return textoDoElelemto;
+	}
+	
+	/**
+	 *  Método que que retorna o primetiro inteiro de uma string de acordo com o parâmetro informado no método.
+	 *  Utilizado na chamada dos métodos (solCaixadeServicosSolicitadosEncontrarProtocolo e sicafCaixaDeTarefasEncontrarProtocolo)
+	 *  afim de obter a quantidade de regitros/protocolos informados na caixa de protocolo.
+	 * @Author Fábio Heller
+	 */ 	
+	public static Integer obterQTDDeRegistrosNaCaixa(By campo){
+		int qtdRegistros = 0;
+		String meuteste = " ", registros = "", textoDoElelemto = driver.findElement(campo).getText();
+		for(int i = 0; i< textoDoElelemto.length(); i++){
+			if(meuteste.charAt(0) == textoDoElelemto.charAt(i))
+				break;
+			else
+			registros = registros + textoDoElelemto.charAt(i);
+		}
+		qtdRegistros = Integer.parseInt(registros);
+		return qtdRegistros;
+	}
+	 
+	/**
+	 *  Método que percorre a caixa de serviços afim de localizar o protocolo informado, quando encontrado 
+	 *  o sistema irá selecionar o registro e acionar o botão infomado no parâmetro do método.
+	 * @Author Fábio Heller
+	 */ 
+	 public static void solCaixadeServicosSolicitadosEncontrarProtocolo(String protocolo, By botaoAcao) throws InterruptedException{
+		 boolean achou = false;
+		 int contador = 0, iteracaoQtdDeRegistros = 0, qtdDeRegistros = MetodosSiare.obterQTDDeRegistrosNaCaixa(By.xpath(".//*[@id='containerConteudoPrincipal']/div/form/table[3]/tbody/tr/td[3]"));
+	     String [][] arrayprotocolos = { 
+					{".//*[@id='containerConteudoPrincipal']/div/form/table[4]/tbody/tr[2]/td[2]",
+					 ".//*[@id='containerConteudoPrincipal']/div/form/table[4]/tbody/tr[2]/td[1]/input"},
+					{".//*[@id='containerConteudoPrincipal']/div/form/table[4]/tbody/tr[3]/td[2]",
+					 ".//*[@id='containerConteudoPrincipal']/div/form/table[4]/tbody/tr[3]/td[1]/input"},
+					{".//*[@id='containerConteudoPrincipal']/div/form/table[4]/tbody/tr[4]/td[2]",
+					 ".//*[@id='containerConteudoPrincipal']/div/form/table[4]/tbody/tr[4]/td[1]/input"},
+					{".//*[@id='containerConteudoPrincipal']/div/form/table[4]/tbody/tr[5]/td[2]",
+					 ".//*[@id='containerConteudoPrincipal']/div/form/table[4]/tbody/tr[5]/td[1]/input"},
+					{".//*[@id='containerConteudoPrincipal']/div/form/table[4]/tbody/tr[6]/td[2]",
+					 ".//*[@id='containerConteudoPrincipal']/div/form/table[4]/tbody/tr[6]/td[1]/input"},
+					{".//*[@id='containerConteudoPrincipal']/div/form/table[4]/tbody/tr[7]/td[2]",
+					 ".//*[@id='containerConteudoPrincipal']/div/form/table[4]/tbody/tr[7]/td[1]/input"},
+					{".//*[@id='containerConteudoPrincipal']/div/form/table[4]/tbody/tr[8]/td[2]",
+					 ".//*[@id='containerConteudoPrincipal']/div/form/table[4]/tbody/tr[8]/td[1]/input"},
+					{".//*[@id='containerConteudoPrincipal']/div/form/table[4]/tbody/tr[9]/td[2]",
+					 ".//*[@id='containerConteudoPrincipal']/div/form/table[4]/tbody/tr[9]/td[1]/input"},
+					{".//*[@id='containerConteudoPrincipal']/div/form/table[4]/tbody/tr[10]/td[2]",
+					 ".//*[@id='containerConteudoPrincipal']/div/form/table[4]/tbody/tr[10]/td[1]/input"},
+					{".//*[@id='containerConteudoPrincipal']/div/form/table[4]/tbody/tr[11]/td[2]",
+					 ".//*[@id='containerConteudoPrincipal']/div/form/table[4]/tbody/tr[11]/td[1]/input"}
+			};
+		 do{
+			 if(iteracaoQtdDeRegistros + 1 > qtdDeRegistros){
+				 contador = 0;
+				 iteracaoQtdDeRegistros = 0;
+				 MetodosSiare.umClique(MetodosSiare.campoLinkText("Home"));
+				 qtdDeRegistros = MetodosSiare.obterQTDDeRegistrosNaCaixa(By.xpath(".//*[@id='containerConteudoPrincipal']/div/form/table[3]/tbody/tr/td[3]"));
+				 MetodosSiare.inserirDadoNoCampo("1", MetodosSiare.campoXpath(".//*[@id='containerConteudoPrincipal']/div/form/table[3]/tbody/tr/td[3]/a[2]/input"));
+				 MetodosSiare.umClique(MetodosSiare.campoXpath(".//*[@id='containerConteudoPrincipal']/div/form/table[3]/tbody/tr/td[3]/a[3]"));
+				 MetodosSiare.aguardarOProximoPasso(5000);
+			 }
+			if(protocolo.equals(textoDoElemento(MetodosSiare.campoXpath(arrayprotocolos[contador][0])))){
+				 achou = true;
+				 MetodosSiare.umClique(MetodosSiare.campoXpath(arrayprotocolos[contador][1]));
+				 MetodosSiare.umClique(botaoAcao);
+			 }
+			if(qtdDeRegistros > 10){
+				 if(contador == 9){
+					 contador = 0;
+					 MetodosSiare.umClique(MetodosSiare.campoLinkText(">"));
+					 iteracaoQtdDeRegistros++;
+				 }else{
+					 contador++;
+					 iteracaoQtdDeRegistros++;
+				 }
+			}else{
+				 if(contador+1 == qtdDeRegistros){
+					 contador = 0;
+					 iteracaoQtdDeRegistros = 0;
+					 MetodosSiare.umClique(MetodosSiare.campoLinkText("Home"));
+					 qtdDeRegistros = MetodosSiare.obterQTDDeRegistrosNaCaixa(By.xpath(".//*[@id='containerConteudoPrincipal']/div/form/table[3]/tbody/tr/td[3]"));
+				 }else{
+					 contador++;
+					 iteracaoQtdDeRegistros++;
+				 }
+			}
+		 }while (!achou);
+	 }
+	 
+	/**
+	 *  Método que percorre a caixa de tarefas afim de localizar o protocolo informado, quando encontrado 
+	 *  o sistema irá selecionar o registro e acionar o botão infomado no parâmetro do método.
+	 * @Author Fábio Heller
+	 */
+	 public static void sicafCaixaDeTarefasEncontrarProtocolo(String protocolo, By botaoAcao) throws InterruptedException{
+		 boolean achou = false;
+		 int contador = 0, iteracaoQtdDeRegistros = 0, qtdDeRegistros = MetodosSiare.obterQTDDeRegistrosNaCaixa(MetodosSiare.campoXpath(".//*[@id='ufw_total_linhas']"));
+		 String [][] arrayprotocolosAnalista = {  
+					{".//*[@id='containerConteudoPrincipal']/div/form/table[2]/tbody/tr[4]/td[2]/p[2]",
+					 ".//*[@id='containerConteudoPrincipal']/div/form/table[2]/tbody/tr[4]/td[1]/input"},
+					{".//*[@id='containerConteudoPrincipal']/div/form/table[2]/tbody/tr[5]/td[2]/p[2]",
+					 ".//*[@id='containerConteudoPrincipal']/div/form/table[2]/tbody/tr[5]/td[1]/input"},
+					{".//*[@id='containerConteudoPrincipal']/div/form/table[2]/tbody/tr[6]/td[2]/p[2]",
+					 ".//*[@id='containerConteudoPrincipal']/div/form/table[2]/tbody/tr[6]/td[1]/input"},
+					{".//*[@id='containerConteudoPrincipal']/div/form/table[2]/tbody/tr[7]/td[2]/p[2]",
+					 ".//*[@id='containerConteudoPrincipal']/div/form/table[2]/tbody/tr[7]/td[1]/input"},
+					{".//*[@id='containerConteudoPrincipal']/div/form/table[2]/tbody/tr[8]/td[2]/p[2]",
+					 ".//*[@id='containerConteudoPrincipal']/div/form/table[2]/tbody/tr[8]/td[1]/input"},
+					{".//*[@id='containerConteudoPrincipal']/div/form/table[2]/tbody/tr[9]/td[2]/p[2]",
+					 ".//*[@id='containerConteudoPrincipal']/div/form/table[2]/tbody/tr[9]/td[1]/input"},
+					{".//*[@id='containerConteudoPrincipal']/div/form/table[2]/tbody/tr[10]/td[2]/p[2]",
+					 ".//*[@id='containerConteudoPrincipal']/div/form/table[2]/tbody/tr[10]/td[1]/input"},
+					{".//*[@id='containerConteudoPrincipal']/div/form/table[2]/tbody/tr[11]/td[2]/p[2]",
+					 ".//*[@id='containerConteudoPrincipal']/div/form/table[2]/tbody/tr[11]/td[1]/input"},
+					{".//*[@id='containerConteudoPrincipal']/div/form/table[2]/tbody/tr[12]/td[2]/p[2]",
+					 ".//*[@id='containerConteudoPrincipal']/div/form/table[2]/tbody/tr[12]/td[1]/input"},
+					{".//*[@id='containerConteudoPrincipal']/div/form/table[2]/tbody/tr[13]/td[2]/p[2]",
+					 ".//*[@id='containerConteudoPrincipal']/div/form/table[2]/tbody/tr[13]/td[1]/input"}
+			};
+		 do{
+			 if(iteracaoQtdDeRegistros + 1 > qtdDeRegistros){
+				 contador = 0;
+				 iteracaoQtdDeRegistros = 0;
+				 MetodosSiare.umClique(MetodosSiare.campoLinkText("Home"));
+				 qtdDeRegistros = MetodosSiare.obterQTDDeRegistrosNaCaixa(MetodosSiare.campoXpath(".//*[@id='ufw_total_linhas']"));
+				 MetodosSiare.inserirDadoNoCampo("1", MetodosSiare.campoXpath(".//*[@id='containerConteudoPrincipal']/div/form/table[2]/tbody/tr[1]/td/table/tbody/tr/td[2]/table/tbody/tr/td/input"));
+				 MetodosSiare.umClique(MetodosSiare.campoLinkText("Ir"));
+				 MetodosSiare.aguardarOProximoPasso(5000);
+			 }
+			if(protocolo.equals(textoDoElemento(MetodosSiare.campoXpath(arrayprotocolosAnalista[contador][0])))){
+				 achou = true;
+				 MetodosSiare.umClique(MetodosSiare.campoXpath(arrayprotocolosAnalista[contador][1]));
+				 MetodosSiare.umClique(botaoAcao);
+			 }
+			if(qtdDeRegistros > 10){
+				 if(contador == 9){
+					 contador = 0;
+					 MetodosSiare.umClique(MetodosSiare.campoLinkText(">"));
+					 iteracaoQtdDeRegistros++;
+				 }else{
+					 contador++;
+					 iteracaoQtdDeRegistros++;
+				 }
+			}else{
+				 if(contador+1 == qtdDeRegistros){
+					 contador = 0;
+					 iteracaoQtdDeRegistros = 0;
+					 MetodosSiare.umClique(MetodosSiare.campoLinkText("Home"));
+					 qtdDeRegistros = MetodosSiare.obterQTDDeRegistrosNaCaixa(By.xpath(".//*[@id='ufw_total_linhas']"));
+				 }else{
+					 contador++;
+					 iteracaoQtdDeRegistros++;
+				 }
+			}
+		 }while (!achou);
+	 }	
+	
+	
+	
 
 	/*
 	*****************************METODOS DEFINIDOS E JÁ UTLIZADOS NO ARCHETYPE*****************************
