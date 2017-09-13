@@ -962,7 +962,25 @@ public class MetodosSiare {
 			}
 		 }while (!achou);
 	 }	
-	
+	 
+	/**
+	 * Método para ler a primeira linha do Arquivo.txt e retornar o registro como uma string
+	 * @Author Fábio Heller
+	 */
+	public static String retornaRegistroDaPrimeiraLinhaDeArquivoTexto(String subPastaProjeto, String nomeDoArquivo) throws IOException {
+		String conteudo = null;
+		try {
+			BufferedReader ler = new BufferedReader(new FileReader(diretorioPrincipal + subPastaProjeto + "\\" + nomeDoArquivo + ".txt"));
+			conteudo = ler.readLine();
+			ler.close();
+		} catch (FileNotFoundException ex) {
+			System.out.println("Erro: Não foi possivel ler arquivo!");
+		} catch (IOException ex) {
+			System.out.println("Erro: Indefinido!");
+		}
+		return conteudo;
+	}
+
 	
 	
 
