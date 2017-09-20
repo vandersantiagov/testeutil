@@ -981,8 +981,46 @@ public class MetodosSiare {
 		return conteudo;
 	}
 
-	
-	
+	/**
+	 * Método para verificar se o elemento está visível na tela 
+	 * retorna true - caso elemento visível
+	 * retorna false - caso elemento não visível
+	 * @Author Fábio Heller
+	 */
+	public static boolean verificaSeOElementoEstaVisivel(By elemento) {
+		boolean visivel = false;
+		try {
+			Actions action = new Actions(driver);
+			WebElement element = driver.findElement(elemento);
+			action.moveToElement(element).build().perform();
+			if(element.isDisplayed())
+				visivel = true;
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+			visivel = false;
+		}
+		return visivel;
+	}
+
+	/**
+	 * Método para verificar se o campo possui informação ou se está vazio (nulo)
+	 * retorna true - caso elemento possui informação
+	 * retorna false - caso elemento não possui informação
+	 * @Author Fábio Heller
+	 */
+	public static boolean verificaSeOElementoPossuiInformacao(By elemento) {
+		boolean dados = false;
+		try {
+			Actions action = new Actions(driver);
+			WebElement element = driver.findElement(elemento);
+			action.moveToElement(element).build().perform();
+			if(!driver.findElement(elemento).getText().equals(""))
+				dados = true;
+		} catch (Exception e) {
+			dados = false;
+		}
+		return dados;
+	}
 
 	/*
 	*****************************METODOS DEFINIDOS E JÁ UTLIZADOS NO ARCHETYPE*****************************
