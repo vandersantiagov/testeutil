@@ -1021,6 +1021,21 @@ public class MetodosSiare {
 		}
 		return dados;
 	}
+	
+
+
+	/**
+	 * Método que aponta o driver para o popUp pelo frame do popUp
+	 * Observações: o nome do elemento deve ser capturado pela tag "<iframe>" do popup
+	 * @Author Fábio Heller
+	 */	
+	public static void localizaPopUpPeloFrame (By elemtentoFrame){
+		try{
+		driver.switchTo().frame(driver.findElement(elemtentoFrame));
+		}catch (Exception e){
+			System.out.println(e.getMessage());
+		}
+	}
 
 	/*
 	*****************************METODOS DEFINIDOS E JÁ UTLIZADOS NO ARCHETYPE*****************************
