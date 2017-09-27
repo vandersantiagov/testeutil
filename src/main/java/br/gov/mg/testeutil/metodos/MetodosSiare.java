@@ -1022,8 +1022,6 @@ public class MetodosSiare {
 		return dados;
 	}
 	
-
-
 	/**
 	 * Método que aponta o driver para o popUp pelo frame do popUp
 	 * Observações: o nome do elemento deve ser capturado pela tag "<iframe>" do popup
@@ -1036,6 +1034,33 @@ public class MetodosSiare {
 			System.out.println(e.getMessage());
 		}
 	}
+
+	/**
+	 * Método que executa o fluxo para a Resolução de Pendência de um protocolo
+	 * @author jacqueline.lucas
+	 */
+    public static void acessarMenuHomeAtendimentoEntregadeDocumentosResolucaodePendenciasPendenciasdeDocumentacao(String subPastaDiretorioProtocolo)throws IOException{
+        MetodosSiare.umClique(ObjetosMetodosComuns.abaHomeSiareSICAF);
+        MetodosSiare.doisCliques(ObjetosMetodosComuns.menuAtendimento,
+                      ObjetosMetodosComuns.submenuEntregadeDocumentosResolucaodePendencias);
+        MetodosSiare.validarTexto("Entrega de Documentos / Resolução de Pendências", 
+                      ObjetosMetodosComuns.textoTituloTelaEntregadeDocumentosResolucaodePendencias);
+        MetodosSiare.lerArquivoTexto(subPastaDiretorioProtocolo, "ProtocoloSemFormatacao",
+                      ObjetosMetodosComuns.campoProtocolo);
+        MetodosSiare.umClique(ObjetosMetodosComuns.comandoPesquisarPendencias);
+        MetodosSiare.umClique(ObjetosMetodosComuns.selecaoRegistro);
+        MetodosSiare.umClique(ObjetosMetodosComuns.linkResolvePendencia);
+        MetodosSiare.validarTexto("Pendências", ObjetosMetodosComuns.textoTituloTelaEntregadeDocumentosResolucaodePendencias);
+        MetodosSiare.umClique(ObjetosMetodosComuns.selecaoRegistroPendenciasdeDocumentacao);
+        MetodosSiare.umClique(ObjetosMetodosComuns.comandoRegistrarEntrega);
+        MetodosSiare.validarTexto("Entrega de documentos pendentes", 
+                      ObjetosMetodosComuns.textoTituloTelaEntregadeDocumentosResolucaodePendencias);
+        MetodosSiare.inserirDadoNoCampo("Teste Pendência de Documentação", ObjetosMetodosComuns.campoObservacoes);
+        MetodosSiare.umClique(ObjetosMetodosComuns.comandoConfirmarEntregaDocumento);
+        MetodosSiare.validaJanelaPopUpDetalhamento("Página 1");
+        MetodosSiare.fecharDriverAposJanelaPopUpDetalhamento();        
+  }
+
 
 	/*
 	*****************************METODOS DEFINIDOS E JÁ UTLIZADOS NO ARCHETYPE*****************************
