@@ -133,7 +133,27 @@ public class ObjetosMetodosComuns {
     public static By comandoRegistrarEntrega = By.name("Registrar_Entrega");
     public static By campoObservacoes = By.name("txtDesRelato");
     public static By comandoConfirmarEntregaDocumento = By.name("ActConfirmar");
+    
+	/**
+	 * Variáveis do fluxo Presumir DAE
+	 * @author Fábio Heller
+	 */
+    public static By  menuDocumentodeArrecadacaoDAE = By.linkText("Documento de Arrecadação DAE");
+    public static By  subMenuManutençãoDAE = By.linkText("Manutenção de DAE");
+    public static By  campoNumeroDAE = By.name("nossoNumero");
+    public static By  campoPeriodoDeEmissaoInicial = By.name("dtIniEmissoa");
+    public static By  campoPeriodoDeEmissaoFinal = By.name("dtFimEmissao");
+    public static By  linkPresumirQuitacaoDAE = By.name("linkPresumirQuitacao");
+    //public static By  campoValorTotalDoDAE = By.xpath(".//*[@id='containerConteudoPrincipal']/div/form/table[3]/tbody/tr[3]/td[5]");
+    public static By  campoValorTotalDoDAE = By.id("total");
+    public static By  campoValorDoDAE = By.name("Valor");
+    public static By campoBanco = By.className("jquery-selectbox-currentItem");
+    public static By campoSelecaoBanco = By.xpath(".//*[@id='containerConteudoPrincipal']/div/form/table[2]/tbody/tr[6]/td[2]/div/div[2]/span[2]");
+    public static By campoAgencia = By.name("Agencia");
+    public static By campoDataPagamento = By.name("DataPagamento");
+    public static By campoNSU = By.name("NSU");
 
-	
+
+
 
 }

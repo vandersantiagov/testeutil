@@ -1036,7 +1036,7 @@ public class MetodosSiare {
 	}
 
 	/**
-	 * Método que executa o fluxo para a Resolução de Pendência de um protocolo
+	 * Método que executa o fluxo para a Resolução de Pendência de um protocolo - Pendências de Documentacao
 	 * @author jacqueline.lucas
 	 */
     public static void acessarMenuHomeAtendimentoEntregadeDocumentosResolucaodePendenciasPendenciasdeDocumentacao(String subPastaDiretorioProtocolo)throws IOException{
@@ -1061,6 +1061,38 @@ public class MetodosSiare {
         MetodosSiare.fecharDriverAposJanelaPopUpDetalhamento();        
   }
 
+	/**
+	 * Método que auxilia a execução do método presumirDAEPeloNumeroDoProtocolo
+	 * @author Fábio Heller
+	 */
+    public static void presuncaoDeQuitacaoDeDocumentoDeArrecadacao(String valorDoDAE){
+    	MetodosSiare.inserirDadoNoCampo(valorDoDAE, ObjetosMetodosComuns.campoValorDoDAE);        
+        MetodosSiare.umClique(ObjetosMetodosComuns.campoBanco);
+        MetodosSiare.umClique(ObjetosMetodosComuns.campoSelecaoBanco);
+        MetodosSiare.inserirDadoNoCampo("3782", ObjetosMetodosComuns.campoAgencia); 
+        MetodosSiare.inserirDadoNoCampo(MetodosSiare.retornaDataAtualOuPosteriorOuAnteriorDaDataAtualDoSistema(0, true), 
+        		ObjetosMetodosComuns.campoDataPagamento);
+        MetodosSiare.inserirDadoNoCampo("12345abcd", ObjetosMetodosComuns.campoNSU); 
+        MetodosSiare.doisCliques(ObjetosMetodosComuns.comandoConfirmarSuspensaoProtocolo, ObjetosMetodosComuns.comandoConfirmarSuspensaoProtocolo);
+        MetodosSiare.umClique(ObjetosMetodosComuns.linkSairSiareSICAF);
+    }
+
+	/**
+	 * Método que executa o fluxo de presunção do DAE pelo número do protocolo sem formatação
+	 * Observação: será efetuado login com administrador no SICAF o fluxo será executado e ao fim será feito logoff
+	 * @author Fábio Heller
+	 */
+    public static void presumirDAEPeloNumeroDoProtocolo(String numeroDoProtocoloSemFormatacao) throws IOException{
+    	String valorTotalDoDAE;
+    	MetodosSiare.logarComAdministrador();
+        MetodosSiare.doisCliques(ObjetosMetodosComuns.menuDocumentodeArrecadacaoDAE, ObjetosMetodosComuns.subMenuManutençãoDAE);
+        MetodosSiare.inserirDadoNoCampo(numeroDoProtocoloSemFormatacao, ObjetosMetodosComuns.campoProtocolo);   
+        MetodosSiare.umClique(ObjetosMetodosComuns.comandoPesquisar);
+        valorTotalDoDAE = driver.findElement(ObjetosMetodosComuns.campoValorTotalDoDAE).getText();
+        MetodosSiare.umClique(ObjetosMetodosComuns.checkProtocoloCaixaDeServico);
+        MetodosSiare.umClique(ObjetosMetodosComuns.linkPresumirQuitacaoDAE);       
+        MetodosSiare.presuncaoDeQuitacaoDeDocumentoDeArrecadacao(valorTotalDoDAE);        
+    }    
 
 	/*
 	*****************************METODOS DEFINIDOS E JÁ UTLIZADOS NO ARCHETYPE*****************************
