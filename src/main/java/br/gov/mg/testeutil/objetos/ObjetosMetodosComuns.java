@@ -133,6 +133,8 @@ public class ObjetosMetodosComuns {
     public static By comandoRegistrarEntrega = By.name("Registrar_Entrega");
     public static By campoObservacoes = By.name("txtDesRelato");
     public static By comandoConfirmarEntregaDocumento = By.name("ActConfirmar");
+    public static By comandoResolver = By.name("Resolver");
+    public static By campoRelato = By.name("DescricaoRelato");
     
 	/**
 	 * Variáveis do fluxo Presumir DAE
@@ -152,6 +154,7 @@ public class ObjetosMetodosComuns {
     public static By campoAgencia = By.name("Agencia");
     public static By campoDataPagamento = By.name("DataPagamento");
     public static By campoNSU = By.name("NSU");
+
 
 
 

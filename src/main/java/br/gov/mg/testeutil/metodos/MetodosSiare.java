@@ -12,6 +12,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -1060,7 +1061,27 @@ public class MetodosSiare {
         MetodosSiare.validaJanelaPopUpDetalhamento("Página 1");
         MetodosSiare.fecharDriverAposJanelaPopUpDetalhamento();        
   }
-
+    
+    /**
+    * Método que executa o fluxo para a Resolução de Pendência de um protocolo - Pendências de Esclarecimento
+    * @author jacqueline.lucas
+    */
+ public static void acessarMenuHomeAtendimentoEntregadeDocumentosResolucaodePendenciasPendenciasdeEsclarecimento(String subPastaDiretorioProtocolo)throws IOException{
+     MetodosSiare.umClique(ObjetosMetodosComuns.abaHomeSiareSICAF);
+     MetodosSiare.doisCliques(ObjetosMetodosComuns.menuAtendimento, ObjetosMetodosComuns.submenuEntregadeDocumentosResolucaodePendencias);
+     MetodosSiare.validarTexto("Entrega de Documentos / Resolução de Pendências", ObjetosMetodosComuns.textoTituloTelaEntregadeDocumentosResolucaodePendencias);
+     MetodosSiare.lerArquivoTexto(subPastaDiretorioProtocolo, "ProtocoloSemFormatacao", ObjetosMetodosComuns.campoProtocolo);
+     MetodosSiare.umClique(ObjetosMetodosComuns.comandoPesquisarPendencias);
+     MetodosSiare.umClique(ObjetosMetodosComuns.selecaoRegistro);
+     MetodosSiare.umClique(ObjetosMetodosComuns.linkResolvePendencia);
+     MetodosSiare.validarTexto("Pendências", ObjetosMetodosComuns.textoTituloTelaEntregadeDocumentosResolucaodePendencias);
+     MetodosSiare.umClique(ObjetosMetodosComuns.checkProtocoloCaixaDeServico);
+     MetodosSiare.umClique(ObjetosMetodosComuns.comandoResolver);
+     MetodosSiare.validarTexto("Resolver Pendências de Esclarecimento", ObjetosMetodosComuns.textoTituloTelaEntregadeDocumentosResolucaodePendencias);
+     MetodosSiare.inserirDadoNoCampo("Teste Pendências de Esclarecimento", ObjetosMetodosComuns.campoRelato);
+     MetodosSiare.umClique(ObjetosMetodosComuns.comandoConfirmarSuspensaoProtocolo); 
+}
+ 
 	/**
 	 * Método que auxilia a execução do método presumirDAEPeloNumeroDoProtocolo
 	 * @author Fábio Heller
@@ -1092,7 +1113,41 @@ public class MetodosSiare {
         MetodosSiare.umClique(ObjetosMetodosComuns.checkProtocoloCaixaDeServico);
         MetodosSiare.umClique(ObjetosMetodosComuns.linkPresumirQuitacaoDAE);       
         MetodosSiare.presuncaoDeQuitacaoDeDocumentoDeArrecadacao(valorTotalDoDAE);        
-    }    
+    }
+    
+	/**
+	 * Método que executa o fluxo de presunção do DAE pelo número do protocolo sem formatação
+	 * Observação: será efetuado login com administrador no SICAF o fluxo será executado e ao fim será feito logoff
+	 * @author Fábio Heller
+	 */
+	public static void presumirDAEPeloNumeroDoDAE(String numeroDoDAESemFormatacao, String dataInicial) throws IOException, ParseException{
+    	String valorTotalDoDAE;
+    	MetodosSiare.logarComAdministrador();
+        MetodosSiare.doisCliques(ObjetosMetodosComuns.menuDocumentodeArrecadacaoDAE, ObjetosMetodosComuns.subMenuManutençãoDAE);
+        MetodosSiare.inserirDadoNoCampo(numeroDoDAESemFormatacao.substring(1, numeroDoDAESemFormatacao.length()).replace("-", ""), ObjetosMetodosComuns.campoNumeroDAE);    
+        MetodosSiare.inserirDadoNoCampo(dataInicial, ObjetosMetodosComuns.campoPeriodoDeEmissaoInicial);  
+        MetodosSiare.inserirDadoNoCampo(acrescentarDiasEmUmaData(dataInicial, 180), ObjetosMetodosComuns.campoPeriodoDeEmissaoFinal);
+        MetodosSiare.umClique(ObjetosMetodosComuns.comandoPesquisar);
+        valorTotalDoDAE = driver.findElement(ObjetosMetodosComuns.campoValorTotalDoDAE).getText();
+        MetodosSiare.umClique(ObjetosMetodosComuns.checkProtocoloCaixaDeServico);
+        MetodosSiare.umClique(ObjetosMetodosComuns.linkPresumirQuitacaoDAE);       
+        MetodosSiare.presuncaoDeQuitacaoDeDocumentoDeArrecadacao(valorTotalDoDAE);        
+    }
+    
+	/**
+	 * Método que acrescenta mais dias a partir de uma data informada
+	 * @author Fábio Heller
+	 * @throws ParseException 
+	 */
+    @SuppressWarnings({ "deprecation", "static-access" })
+	public static String acrescentarDiasEmUmaData (String dataInicial, int quantidadeDeDiasAcrescentar) throws ParseException{
+		DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+		Date dateInicial = (Date)formatter.parse(dataInicial);
+    	dateInicial.parse(dataInicial);
+    	dateInicial.setDate(dateInicial.getDate()+180);
+    	formatter.format(dateInicial);
+    	return 	String.valueOf(formatter.format(dateInicial));
+    }
 
 	/*
 	*****************************METODOS DEFINIDOS E JÁ UTLIZADOS NO ARCHETYPE*****************************
