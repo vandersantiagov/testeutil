@@ -1086,7 +1086,7 @@ public class MetodosSiare {
 	 * Método que auxilia a execução do método presumirDAEPeloNumeroDoProtocolo
 	 * @author Fábio Heller
 	 */
-    public static void presuncaoDeQuitacaoDeDocumentoDeArrecadacao(String valorDoDAE){
+    public static void presuncaoDeQuitacaoDeDocumentoDeArrecadacao(String valorDoDAE, boolean efetuarLoginELogoffComAdministrador){
     	MetodosSiare.inserirDadoNoCampo(valorDoDAE, ObjetosMetodosComuns.campoValorDoDAE);        
         MetodosSiare.umClique(ObjetosMetodosComuns.campoBanco);
         MetodosSiare.umClique(ObjetosMetodosComuns.campoSelecaoBanco);
@@ -1095,17 +1095,21 @@ public class MetodosSiare {
         		ObjetosMetodosComuns.campoDataPagamento);
         MetodosSiare.inserirDadoNoCampo("12345abcd", ObjetosMetodosComuns.campoNSU); 
         MetodosSiare.doisCliques(ObjetosMetodosComuns.comandoConfirmarSuspensaoProtocolo, ObjetosMetodosComuns.comandoConfirmarSuspensaoProtocolo);
-        MetodosSiare.umClique(ObjetosMetodosComuns.linkSairSiareSICAF);
+        if(efetuarLoginELogoffComAdministrador)
+        	MetodosSiare.umClique(ObjetosMetodosComuns.linkSairSiareSICAF);
     }
 
 	/**
 	 * Método que executa o fluxo de presunção do DAE pelo número do protocolo sem formatação
-	 * Observação: será efetuado login com administrador no SICAF o fluxo será executado e ao fim será feito logoff
+	 * Observação para o parâmetro boolean efetuarLoginELogoffComAdministrador: 
+	 * (true) - será efetuado login com administrador no SICAF o fluxo será executado e ao fim será feito logoff
+	 * (false) - não será efetuado login e logoff, sendo pré-condição analista logado no SICAF com perfil apto para presumir DAE
 	 * @author Fábio Heller
 	 */
-    public static void presumirDAEPeloNumeroDoProtocolo(String subPastaDiretorioProtocolo) throws IOException{
+    public static void presumirDAEPeloNumeroDoProtocolo(String subPastaDiretorioProtocolo, boolean efetuarLoginELogoffComAdministrador) throws IOException{
     	String valorTotalDoDAE;
-    	MetodosSiare.logarComAdministrador();
+        if(efetuarLoginELogoffComAdministrador)
+        	MetodosSiare.logarComAdministrador();
         MetodosSiare.doisCliques(ObjetosMetodosComuns.menuDocumentodeArrecadacaoDAE, ObjetosMetodosComuns.subMenuManutençãoDAE);
         MetodosSiare.lerArquivoTexto(subPastaDiretorioProtocolo, "ProtocoloSemFormatacao",
                 ObjetosMetodosComuns.campoProtocolo);        
@@ -1113,18 +1117,21 @@ public class MetodosSiare {
         MetodosSiare.umClique(ObjetosMetodosComuns.comandoPesquisar);
         valorTotalDoDAE = driver.findElement(ObjetosMetodosComuns.campoValorTotalDoDAE).getText();
         MetodosSiare.umClique(ObjetosMetodosComuns.checkProtocoloCaixaDeServico);
-        MetodosSiare.umClique(ObjetosMetodosComuns.linkPresumirQuitacaoDAE);       
-        MetodosSiare.presuncaoDeQuitacaoDeDocumentoDeArrecadacao(valorTotalDoDAE);        
+        MetodosSiare.umClique(ObjetosMetodosComuns.linkPresumirQuitacaoDAE);
+        MetodosSiare.presuncaoDeQuitacaoDeDocumentoDeArrecadacao(valorTotalDoDAE, efetuarLoginELogoffComAdministrador);        
     }
     
 	/**
 	 * Método que executa o fluxo de presunção do DAE pelo número do protocolo sem formatação
-	 * Observação: será efetuado login com administrador no SICAF o fluxo será executado e ao fim será feito logoff
+	 * Observação para o parâmetro boolean efetuarLoginELogoffComAdministrador: 
+	 * (true) - será efetuado login com administrador no SICAF o fluxo será executado e ao fim será feito logoff
+	 * (false) - não será efetuado login e logoff, sendo pré-condição analista logado no SICAF com perfil apto para presumir DAE
 	 * @author Fábio Heller
 	 */
-	public static void presumirDAEPeloNumeroDoDAE(String subPastaDiretorioProtocolo, String dataInicial) throws IOException, ParseException{
+	public static void presumirDAEPeloNumeroDoDAE(String subPastaDiretorioProtocolo, String dataInicial, boolean efetuarLoginELogoffComAdministrador) throws IOException, ParseException{
     	String valorTotalDoDAE;
-    	MetodosSiare.logarComAdministrador();
+    	if(efetuarLoginELogoffComAdministrador)
+    		MetodosSiare.logarComAdministrador();
         MetodosSiare.doisCliques(ObjetosMetodosComuns.menuDocumentodeArrecadacaoDAE, ObjetosMetodosComuns.subMenuManutençãoDAE);
         MetodosSiare.lerArquivoTexto(subPastaDiretorioProtocolo, "ProtocoloSemFormatacao",
                 ObjetosMetodosComuns.campoProtocolo);        
@@ -1135,7 +1142,7 @@ public class MetodosSiare {
         valorTotalDoDAE = driver.findElement(ObjetosMetodosComuns.campoValorTotalDoDAE).getText();
         MetodosSiare.umClique(ObjetosMetodosComuns.checkProtocoloCaixaDeServico);
         MetodosSiare.umClique(ObjetosMetodosComuns.linkPresumirQuitacaoDAE);       
-        MetodosSiare.presuncaoDeQuitacaoDeDocumentoDeArrecadacao(valorTotalDoDAE);        
+        MetodosSiare.presuncaoDeQuitacaoDeDocumentoDeArrecadacao(valorTotalDoDAE, efetuarLoginELogoffComAdministrador);        
     }
     
 	/**
