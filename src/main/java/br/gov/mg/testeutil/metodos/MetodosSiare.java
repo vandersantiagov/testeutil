@@ -1103,11 +1103,13 @@ public class MetodosSiare {
 	 * Observação: será efetuado login com administrador no SICAF o fluxo será executado e ao fim será feito logoff
 	 * @author Fábio Heller
 	 */
-    public static void presumirDAEPeloNumeroDoProtocolo(String numeroDoProtocoloSemFormatacao) throws IOException{
+    public static void presumirDAEPeloNumeroDoProtocolo(String subPastaDiretorioProtocolo) throws IOException{
     	String valorTotalDoDAE;
     	MetodosSiare.logarComAdministrador();
         MetodosSiare.doisCliques(ObjetosMetodosComuns.menuDocumentodeArrecadacaoDAE, ObjetosMetodosComuns.subMenuManutençãoDAE);
-        MetodosSiare.inserirDadoNoCampo(numeroDoProtocoloSemFormatacao, ObjetosMetodosComuns.campoProtocolo);   
+        MetodosSiare.lerArquivoTexto(subPastaDiretorioProtocolo, "ProtocoloSemFormatacao",
+                ObjetosMetodosComuns.campoProtocolo);        
+        //MetodosSiare.inserirDadoNoCampo(numeroDoProtocoloSemFormatacao, ObjetosMetodosComuns.campoProtocolo);   
         MetodosSiare.umClique(ObjetosMetodosComuns.comandoPesquisar);
         valorTotalDoDAE = driver.findElement(ObjetosMetodosComuns.campoValorTotalDoDAE).getText();
         MetodosSiare.umClique(ObjetosMetodosComuns.checkProtocoloCaixaDeServico);
@@ -1120,11 +1122,13 @@ public class MetodosSiare {
 	 * Observação: será efetuado login com administrador no SICAF o fluxo será executado e ao fim será feito logoff
 	 * @author Fábio Heller
 	 */
-	public static void presumirDAEPeloNumeroDoDAE(String numeroDoDAESemFormatacao, String dataInicial) throws IOException, ParseException{
+	public static void presumirDAEPeloNumeroDoDAE(String subPastaDiretorioProtocolo, String dataInicial) throws IOException, ParseException{
     	String valorTotalDoDAE;
     	MetodosSiare.logarComAdministrador();
         MetodosSiare.doisCliques(ObjetosMetodosComuns.menuDocumentodeArrecadacaoDAE, ObjetosMetodosComuns.subMenuManutençãoDAE);
-        MetodosSiare.inserirDadoNoCampo(numeroDoDAESemFormatacao.substring(1, numeroDoDAESemFormatacao.length()).replace("-", ""), ObjetosMetodosComuns.campoNumeroDAE);    
+        MetodosSiare.lerArquivoTexto(subPastaDiretorioProtocolo, "ProtocoloSemFormatacao",
+                ObjetosMetodosComuns.campoProtocolo);        
+        //MetodosSiare.inserirDadoNoCampo(numeroDoDAESemFormatacao.substring(1, numeroDoDAESemFormatacao.length()).replace("-", ""), ObjetosMetodosComuns.campoNumeroDAE);    
         MetodosSiare.inserirDadoNoCampo(dataInicial, ObjetosMetodosComuns.campoPeriodoDeEmissaoInicial);  
         MetodosSiare.inserirDadoNoCampo(acrescentarDiasEmUmaData(dataInicial, 180), ObjetosMetodosComuns.campoPeriodoDeEmissaoFinal);
         MetodosSiare.umClique(ObjetosMetodosComuns.comandoPesquisar);
