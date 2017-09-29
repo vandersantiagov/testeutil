@@ -43,84 +43,87 @@ import br.gov.mg.testeutil.util.sol.SeleniumSol;
 //import gov.sefmg.CopiarColar.objetos.sicaf.ObjetosConsultaProtocolo;
 //import gov.sefmg.CopiarColar.objetos.sicaf.ObjetosCopiarEColarValores;
 
-
 public class MetodosSiare {
-		
+
 	/*
-	*****************************METODOS GLOBAIS PARA CHAMADA NAS CLASSES*****************************
-	**/
+	 ***************************** METODOS GLOBAIS PARA CHAMADA NAS CLASSES*****************************
+	 **/
 
 	/**
 	 * Método para instanciar objetos HTML
+	 * 
 	 * @Author Fábio Heller
 	 */
-	public static By campoID (String nomeElementoID){
+	public static By campoID(String nomeElementoID) {
 		By cpoIDBy = By.id(nomeElementoID);
 		return cpoIDBy;
 	}
-	
-	public static By campoName (String nomeElementoName){
+
+	public static By campoName(String nomeElementoName) {
 		By cpoNameBy = By.name(nomeElementoName);
 		return cpoNameBy;
 	}
-	
-	public static By campoXpath (String nomeElementoXpath){
+
+	public static By campoXpath(String nomeElementoXpath) {
 		By cpoXpathBy = By.xpath(nomeElementoXpath);
 		return cpoXpathBy;
 	}
-	
-	public static By campoLinkText (String nomeElementoLinkText){
+
+	public static By campoLinkText(String nomeElementoLinkText) {
 		By cpoLinkTextBy = By.linkText(nomeElementoLinkText);
 		return cpoLinkTextBy;
 	}
-	
-	public static By campoCssSelector (String nomeElementocssSelector){
+
+	public static By campoCssSelector(String nomeElementocssSelector) {
 		By cpoCssSelectorBy = By.linkText(nomeElementocssSelector);
 		return cpoCssSelectorBy;
 	}
-	
+
 	/**
-	 * Método que valida a igualdade entre duas strings
-	 * Objetivo: Verificar se duas frases são iguais.
+	 * Método que valida a igualdade entre duas strings Objetivo: Verificar se
+	 * duas frases são iguais.
+	 * 
 	 * @Author Fábio Heller
 	 */
-	public static boolean validarTexto(String texto, By campo){
+	public static boolean validarTexto(String texto, By campo) {
 		boolean achou = false;
-		if(driver.findElement(campo).getText().equals(texto))
-		 achou = true;
+		if (driver.findElement(campo).getText().equals(texto))
+			achou = true;
 		else
-			assertThat("Título Incorreto!!",  driver.findElement(campo).getText(), is(texto));
+			assertThat("Título Incorreto!!", driver.findElement(campo).getText(), is(texto));
 		return achou;
 	}
 
-	
 	/**
 	 * Método que efetua a ação de um clique
+	 * 
 	 * @Author Fábio Heller
 	 */
-	 public static void umClique(By ElementoOpcaoClick1){
+	public static void umClique(By ElementoOpcaoClick1) {
 		By correctLocator = null;
 		correctLocator = ElementoOpcaoClick1;
 		driver.findElement(correctLocator).click();
-	 }
-	 
+	}
+
 	/**
-	 *  Método que efetua a ação de dois cliques
+	 * Método que efetua a ação de dois cliques
+	 * 
 	 * @Author Fábio Heller
 	 */
-	 public static void doisCliques(By ElementoOpcaoClick1, By ElementoOpcaoClik2){
+	public static void doisCliques(By ElementoOpcaoClick1, By ElementoOpcaoClik2) {
 		By correctLocator = null;
 		correctLocator = ElementoOpcaoClick1;
 		driver.findElement(correctLocator).click();
 		correctLocator = ElementoOpcaoClik2;
 		driver.findElement(correctLocator).click();
-	 }
-		
+	}
+
 	/**
 	 * Método que efetua a ação de três cliques
+	 * 
 	 * @Author Fábio Heller
 	 */
-	 public static void tresCliques(By ElementoOpcaoClick1, By ElementoOpcaoClik2, By ElementoOpcaoClik3){
+	public static void tresCliques(By ElementoOpcaoClick1, By ElementoOpcaoClik2, By ElementoOpcaoClik3) {
 		By correctLocator = null;
 		correctLocator = ElementoOpcaoClick1;
 		driver.findElement(correctLocator).click();
@@ -128,13 +131,15 @@ public class MetodosSiare {
 		driver.findElement(correctLocator).click();
 		correctLocator = ElementoOpcaoClik3;
 		driver.findElement(correctLocator).click();
-	 }
-		
+	}
+
 	/**
 	 * Método que efetua a ação de quatro cliques
+	 * 
 	 * @Author Fábio Heller
 	 */
-	 public static void quatroCliques(By ElementoOpcaoClick1, By ElementoOpcaoClik2, By ElementoOpcaoClik3, By ElementoOpcaoClik4){
+	public static void quatroCliques(By ElementoOpcaoClick1, By ElementoOpcaoClik2, By ElementoOpcaoClik3,
+			By ElementoOpcaoClik4) {
 		By correctLocator = null;
 		correctLocator = ElementoOpcaoClick1;
 		driver.findElement(correctLocator).click();
@@ -144,24 +149,26 @@ public class MetodosSiare {
 		driver.findElement(correctLocator).click();
 		correctLocator = ElementoOpcaoClik4;
 		driver.findElement(correctLocator).click();
-	 }
-	 
+	}
+
 	/**
 	 * Método que insere um valor em um campo
+	 * 
 	 * @Author Fábio Heller
 	 */
-	public static void inserirDadoNoCampo(String textoAInserir, By nomeElemento) { 
+	public static void inserirDadoNoCampo(String textoAInserir, By nomeElemento) {
 		wait.until(ExpectedConditions.visibilityOfElementLocated(nomeElemento));
 		driver.findElement(nomeElemento);
 		driver.findElement(nomeElemento).clear();
 		driver.findElement(nomeElemento).sendKeys(textoAInserir);
-	}	
+	}
 
 	/**
 	 * Método que valida uma string em uma janela/popup aberta
+	 * 
 	 * @Author Fábio Heller
 	 */
-	public static void validaJanelaPopUpDetalhamento (String NomePopup){
+	public static void validaJanelaPopUpDetalhamento(String NomePopup) {
 		Set<String> janelas = driver.getWindowHandles();
 		for (String janela : janelas) {
 			driver.switchTo().window(janela);
@@ -169,367 +176,393 @@ public class MetodosSiare {
 				break;
 			}
 		}
-	}	
+	}
 
 	/**
-	 * Fechar janela/popup 
+	 * Fechar janela/popup
+	 * 
 	 * @Author Fábio Heller
 	 */
-	public static void fecharDriverAposJanelaPopUpDetalhamento (){
+	public static void fecharDriverAposJanelaPopUpDetalhamento() {
 		driver.close();
 	}
-	
+
 	/**
 	 * Comando de aceitar o alerta de um Javascript
+	 * 
 	 * @Author Antonio Bernardo
 	 */
 	@SuppressWarnings("unused")
 	public static void aceitarCancelamentoJavaScriptSicaf(String Alert) {
 		wait.until(ExpectedConditions.alertIsPresent());
 		SeleniumSicaf runner;
-		WebDriver driver =  (WebDriver ) SeleniumSicaf.getDriver();
+		WebDriver driver = (WebDriver) SeleniumSicaf.getDriver();
 		driver.switchTo().alert().accept();
 	}
-	
+
 	/**
 	 * Comando de cancelar o alerta de um Javascript
+	 * 
 	 * @Author Antonio Bernardo
-	 */ 
+	 */
 	@SuppressWarnings("unused")
 	public static void cancelarAlertaCancelamentoJavaScriptSicaf(String Alert) {
 		wait.until(ExpectedConditions.alertIsPresent());
 		SeleniumSicaf runner;
-		WebDriver driver =  (WebDriver ) SeleniumSicaf.getDriver();
+		WebDriver driver = (WebDriver) SeleniumSicaf.getDriver();
 		driver.switchTo().alert().dismiss();
 	}
-	
+
 	/**
 	 * Comando de aceitar o alerta de um Javascript
+	 * 
 	 * @Author Antonio Bernardo
 	 */
 	@SuppressWarnings("unused")
 	public static void aceitarCancelamentoJavaScriptSol(String Alert) {
 		wait.until(ExpectedConditions.alertIsPresent());
 		SeleniumSol runner;
-		WebDriver driver =  (WebDriver ) SeleniumSol.getDriver();
+		WebDriver driver = (WebDriver) SeleniumSol.getDriver();
 		driver.switchTo().alert().accept();
 	}
-	
+
 	/**
 	 * Comando de cancelar o alerta de um Javascript
+	 * 
 	 * @Author Antonio Bernardo
-	 */ 
+	 */
 	@SuppressWarnings("unused")
 	public static void cancelarAlertaCancelamentoJavaScriptSol(String Alert) {
 		wait.until(ExpectedConditions.alertIsPresent());
 		SeleniumSol runner;
-		WebDriver driver =  (WebDriver ) SeleniumSol.getDriver();
+		WebDriver driver = (WebDriver) SeleniumSol.getDriver();
 		driver.switchTo().alert().dismiss();
 	}
-	
+
 	/**
 	 * Validar a existência do campo na Interface
-	 * @Author Antonio Bernardo 
+	 * 
+	 * @Author Antonio Bernardo
 	 */
-	public static void validarCampoVisivelNaInterface(By objetoVisivel ){
+	public static void validarCampoVisivelNaInterface(By objetoVisivel) {
 		wait.until(ExpectedConditions.visibilityOfElementLocated(objetoVisivel));
 	}
-	
+
 	/**
 	 * Método que clica em um item da lista de um Combobox
-	 * @throws InterruptedException  
+	 * 
+	 * @throws InterruptedException
 	 * @Author Fábio Heller
 	 */
-	public static void selecionarOpcaoEmCombobox(By combobox, By opcaoCombobox) throws InterruptedException{
+	public static void selecionarOpcaoEmCombobox(By combobox, By opcaoCombobox) throws InterruptedException {
 		Actions action = new Actions(driver);
-		driver.findElement(combobox).click(); 	
+		driver.findElement(combobox).click();
 		WebElement element = driver.findElement(opcaoCombobox);
 		action.moveToElement(element).build().perform();
 		action.click(element).build().perform();
 		element.click();
-	}	
+	}
 
 	/**
-
-	* Método para criar uma subpasta no diretório ScreencShot e capturar Print. 
-	* @param fileName - Nome do arquivo
-	* @Athor Antonio Bernardo e Fábio Heller
-	*/
-	public static void capturaScreenDaTela(String subPastaProjeto, String fileName){
-		File scrFile = ((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);
+	 * 
+	 * Método para criar uma subpasta no diretório ScreencShot e capturar Print.
+	 * 
+	 * @param fileName
+	 *            - Nome do arquivo
+	 * @Athor Antonio Bernardo e Fábio Heller
+	 */
+	public static void capturaScreenDaTela(String subPastaProjeto, String fileName) {
+		File scrFile = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
 		try {
-			FileUtils.copyFile(scrFile, new File(diretorioPrincipal+subPastaProjeto+"\\"+fileName+".jpeg"),true);
+			FileUtils.copyFile(scrFile, new File(diretorioPrincipal + subPastaProjeto + "\\" + fileName + ".jpeg"),
+					true);
 		} catch (IOException e) {
-		e.printStackTrace();
+			e.printStackTrace();
 		}
 	}
 
 	/**
-	* Método para excluir os arquivo na Subpasta do diretório onde estão sendo gerados os prints.	* @Author Antonio Bernardo e Fábio Heller
-	*/
-	public static void deletarArquivosDaSubpasta(String subPastaProjeto){
+	 * Método para excluir os arquivo na Subpasta do diretório onde estão sendo
+	 * gerados os prints. * @Author Antonio Bernardo e Fábio Heller
+	 */
+	public static void deletarArquivosDaSubpasta(String subPastaProjeto) {
 		try {
-			File pasta = new File(diretorioPrincipal+subPastaProjeto+"\\");    
-			File[] arquivos = pasta.listFiles();    
-			for(File arquivo : arquivos) {
-		    if(arquivo.getName().endsWith("jpeg") || arquivo.getName().endsWith("sql") || arquivo.getName().endsWith("out") || arquivo.getName().endsWith("txt") || arquivo.getName().endsWith("pdf")) {
-		        arquivo.delete();
-		    	}
+			File pasta = new File(diretorioPrincipal + subPastaProjeto + "\\");
+			File[] arquivos = pasta.listFiles();
+			for (File arquivo : arquivos) {
+				if (arquivo.getName().endsWith("jpeg") || arquivo.getName().endsWith("sql")
+						|| arquivo.getName().endsWith("out") || arquivo.getName().endsWith("txt")
+						|| arquivo.getName().endsWith("pdf")) {
+					arquivo.delete();
+				}
 			}
-		}catch (NullPointerException ex){
+		} catch (NullPointerException ex) {
 			System.out.println("Diretorio e/ou subpastas inexistentes!");
-		}catch (Exception ex){
-			
+		} catch (Exception ex) {
+
 		}
 	}
-	
+
 	/**
-	* Método para Criar o arquivo colocar a informação dentro do arquivo  Arquivo.txt
-	* Por exemplo, copiar o número de um protocolo e colar em um arquivo texto para utilizá-lo posteriormente. (CTRL C + CTRL V)
-	* @Author Antonio Bernardo e Fábio Heller
-	* Atualizado dia 25/08/2017 - Antonio Bernardo
-	*/
-		
-	public static void escreverEmArquivoTexto(By objetoCopiar, String subPastaProjeto, String nomeDoArquivo){
-	try{
-		boolean success = (new File(diretorioPrincipal+subPastaProjeto)).mkdirs();
-		if (!success) {
-		// Falha no momento de criar o diretório
-		}
-		FileWriter canal  = new FileWriter (new File(diretorioPrincipal+subPastaProjeto+"\\"+nomeDoArquivo+".txt"));
-		PrintWriter escrever = new PrintWriter(canal);
-		String guardaValor = null;
-		guardaValor = driver.findElement(objetoCopiar).getText();
-		String str = guardaValor;
-	    while (str.indexOf("-") != -1) {
-		      if (str.indexOf("-") != 0) {
-		        str = str.substring(0, str.indexOf("-")) +
-		            str.substring(str.indexOf("-") + 1);
-		      }
-		      else {
-		        str = str.substring(str.indexOf("-") + 1);
-		      }
-		    }
-		    while (str.indexOf(".") != -1) {
-		      if (str.indexOf(".") != 0) {
-		        str = str.substring(0, str.indexOf(".")) +
-		            str.substring(str.indexOf(".") + 1);
-		      }
-		      else {
-		        str = str.substring(str.indexOf(".") + 1);
-		      }
-		    }
-		escrever.println (str);
-		escrever.close();
-		}
-	catch (Exception ex){
+	 * Método para Criar o arquivo colocar a informação dentro do arquivo
+	 * Arquivo.txt Por exemplo, copiar o número de um protocolo e colar em um
+	 * arquivo texto para utilizá-lo posteriormente. (CTRL C + CTRL V)
+	 * 
+	 * @Author Antonio Bernardo e Fábio Heller Atualizado dia 25/08/2017 -
+	 *         Antonio Bernardo
+	 */
+
+	public static void escreverEmArquivoTexto(By objetoCopiar, String subPastaProjeto, String nomeDoArquivo) {
+		try {
+			boolean success = (new File(diretorioPrincipal + subPastaProjeto)).mkdirs();
+			if (!success) {
+				// Falha no momento de criar o diretório
+			}
+			FileWriter canal = new FileWriter(
+					new File(diretorioPrincipal + subPastaProjeto + "\\" + nomeDoArquivo + ".txt"));
+			PrintWriter escrever = new PrintWriter(canal);
+			String guardaValor = null;
+			guardaValor = driver.findElement(objetoCopiar).getText();
+			String str = guardaValor;
+			while (str.indexOf("-") != -1) {
+				if (str.indexOf("-") != 0) {
+					str = str.substring(0, str.indexOf("-")) + str.substring(str.indexOf("-") + 1);
+				} else {
+					str = str.substring(str.indexOf("-") + 1);
+				}
+			}
+			while (str.indexOf(".") != -1) {
+				if (str.indexOf(".") != 0) {
+					str = str.substring(0, str.indexOf(".")) + str.substring(str.indexOf(".") + 1);
+				} else {
+					str = str.substring(str.indexOf(".") + 1);
+				}
+			}
+			escrever.println(str);
+			escrever.close();
+		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
 	}
-	
+
 	/**
-	* Método para ler o Arquivo.txt que foi criado e inserido um valor
-* Por exemplo, copiar o número de um protocolo que está em um arquivo txt e inserir no elemento que receberá a informação
-	* @Author Antonio Bernardo
-	*/
-	public static void lerArquivoTexto(String subPastaProjeto, String nomeDoArquivo, By elementoRecebedorValor) throws IOException{
+	 * Método para ler o Arquivo.txt que foi criado e inserido um valor Por
+	 * exemplo, copiar o número de um protocolo que está em um arquivo txt e
+	 * inserir no elemento que receberá a informação
+	 * 
+	 * @Author Antonio Bernardo
+	 */
+	public static void lerArquivoTexto(String subPastaProjeto, String nomeDoArquivo, By elementoRecebedorValor)
+			throws IOException {
 		@SuppressWarnings("unused")
-		String conteudo = ""; 
-		try{
-			BufferedReader ler = new BufferedReader(new FileReader(diretorioPrincipal+subPastaProjeto+"\\"+nomeDoArquivo+".txt"));
+		String conteudo = "";
+		try {
+			BufferedReader ler = new BufferedReader(
+					new FileReader(diretorioPrincipal + subPastaProjeto + "\\" + nomeDoArquivo + ".txt"));
 			String linha = ler.readLine();
 			wait.until(ExpectedConditions.visibilityOfElementLocated(elementoRecebedorValor));
 			driver.findElement(elementoRecebedorValor).clear();
 			driver.findElement(elementoRecebedorValor).sendKeys(linha);
-						
-			try{ 
+
+			try {
 				linha = ler.readLine();
-				while (linha != null){
-					conteudo += linha+"\r\n";
-					linha =ler.readLine();
+				while (linha != null) {
+					conteudo += linha + "\r\n";
+					linha = ler.readLine();
 				}
 				ler.close();
-			
-			}catch (IOException ex){
+
+			} catch (IOException ex) {
 				System.out.println("Erro: Não foi possivel ler arquivo!");
 			}
-		} catch (FileNotFoundException ex){
-			
+		} catch (FileNotFoundException ex) {
+
 		}
 	}
+
 	/**
-	* Método para criar um arquivo .pdf e inserido um valor
-	* @Athor Jacqueline Lucas
-	*/
-	public static void criarArquivoPDFEInserirTexto(String subPastaProjeto, String nomeDoArquivo, String inserirTexto){
-		 try{
+	 * Método para criar um arquivo .pdf e inserido um valor
+	 * 
+	 * @Athor Jacqueline Lucas
+	 */
+	public static void criarArquivoPDFEInserirTexto(String subPastaProjeto, String nomeDoArquivo, String inserirTexto) {
+		try {
 			Document document = new Document(PageSize.A4, 50, 50, 50, 50);
-			PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(new File(diretorioPrincipal+subPastaProjeto+"\\"+nomeDoArquivo+".pdf")));
+			PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(
+					new File(diretorioPrincipal + subPastaProjeto + "\\" + nomeDoArquivo + ".pdf")));
 			document.open();
 			document.add(new Paragraph(inserirTexto));
 			document.close();
 			writer.close();
-			} 
-			catch (Exception e) {
-				e.printStackTrace();
-			}
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
-	
+	}
+
 	/**
-	* Método para anexar um arquivo 
-	* @Athor Jacqueline Lucas e Antonio Bernardo
-	*/	
-	public static void comandoAnexarArquivo(By nomeElemento, String subPastaProjeto, String nomeDoArquivo){
+	 * Método para anexar um arquivo
+	 * 
+	 * @Athor Jacqueline Lucas e Antonio Bernardo
+	 */
+	public static void comandoAnexarArquivo(By nomeElemento, String subPastaProjeto, String nomeDoArquivo) {
 		wait.until(ExpectedConditions.visibilityOfElementLocated(nomeElemento));
 		WebElement file_input = driver.findElement(nomeElemento);
-		file_input.sendKeys(diretorioPrincipal+subPastaProjeto+"\\"+nomeDoArquivo+".pdf");
+		file_input.sendKeys(diretorioPrincipal + subPastaProjeto + "\\" + nomeDoArquivo + ".pdf");
 	}
-	
+
 	/**
-	* Método para acessar o Menu e o Submenu1.
-	* @Athor Jacqueline Lucas 
-	*/	
-	public static void menuSubMenuNivel1(By Menu, By subMenu1){
+	 * Método para acessar o Menu e o Submenu1.
+	 * 
+	 * @Athor Jacqueline Lucas
+	 */
+	public static void menuSubMenuNivel1(By Menu, By subMenu1) {
 		Actions action = new Actions(driver);
-		WebElement element = driver.findElement(Menu);		
+		WebElement element = driver.findElement(Menu);
 		action.moveToElement(element).build().perform();
-		driver.findElement(Menu).click(); 	
-		action.click(element).build().perform();		
+		driver.findElement(Menu).click();
+		action.click(element).build().perform();
 		action.moveToElement(element).build().perform();
-		driver.findElement(subMenu1).click(); 
+		driver.findElement(subMenu1).click();
 	}
-	
+
 	/**
-	* Método para acessar o Menu, Submenu1 e Submenu2  
-	* @Athor Jacqueline Lucas 
-	*/	
-	public static void menuSubMenuNivel2(By Menu, By subMenu1, By subMenu2){
+	 * Método para acessar o Menu, Submenu1 e Submenu2
+	 * 
+	 * @Athor Jacqueline Lucas
+	 */
+	public static void menuSubMenuNivel2(By Menu, By subMenu1, By subMenu2) {
 		Actions action = new Actions(driver);
-		WebElement element = driver.findElement(Menu);		
-		action.moveToElement(element).build().perform();		
-		driver.findElement(Menu).click(); 	
-		action.click(element).build().perform();		
+		WebElement element = driver.findElement(Menu);
 		action.moveToElement(element).build().perform();
-		driver.findElement(subMenu1).click(); 		
+		driver.findElement(Menu).click();
+		action.click(element).build().perform();
+		action.moveToElement(element).build().perform();
+		driver.findElement(subMenu1).click();
 		element = driver.findElement(subMenu1);
 		action.moveToElement(element).build().perform();
-		driver.findElement(subMenu2).click(); 
+		driver.findElement(subMenu2).click();
 	}
-	
+
 	/**
-	* Método para acessar o Menu, Submenu1, Submenu2 e Submenu3.   
-	* @Athor Jacqueline Lucas 
-	*/	
-	public static void menuSubMenuNivel3(By Menu, By subMenu1, By subMenu2, By subMenu3){
+	 * Método para acessar o Menu, Submenu1, Submenu2 e Submenu3.
+	 * 
+	 * @Athor Jacqueline Lucas
+	 */
+	public static void menuSubMenuNivel3(By Menu, By subMenu1, By subMenu2, By subMenu3) {
 		Actions action = new Actions(driver);
-		WebElement element = driver.findElement(Menu);		
-		action.moveToElement(element).build().perform();		
-		driver.findElement(Menu).click(); 	
-		action.click(element).build().perform();		
+		WebElement element = driver.findElement(Menu);
 		action.moveToElement(element).build().perform();
-		driver.findElement(subMenu1).click(); 		
+		driver.findElement(Menu).click();
+		action.click(element).build().perform();
+		action.moveToElement(element).build().perform();
+		driver.findElement(subMenu1).click();
 		element = driver.findElement(subMenu1);
 		action.moveToElement(element).build().perform();
-		driver.findElement(subMenu2).click(); 		
+		driver.findElement(subMenu2).click();
 		element = driver.findElement(subMenu2);
 		action.moveToElement(element).build().perform();
-		driver.findElement(subMenu3).click(); 
+		driver.findElement(subMenu3).click();
 	}
-	
+
 	/**
-	* Método para acessar o Menu, Submenu1, Submenu2 e Submenu3 e Submenu4.   
-	* @Athor Jacqueline Lucas 
-	*/	
-	public static void menuSubMenuNivel4(By Menu, By subMenu1, By subMenu2, By subMenu3, By subMenu4){
+	 * Método para acessar o Menu, Submenu1, Submenu2 e Submenu3 e Submenu4.
+	 * 
+	 * @Athor Jacqueline Lucas
+	 */
+	public static void menuSubMenuNivel4(By Menu, By subMenu1, By subMenu2, By subMenu3, By subMenu4) {
 		Actions action = new Actions(driver);
-		WebElement element = driver.findElement(Menu);		
-		action.moveToElement(element).build().perform();		
-		driver.findElement(Menu).click(); 	
-		action.click(element).build().perform();		
+		WebElement element = driver.findElement(Menu);
 		action.moveToElement(element).build().perform();
-		driver.findElement(subMenu1).click(); 		
+		driver.findElement(Menu).click();
+		action.click(element).build().perform();
+		action.moveToElement(element).build().perform();
+		driver.findElement(subMenu1).click();
 		element = driver.findElement(subMenu1);
 		action.moveToElement(element).build().perform();
-		driver.findElement(subMenu2).click(); 		
+		driver.findElement(subMenu2).click();
 		element = driver.findElement(subMenu2);
 		action.moveToElement(element).build().perform();
-		driver.findElement(subMenu3).click(); 	
+		driver.findElement(subMenu3).click();
 		element = driver.findElement(subMenu3);
 		action.moveToElement(element).build().perform();
-		driver.findElement(subMenu4).click(); 
+		driver.findElement(subMenu4).click();
 	}
-	
+
 	/**
-	* Método para clicar em um campo checkbox
-	* esse método irá setar o elemento da tela conforme o value seja (true,false,0,1,2,3...)
-	* @Author Jacqueline Lucas
-	*/		
-    public static void clickCampoCheckBox(By nomeCampo, String valueDoCampo) throws InterruptedException{
-        final List<WebElement> rdBtn_Campo = driver.findElements((nomeCampo));
-        int size = rdBtn_Campo.size();
-        for (int i=0; i< size; i++)
-        {
-               String sValue = rdBtn_Campo.get(i).getAttribute("value"); 
-               if (sValue.equalsIgnoreCase(valueDoCampo))
-               {
-                      rdBtn_Campo.get(i).click();
-               }
-        }
-    }
-    
+	 * Método para clicar em um campo checkbox esse método irá setar o elemento
+	 * da tela conforme o value seja (true,false,0,1,2,3...)
+	 * 
+	 * @Author Jacqueline Lucas
+	 */
+	public static void clickCampoCheckBox(By nomeCampo, String valueDoCampo) throws InterruptedException {
+		final List<WebElement> rdBtn_Campo = driver.findElements((nomeCampo));
+		int size = rdBtn_Campo.size();
+		for (int i = 0; i < size; i++) {
+			String sValue = rdBtn_Campo.get(i).getAttribute("value");
+			if (sValue.equalsIgnoreCase(valueDoCampo)) {
+				rdBtn_Campo.get(i).click();
+			}
+		}
+	}
+
 	/**
-	 * Método para um tempo para o 
+	 * Método para um tempo para o
+	 * 
 	 * @Author Antonio Bernardo
 	 */
-    public static void aguardarOProximoPasso(int valorEmMilisegundos) throws InterruptedException{
-    	Thread.sleep(valorEmMilisegundos);
-    }    
+	public static void aguardarOProximoPasso(int valorEmMilisegundos) throws InterruptedException {
+		Thread.sleep(valorEmMilisegundos);
+	}
 
 	/**
-	* Método para capturar a data atual do sistema e acrescentar ou diminuir em dias a data capturada
-	* set true com mascara ("dd/MM/yyyy") // set false sem mascara ("ddMMyyyy")
-	* @Author Rogerio Cesar e Fabio Heller
-	*/		    
+	 * Método para capturar a data atual do sistema e acrescentar ou diminuir em
+	 * dias a data capturada set true com mascara ("dd/MM/yyyy") // set false
+	 * sem mascara ("ddMMyyyy")
+	 * 
+	 * @Author Rogerio Cesar e Fabio Heller
+	 */
 	@SuppressWarnings("deprecation")
 	public static String retornaDataAtualOuPosteriorOuAnteriorDaDataAtualDoSistema(int dias, boolean comMascara) {
-           DateFormat dateFormat = new SimpleDateFormat("ddMMyyyy");	
-		if (comMascara){
+		DateFormat dateFormat = new SimpleDateFormat("ddMMyyyy");
+		if (comMascara) {
 			dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-		}else{
-	        dateFormat = new SimpleDateFormat("ddMMyyyy");
+		} else {
+			dateFormat = new SimpleDateFormat("ddMMyyyy");
 		}
-    	   Date data = new Date();
-    	   data.setDate(data.getDate()+dias);
-    	   return dateFormat.format(data);
-    	}
+		Date data = new Date();
+		data.setDate(data.getDate() + dias);
+		return dateFormat.format(data);
+	}
 
 	/**
-	* Método para capturar a hora atual do sistema
-	* @Author Fábio Heller
-	*/	
+	 * Método para capturar a hora atual do sistema
+	 * 
+	 * @Author Fábio Heller
+	 */
 	public static String retornaHoraAtualDoSistema() {
-           DateFormat dateFormat = new SimpleDateFormat("HHmmss");	
-    	   Date data = new Date();
-    	   return dateFormat.format(data);
-    	}
-	
-    /**
-    * Método que efetua a ação de um clique em uma opção existente em Tela
-    * String texto = título da tela modal
-    * By campo = passar um elemento para validar o título da tela Modal 
-    * By ElementoOpcaoClick1 = passar o elemento que vai receber a ação click int
-    * int tempo = tempo de espera do carregamento DOM
-    * 
-     * @Author Jacqueline Lucas
-    */
-    public static void modalValidareClicar(String texto, By campo, By ElementoOpcaoClick1, int tempo) throws InterruptedException{
-         Thread.sleep(tempo);
-         validarTexto(texto, campo);
-         By correctLocator = null;
-         correctLocator = ElementoOpcaoClick1;
-         driver.findElement(correctLocator).click();
-    }
-    
+		DateFormat dateFormat = new SimpleDateFormat("HHmmss");
+		Date data = new Date();
+		return dateFormat.format(data);
+	}
+
+	/**
+	 * Método que efetua a ação de um clique em uma opção existente em Tela
+	 * String texto = título da tela modal By campo = passar um elemento para
+	 * validar o título da tela Modal By ElementoOpcaoClick1 = passar o elemento
+	 * que vai receber a ação click int int tempo = tempo de espera do
+	 * carregamento DOM
+	 * 
+	 * @Author Jacqueline Lucas
+	 */
+	public static void modalValidareClicar(String texto, By campo, By ElementoOpcaoClick1, int tempo)
+			throws InterruptedException {
+		Thread.sleep(tempo);
+		validarTexto(texto, campo);
+		By correctLocator = null;
+		correctLocator = ElementoOpcaoClick1;
+		driver.findElement(correctLocator).click();
+	}
+
 	/**
 	 * Método para Criar o arquivo colocar a informação dentro do arquivo
 	 * Arquivo .txt (Esse método só vai preencher se o campo a qual for
@@ -635,16 +668,18 @@ public class MetodosSiare {
 		ObjetosTelaLoginSicaf.performSearchCpf("88888888888");
 		ObjetosTelaLoginSicaf.performSearchSenha("12345678");
 		ObjetosTelaLoginSicaf.clickSearchButtonLogin();
-		
+
 	}
+
 	/**
-	 * Método para acessar a tela Consulta Histórico de Protocolo
-	 * Histório de Protocolo
+	 * Método para acessar a tela Consulta Histórico de Protocolo Histório de
+	 * Protocolo
+	 * 
 	 * @author Antonio Benardo
 	 * @throws IOException
 	 */
-	
-	public static void acessarMenuconsultaDeHistoriocoProtocolo()throws IOException{
+
+	public static void acessarMenuconsultaDeHistoriocoProtocolo() throws IOException {
 		// Acessar a tela de consluta de protocolo
 		MetodosSiare.umClique(ObjetosMetodosComuns.abaConultaSiareSICAF);
 		MetodosSiare.validarTexto("Principais Consultas", ObjetosMetodosComuns.textoTituloDaAbaConsulta);
@@ -797,181 +832,204 @@ public class MetodosSiare {
 		}
 		return linha;
 	}
-	
+
 	/**
-	 *  Método que que retorna o texto de um xpath de acordo com o parâmetro informado no método.
-	 *  Utilizado na chamada dos métodos (solCaixadeServicosSolicitadosEncontrarProtocolo e sicafCaixaDeTarefasEncontrarProtocolo)
-	 *  a chamada do .gettext no proprio método estava ocasionando erro, daí a necessidade de criar um método a parte.
+	 * Método que que retorna o texto de um xpath de acordo com o parâmetro
+	 * informado no método. Utilizado na chamada dos métodos
+	 * (solCaixadeServicosSolicitadosEncontrarProtocolo e
+	 * sicafCaixaDeTarefasEncontrarProtocolo) a chamada do .gettext no proprio
+	 * método estava ocasionando erro, daí a necessidade de criar um método a
+	 * parte.
+	 * 
 	 * @Author Fábio Heller
-	 */ 	
-	public static String textoDoElemento(By campo){
+	 */
+	public static String textoDoElemento(By campo) {
 		String textoDoElelemto = driver.findElement(campo).getText();
 		return textoDoElelemto;
 	}
-	
+
 	/**
-	 *  Método que que retorna o primetiro inteiro de uma string de acordo com o parâmetro informado no método.
-	 *  Utilizado na chamada dos métodos (solCaixadeServicosSolicitadosEncontrarProtocolo e sicafCaixaDeTarefasEncontrarProtocolo)
-	 *  afim de obter a quantidade de regitros/protocolos informados na caixa de protocolo.
+	 * Método que que retorna o primetiro inteiro de uma string de acordo com o
+	 * parâmetro informado no método. Utilizado na chamada dos métodos
+	 * (solCaixadeServicosSolicitadosEncontrarProtocolo e
+	 * sicafCaixaDeTarefasEncontrarProtocolo) afim de obter a quantidade de
+	 * regitros/protocolos informados na caixa de protocolo.
+	 * 
 	 * @Author Fábio Heller
-	 */ 	
-	public static Integer obterQTDDeRegistrosNaCaixa(By campo){
+	 */
+	public static Integer obterQTDDeRegistrosNaCaixa(By campo) {
 		int qtdRegistros = 0;
 		String meuteste = " ", registros = "", textoDoElelemto = driver.findElement(campo).getText();
-		for(int i = 0; i< textoDoElelemto.length(); i++){
-			if(meuteste.charAt(0) == textoDoElelemto.charAt(i))
+		for (int i = 0; i < textoDoElelemto.length(); i++) {
+			if (meuteste.charAt(0) == textoDoElelemto.charAt(i))
 				break;
 			else
-			registros = registros + textoDoElelemto.charAt(i);
+				registros = registros + textoDoElelemto.charAt(i);
 		}
 		qtdRegistros = Integer.parseInt(registros);
 		return qtdRegistros;
 	}
-	 
+
 	/**
-	 *  Método que percorre a caixa de serviços afim de localizar o protocolo informado, quando encontrado 
-	 *  o sistema irá selecionar o registro e acionar o botão infomado no parâmetro do método.
-	 * @Author Fábio Heller
-	 */ 
-	 public static void solCaixadeServicosSolicitadosEncontrarProtocolo(String protocolo, By botaoAcao) throws InterruptedException{
-		 boolean achou = false;
-		 int contador = 0, iteracaoQtdDeRegistros = 0, qtdDeRegistros = MetodosSiare.obterQTDDeRegistrosNaCaixa(By.xpath(".//*[@id='containerConteudoPrincipal']/div/form/table[3]/tbody/tr/td[3]"));
-	     String [][] arrayprotocolos = { 
-					{".//*[@id='containerConteudoPrincipal']/div/form/table[4]/tbody/tr[2]/td[2]",
-					 ".//*[@id='containerConteudoPrincipal']/div/form/table[4]/tbody/tr[2]/td[1]/input"},
-					{".//*[@id='containerConteudoPrincipal']/div/form/table[4]/tbody/tr[3]/td[2]",
-					 ".//*[@id='containerConteudoPrincipal']/div/form/table[4]/tbody/tr[3]/td[1]/input"},
-					{".//*[@id='containerConteudoPrincipal']/div/form/table[4]/tbody/tr[4]/td[2]",
-					 ".//*[@id='containerConteudoPrincipal']/div/form/table[4]/tbody/tr[4]/td[1]/input"},
-					{".//*[@id='containerConteudoPrincipal']/div/form/table[4]/tbody/tr[5]/td[2]",
-					 ".//*[@id='containerConteudoPrincipal']/div/form/table[4]/tbody/tr[5]/td[1]/input"},
-					{".//*[@id='containerConteudoPrincipal']/div/form/table[4]/tbody/tr[6]/td[2]",
-					 ".//*[@id='containerConteudoPrincipal']/div/form/table[4]/tbody/tr[6]/td[1]/input"},
-					{".//*[@id='containerConteudoPrincipal']/div/form/table[4]/tbody/tr[7]/td[2]",
-					 ".//*[@id='containerConteudoPrincipal']/div/form/table[4]/tbody/tr[7]/td[1]/input"},
-					{".//*[@id='containerConteudoPrincipal']/div/form/table[4]/tbody/tr[8]/td[2]",
-					 ".//*[@id='containerConteudoPrincipal']/div/form/table[4]/tbody/tr[8]/td[1]/input"},
-					{".//*[@id='containerConteudoPrincipal']/div/form/table[4]/tbody/tr[9]/td[2]",
-					 ".//*[@id='containerConteudoPrincipal']/div/form/table[4]/tbody/tr[9]/td[1]/input"},
-					{".//*[@id='containerConteudoPrincipal']/div/form/table[4]/tbody/tr[10]/td[2]",
-					 ".//*[@id='containerConteudoPrincipal']/div/form/table[4]/tbody/tr[10]/td[1]/input"},
-					{".//*[@id='containerConteudoPrincipal']/div/form/table[4]/tbody/tr[11]/td[2]",
-					 ".//*[@id='containerConteudoPrincipal']/div/form/table[4]/tbody/tr[11]/td[1]/input"}
-			};
-		 do{
-			 if(iteracaoQtdDeRegistros + 1 > qtdDeRegistros){
-				 contador = 0;
-				 iteracaoQtdDeRegistros = 0;
-				 MetodosSiare.umClique(MetodosSiare.campoLinkText("Home"));
-				 qtdDeRegistros = MetodosSiare.obterQTDDeRegistrosNaCaixa(By.xpath(".//*[@id='containerConteudoPrincipal']/div/form/table[3]/tbody/tr/td[3]"));
-				 MetodosSiare.inserirDadoNoCampo("1", MetodosSiare.campoXpath(".//*[@id='containerConteudoPrincipal']/div/form/table[3]/tbody/tr/td[3]/a[2]/input"));
-				 MetodosSiare.umClique(MetodosSiare.campoXpath(".//*[@id='containerConteudoPrincipal']/div/form/table[3]/tbody/tr/td[3]/a[3]"));
-				 MetodosSiare.aguardarOProximoPasso(5000);
-			 }
-			if(protocolo.equals(textoDoElemento(MetodosSiare.campoXpath(arrayprotocolos[contador][0])))){
-				 achou = true;
-				 MetodosSiare.umClique(MetodosSiare.campoXpath(arrayprotocolos[contador][1]));
-				 MetodosSiare.umClique(botaoAcao);
-			 }
-			if(qtdDeRegistros > 10){
-				 if(contador == 9){
-					 contador = 0;
-					 MetodosSiare.umClique(MetodosSiare.campoLinkText(">"));
-					 iteracaoQtdDeRegistros++;
-				 }else{
-					 contador++;
-					 iteracaoQtdDeRegistros++;
-				 }
-			}else{
-				 if(contador+1 == qtdDeRegistros){
-					 contador = 0;
-					 iteracaoQtdDeRegistros = 0;
-					 MetodosSiare.umClique(MetodosSiare.campoLinkText("Home"));
-					 qtdDeRegistros = MetodosSiare.obterQTDDeRegistrosNaCaixa(By.xpath(".//*[@id='containerConteudoPrincipal']/div/form/table[3]/tbody/tr/td[3]"));
-				 }else{
-					 contador++;
-					 iteracaoQtdDeRegistros++;
-				 }
-			}
-		 }while (!achou);
-	 }
-	 
-	/**
-	 *  Método que percorre a caixa de tarefas afim de localizar o protocolo informado, quando encontrado 
-	 *  o sistema irá selecionar o registro e acionar o botão infomado no parâmetro do método.
+	 * Método que percorre a caixa de serviços afim de localizar o protocolo
+	 * informado, quando encontrado o sistema irá selecionar o registro e
+	 * acionar o botão infomado no parâmetro do método.
+	 * 
 	 * @Author Fábio Heller
 	 */
-	 public static void sicafCaixaDeTarefasEncontrarProtocolo(String protocolo, By botaoAcao) throws InterruptedException{
-		 boolean achou = false;
-		 int contador = 0, iteracaoQtdDeRegistros = 0, qtdDeRegistros = MetodosSiare.obterQTDDeRegistrosNaCaixa(MetodosSiare.campoXpath(".//*[@id='ufw_total_linhas']"));
-		 String [][] arrayprotocolosAnalista = {  
-					{".//*[@id='containerConteudoPrincipal']/div/form/table[2]/tbody/tr[4]/td[2]/p[2]",
-					 ".//*[@id='containerConteudoPrincipal']/div/form/table[2]/tbody/tr[4]/td[1]/input"},
-					{".//*[@id='containerConteudoPrincipal']/div/form/table[2]/tbody/tr[5]/td[2]/p[2]",
-					 ".//*[@id='containerConteudoPrincipal']/div/form/table[2]/tbody/tr[5]/td[1]/input"},
-					{".//*[@id='containerConteudoPrincipal']/div/form/table[2]/tbody/tr[6]/td[2]/p[2]",
-					 ".//*[@id='containerConteudoPrincipal']/div/form/table[2]/tbody/tr[6]/td[1]/input"},
-					{".//*[@id='containerConteudoPrincipal']/div/form/table[2]/tbody/tr[7]/td[2]/p[2]",
-					 ".//*[@id='containerConteudoPrincipal']/div/form/table[2]/tbody/tr[7]/td[1]/input"},
-					{".//*[@id='containerConteudoPrincipal']/div/form/table[2]/tbody/tr[8]/td[2]/p[2]",
-					 ".//*[@id='containerConteudoPrincipal']/div/form/table[2]/tbody/tr[8]/td[1]/input"},
-					{".//*[@id='containerConteudoPrincipal']/div/form/table[2]/tbody/tr[9]/td[2]/p[2]",
-					 ".//*[@id='containerConteudoPrincipal']/div/form/table[2]/tbody/tr[9]/td[1]/input"},
-					{".//*[@id='containerConteudoPrincipal']/div/form/table[2]/tbody/tr[10]/td[2]/p[2]",
-					 ".//*[@id='containerConteudoPrincipal']/div/form/table[2]/tbody/tr[10]/td[1]/input"},
-					{".//*[@id='containerConteudoPrincipal']/div/form/table[2]/tbody/tr[11]/td[2]/p[2]",
-					 ".//*[@id='containerConteudoPrincipal']/div/form/table[2]/tbody/tr[11]/td[1]/input"},
-					{".//*[@id='containerConteudoPrincipal']/div/form/table[2]/tbody/tr[12]/td[2]/p[2]",
-					 ".//*[@id='containerConteudoPrincipal']/div/form/table[2]/tbody/tr[12]/td[1]/input"},
-					{".//*[@id='containerConteudoPrincipal']/div/form/table[2]/tbody/tr[13]/td[2]/p[2]",
-					 ".//*[@id='containerConteudoPrincipal']/div/form/table[2]/tbody/tr[13]/td[1]/input"}
-			};
-		 do{
-			 if(iteracaoQtdDeRegistros + 1 > qtdDeRegistros){
-				 contador = 0;
-				 iteracaoQtdDeRegistros = 0;
-				 MetodosSiare.umClique(MetodosSiare.campoLinkText("Home"));
-				 qtdDeRegistros = MetodosSiare.obterQTDDeRegistrosNaCaixa(MetodosSiare.campoXpath(".//*[@id='ufw_total_linhas']"));
-				 MetodosSiare.inserirDadoNoCampo("1", MetodosSiare.campoXpath(".//*[@id='containerConteudoPrincipal']/div/form/table[2]/tbody/tr[1]/td/table/tbody/tr/td[2]/table/tbody/tr/td/input"));
-				 MetodosSiare.umClique(MetodosSiare.campoLinkText("Ir"));
-				 MetodosSiare.aguardarOProximoPasso(5000);
-			 }
-			if(protocolo.equals(textoDoElemento(MetodosSiare.campoXpath(arrayprotocolosAnalista[contador][0])))){
-				 achou = true;
-				 MetodosSiare.umClique(MetodosSiare.campoXpath(arrayprotocolosAnalista[contador][1]));
-				 MetodosSiare.umClique(botaoAcao);
-			 }
-			if(qtdDeRegistros > 10){
-				 if(contador == 9){
-					 contador = 0;
-					 MetodosSiare.umClique(MetodosSiare.campoLinkText(">"));
-					 iteracaoQtdDeRegistros++;
-				 }else{
-					 contador++;
-					 iteracaoQtdDeRegistros++;
-				 }
-			}else{
-				 if(contador+1 == qtdDeRegistros){
-					 contador = 0;
-					 iteracaoQtdDeRegistros = 0;
-					 MetodosSiare.umClique(MetodosSiare.campoLinkText("Home"));
-					 qtdDeRegistros = MetodosSiare.obterQTDDeRegistrosNaCaixa(By.xpath(".//*[@id='ufw_total_linhas']"));
-				 }else{
-					 contador++;
-					 iteracaoQtdDeRegistros++;
-				 }
+	public static void solCaixadeServicosSolicitadosEncontrarProtocolo(String protocolo, By botaoAcao)
+			throws InterruptedException {
+		boolean achou = false;
+		int contador = 0, iteracaoQtdDeRegistros = 0, qtdDeRegistros = MetodosSiare.obterQTDDeRegistrosNaCaixa(
+				By.xpath(".//*[@id='containerConteudoPrincipal']/div/form/table[3]/tbody/tr/td[3]"));
+		String[][] arrayprotocolos = {
+				{ ".//*[@id='containerConteudoPrincipal']/div/form/table[4]/tbody/tr[2]/td[2]",
+						".//*[@id='containerConteudoPrincipal']/div/form/table[4]/tbody/tr[2]/td[1]/input" },
+				{ ".//*[@id='containerConteudoPrincipal']/div/form/table[4]/tbody/tr[3]/td[2]",
+						".//*[@id='containerConteudoPrincipal']/div/form/table[4]/tbody/tr[3]/td[1]/input" },
+				{ ".//*[@id='containerConteudoPrincipal']/div/form/table[4]/tbody/tr[4]/td[2]",
+						".//*[@id='containerConteudoPrincipal']/div/form/table[4]/tbody/tr[4]/td[1]/input" },
+				{ ".//*[@id='containerConteudoPrincipal']/div/form/table[4]/tbody/tr[5]/td[2]",
+						".//*[@id='containerConteudoPrincipal']/div/form/table[4]/tbody/tr[5]/td[1]/input" },
+				{ ".//*[@id='containerConteudoPrincipal']/div/form/table[4]/tbody/tr[6]/td[2]",
+						".//*[@id='containerConteudoPrincipal']/div/form/table[4]/tbody/tr[6]/td[1]/input" },
+				{ ".//*[@id='containerConteudoPrincipal']/div/form/table[4]/tbody/tr[7]/td[2]",
+						".//*[@id='containerConteudoPrincipal']/div/form/table[4]/tbody/tr[7]/td[1]/input" },
+				{ ".//*[@id='containerConteudoPrincipal']/div/form/table[4]/tbody/tr[8]/td[2]",
+						".//*[@id='containerConteudoPrincipal']/div/form/table[4]/tbody/tr[8]/td[1]/input" },
+				{ ".//*[@id='containerConteudoPrincipal']/div/form/table[4]/tbody/tr[9]/td[2]",
+						".//*[@id='containerConteudoPrincipal']/div/form/table[4]/tbody/tr[9]/td[1]/input" },
+				{ ".//*[@id='containerConteudoPrincipal']/div/form/table[4]/tbody/tr[10]/td[2]",
+						".//*[@id='containerConteudoPrincipal']/div/form/table[4]/tbody/tr[10]/td[1]/input" },
+				{ ".//*[@id='containerConteudoPrincipal']/div/form/table[4]/tbody/tr[11]/td[2]",
+						".//*[@id='containerConteudoPrincipal']/div/form/table[4]/tbody/tr[11]/td[1]/input" } };
+		do {
+			if (iteracaoQtdDeRegistros + 1 > qtdDeRegistros) {
+				contador = 0;
+				iteracaoQtdDeRegistros = 0;
+				MetodosSiare.umClique(MetodosSiare.campoLinkText("Home"));
+				qtdDeRegistros = MetodosSiare.obterQTDDeRegistrosNaCaixa(
+						By.xpath(".//*[@id='containerConteudoPrincipal']/div/form/table[3]/tbody/tr/td[3]"));
+				MetodosSiare.inserirDadoNoCampo("1", MetodosSiare.campoXpath(
+						".//*[@id='containerConteudoPrincipal']/div/form/table[3]/tbody/tr/td[3]/a[2]/input"));
+				MetodosSiare.umClique(MetodosSiare
+						.campoXpath(".//*[@id='containerConteudoPrincipal']/div/form/table[3]/tbody/tr/td[3]/a[3]"));
+				MetodosSiare.aguardarOProximoPasso(5000);
 			}
-		 }while (!achou);
-	 }	
-	 
+			if (protocolo.equals(textoDoElemento(MetodosSiare.campoXpath(arrayprotocolos[contador][0])))) {
+				achou = true;
+				MetodosSiare.umClique(MetodosSiare.campoXpath(arrayprotocolos[contador][1]));
+				MetodosSiare.umClique(botaoAcao);
+			}
+			if (qtdDeRegistros > 10) {
+				if (contador == 9) {
+					contador = 0;
+					MetodosSiare.umClique(MetodosSiare.campoLinkText(">"));
+					iteracaoQtdDeRegistros++;
+				} else {
+					contador++;
+					iteracaoQtdDeRegistros++;
+				}
+			} else {
+				if (contador + 1 == qtdDeRegistros) {
+					contador = 0;
+					iteracaoQtdDeRegistros = 0;
+					MetodosSiare.umClique(MetodosSiare.campoLinkText("Home"));
+					qtdDeRegistros = MetodosSiare.obterQTDDeRegistrosNaCaixa(
+							By.xpath(".//*[@id='containerConteudoPrincipal']/div/form/table[3]/tbody/tr/td[3]"));
+				} else {
+					contador++;
+					iteracaoQtdDeRegistros++;
+				}
+			}
+		} while (!achou);
+	}
+
 	/**
-	 * Método para ler a primeira linha do Arquivo.txt e retornar o registro como uma string
+	 * Método que percorre a caixa de tarefas afim de localizar o protocolo
+	 * informado, quando encontrado o sistema irá selecionar o registro e
+	 * acionar o botão infomado no parâmetro do método.
+	 * 
 	 * @Author Fábio Heller
 	 */
-	public static String retornaRegistroDaPrimeiraLinhaDeArquivoTexto(String subPastaProjeto, String nomeDoArquivo) throws IOException {
+	public static void sicafCaixaDeTarefasEncontrarProtocolo(String protocolo, By botaoAcao)
+			throws InterruptedException {
+		boolean achou = false;
+		int contador = 0, iteracaoQtdDeRegistros = 0, qtdDeRegistros = MetodosSiare
+				.obterQTDDeRegistrosNaCaixa(MetodosSiare.campoXpath(".//*[@id='ufw_total_linhas']"));
+		String[][] arrayprotocolosAnalista = {
+				{ ".//*[@id='containerConteudoPrincipal']/div/form/table[2]/tbody/tr[4]/td[2]/p[2]",
+						".//*[@id='containerConteudoPrincipal']/div/form/table[2]/tbody/tr[4]/td[1]/input" },
+				{ ".//*[@id='containerConteudoPrincipal']/div/form/table[2]/tbody/tr[5]/td[2]/p[2]",
+						".//*[@id='containerConteudoPrincipal']/div/form/table[2]/tbody/tr[5]/td[1]/input" },
+				{ ".//*[@id='containerConteudoPrincipal']/div/form/table[2]/tbody/tr[6]/td[2]/p[2]",
+						".//*[@id='containerConteudoPrincipal']/div/form/table[2]/tbody/tr[6]/td[1]/input" },
+				{ ".//*[@id='containerConteudoPrincipal']/div/form/table[2]/tbody/tr[7]/td[2]/p[2]",
+						".//*[@id='containerConteudoPrincipal']/div/form/table[2]/tbody/tr[7]/td[1]/input" },
+				{ ".//*[@id='containerConteudoPrincipal']/div/form/table[2]/tbody/tr[8]/td[2]/p[2]",
+						".//*[@id='containerConteudoPrincipal']/div/form/table[2]/tbody/tr[8]/td[1]/input" },
+				{ ".//*[@id='containerConteudoPrincipal']/div/form/table[2]/tbody/tr[9]/td[2]/p[2]",
+						".//*[@id='containerConteudoPrincipal']/div/form/table[2]/tbody/tr[9]/td[1]/input" },
+				{ ".//*[@id='containerConteudoPrincipal']/div/form/table[2]/tbody/tr[10]/td[2]/p[2]",
+						".//*[@id='containerConteudoPrincipal']/div/form/table[2]/tbody/tr[10]/td[1]/input" },
+				{ ".//*[@id='containerConteudoPrincipal']/div/form/table[2]/tbody/tr[11]/td[2]/p[2]",
+						".//*[@id='containerConteudoPrincipal']/div/form/table[2]/tbody/tr[11]/td[1]/input" },
+				{ ".//*[@id='containerConteudoPrincipal']/div/form/table[2]/tbody/tr[12]/td[2]/p[2]",
+						".//*[@id='containerConteudoPrincipal']/div/form/table[2]/tbody/tr[12]/td[1]/input" },
+				{ ".//*[@id='containerConteudoPrincipal']/div/form/table[2]/tbody/tr[13]/td[2]/p[2]",
+						".//*[@id='containerConteudoPrincipal']/div/form/table[2]/tbody/tr[13]/td[1]/input" } };
+		do {
+			if (iteracaoQtdDeRegistros + 1 > qtdDeRegistros) {
+				contador = 0;
+				iteracaoQtdDeRegistros = 0;
+				MetodosSiare.umClique(MetodosSiare.campoLinkText("Home"));
+				qtdDeRegistros = MetodosSiare
+						.obterQTDDeRegistrosNaCaixa(MetodosSiare.campoXpath(".//*[@id='ufw_total_linhas']"));
+				MetodosSiare.inserirDadoNoCampo("1", MetodosSiare.campoXpath(
+						".//*[@id='containerConteudoPrincipal']/div/form/table[2]/tbody/tr[1]/td/table/tbody/tr/td[2]/table/tbody/tr/td/input"));
+				MetodosSiare.umClique(MetodosSiare.campoLinkText("Ir"));
+				MetodosSiare.aguardarOProximoPasso(5000);
+			}
+			if (protocolo.equals(textoDoElemento(MetodosSiare.campoXpath(arrayprotocolosAnalista[contador][0])))) {
+				achou = true;
+				MetodosSiare.umClique(MetodosSiare.campoXpath(arrayprotocolosAnalista[contador][1]));
+				MetodosSiare.umClique(botaoAcao);
+			}
+			if (qtdDeRegistros > 10) {
+				if (contador == 9) {
+					contador = 0;
+					MetodosSiare.umClique(MetodosSiare.campoLinkText(">"));
+					iteracaoQtdDeRegistros++;
+				} else {
+					contador++;
+					iteracaoQtdDeRegistros++;
+				}
+			} else {
+				if (contador + 1 == qtdDeRegistros) {
+					contador = 0;
+					iteracaoQtdDeRegistros = 0;
+					MetodosSiare.umClique(MetodosSiare.campoLinkText("Home"));
+					qtdDeRegistros = MetodosSiare.obterQTDDeRegistrosNaCaixa(By.xpath(".//*[@id='ufw_total_linhas']"));
+				} else {
+					contador++;
+					iteracaoQtdDeRegistros++;
+				}
+			}
+		} while (!achou);
+	}
+
+	/**
+	 * Método para ler a primeira linha do Arquivo.txt e retornar o registro
+	 * como uma string
+	 * 
+	 * @Author Fábio Heller
+	 */
+	public static String retornaRegistroDaPrimeiraLinhaDeArquivoTexto(String subPastaProjeto, String nomeDoArquivo)
+			throws IOException {
 		String conteudo = null;
 		try {
-			BufferedReader ler = new BufferedReader(new FileReader(diretorioPrincipal + subPastaProjeto + "\\" + nomeDoArquivo + ".txt"));
+			BufferedReader ler = new BufferedReader(
+					new FileReader(diretorioPrincipal + subPastaProjeto + "\\" + nomeDoArquivo + ".txt"));
 			conteudo = ler.readLine();
 			ler.close();
 		} catch (FileNotFoundException ex) {
@@ -983,9 +1041,9 @@ public class MetodosSiare {
 	}
 
 	/**
-	 * Método para verificar se o elemento está visível na tela 
-	 * retorna true - caso elemento visível
-	 * retorna false - caso elemento não visível
+	 * Método para verificar se o elemento está visível na tela retorna true -
+	 * caso elemento visível retorna false - caso elemento não visível
+	 * 
 	 * @Author Fábio Heller
 	 */
 	public static boolean verificaSeOElementoEstaVisivel(By elemento) {
@@ -994,7 +1052,7 @@ public class MetodosSiare {
 			Actions action = new Actions(driver);
 			WebElement element = driver.findElement(elemento);
 			action.moveToElement(element).build().perform();
-			if(element.isDisplayed())
+			if (element.isDisplayed())
 				visivel = true;
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
@@ -1004,9 +1062,10 @@ public class MetodosSiare {
 	}
 
 	/**
-	 * Método para verificar se o campo possui informação ou se está vazio (nulo)
-	 * retorna true - caso elemento possui informação
-	 * retorna false - caso elemento não possui informação
+	 * Método para verificar se o campo possui informação ou se está vazio
+	 * (nulo) retorna true - caso elemento possui informação retorna false -
+	 * caso elemento não possui informação
+	 * 
 	 * @Author Fábio Heller
 	 */
 	public static boolean verificaSeOElementoPossuiInformacao(By elemento) {
@@ -1015,198 +1074,224 @@ public class MetodosSiare {
 			Actions action = new Actions(driver);
 			WebElement element = driver.findElement(elemento);
 			action.moveToElement(element).build().perform();
-			if(!driver.findElement(elemento).getText().equals(""))
+			if (!driver.findElement(elemento).getText().equals(""))
 				dados = true;
 		} catch (Exception e) {
 			dados = false;
 		}
 		return dados;
 	}
-	
+
 	/**
-	 * Método que aponta o driver para o popUp pelo frame do popUp
-	 * Observações: o nome do elemento deve ser capturado pela tag "<iframe>" do popup
+	 * Método que aponta o driver para o popUp pelo frame do popUp Observações:
+	 * o nome do elemento deve ser capturado pela tag "<iframe>" do popup
+	 * 
 	 * @Author Fábio Heller
-	 */	
-	public static void localizaPopUpPeloFrame (By elemtentoFrame){
-		try{
-		driver.switchTo().frame(driver.findElement(elemtentoFrame));
-		}catch (Exception e){
+	 */
+	public static void localizaPopUpPeloFrame(By elemtentoFrame) {
+		try {
+			driver.switchTo().frame(driver.findElement(elemtentoFrame));
+		} catch (Exception e) {
 			System.out.println(e.getMessage());
 		}
 	}
 
 	/**
-	 * Método que executa o fluxo para a Resolução de Pendência de um protocolo - Pendências de Documentacao
+	 * Método que executa o fluxo para a Resolução de Pendência de um protocolo
+	 * - Pendências de Documentacao
+	 * 
 	 * @author jacqueline.lucas
 	 */
-    public static void acessarMenuHomeAtendimentoEntregadeDocumentosResolucaodePendenciasPendenciasdeDocumentacao(String subPastaDiretorioProtocolo)throws IOException{
-        MetodosSiare.umClique(ObjetosMetodosComuns.abaHomeSiareSICAF);
-        MetodosSiare.doisCliques(ObjetosMetodosComuns.menuAtendimento,
-                      ObjetosMetodosComuns.submenuEntregadeDocumentosResolucaodePendencias);
-        MetodosSiare.validarTexto("Entrega de Documentos / Resolução de Pendências", 
-                      ObjetosMetodosComuns.textoTituloTelaEntregadeDocumentosResolucaodePendencias);
-        MetodosSiare.lerArquivoTexto(subPastaDiretorioProtocolo, "ProtocoloSemFormatacao",
-                      ObjetosMetodosComuns.campoProtocolo);
-        MetodosSiare.umClique(ObjetosMetodosComuns.comandoPesquisarPendencias);
-        MetodosSiare.umClique(ObjetosMetodosComuns.selecaoRegistro);
-        MetodosSiare.umClique(ObjetosMetodosComuns.linkResolvePendencia);
-        MetodosSiare.validarTexto("Pendências", ObjetosMetodosComuns.textoTituloTelaEntregadeDocumentosResolucaodePendencias);
-        MetodosSiare.umClique(ObjetosMetodosComuns.selecaoRegistroPendenciasdeDocumentacao);
-        MetodosSiare.umClique(ObjetosMetodosComuns.comandoRegistrarEntrega);
-        MetodosSiare.validarTexto("Entrega de documentos pendentes", 
-                      ObjetosMetodosComuns.textoTituloTelaEntregadeDocumentosResolucaodePendencias);
-        MetodosSiare.inserirDadoNoCampo("Teste Pendência de Documentação", ObjetosMetodosComuns.campoObservacoes);
-        MetodosSiare.umClique(ObjetosMetodosComuns.comandoConfirmarEntregaDocumento);
-        MetodosSiare.validaJanelaPopUpDetalhamento("Página 1");
-        MetodosSiare.fecharDriverAposJanelaPopUpDetalhamento();        
-  }
-    
-    /**
-    * Método que executa o fluxo para a Resolução de Pendência de um protocolo - Pendências de Esclarecimento
-    * @author jacqueline.lucas
-    */
- public static void acessarMenuHomeAtendimentoEntregadeDocumentosResolucaodePendenciasPendenciasdeEsclarecimento(String subPastaDiretorioProtocolo)throws IOException{
-     MetodosSiare.umClique(ObjetosMetodosComuns.abaHomeSiareSICAF);
-     MetodosSiare.doisCliques(ObjetosMetodosComuns.menuAtendimento, ObjetosMetodosComuns.submenuEntregadeDocumentosResolucaodePendencias);
-     MetodosSiare.validarTexto("Entrega de Documentos / Resolução de Pendências", ObjetosMetodosComuns.textoTituloTelaEntregadeDocumentosResolucaodePendencias);
-     MetodosSiare.lerArquivoTexto(subPastaDiretorioProtocolo, "ProtocoloSemFormatacao", ObjetosMetodosComuns.campoProtocolo);
-     MetodosSiare.umClique(ObjetosMetodosComuns.comandoPesquisarPendencias);
-     MetodosSiare.umClique(ObjetosMetodosComuns.selecaoRegistro);
-     MetodosSiare.umClique(ObjetosMetodosComuns.linkResolvePendencia);
-     MetodosSiare.validarTexto("Pendências", ObjetosMetodosComuns.textoTituloTelaEntregadeDocumentosResolucaodePendencias);
-     MetodosSiare.umClique(ObjetosMetodosComuns.checkProtocoloCaixaDeServico);
-     MetodosSiare.umClique(ObjetosMetodosComuns.comandoResolver);
-     MetodosSiare.validarTexto("Resolver Pendências de Esclarecimento", ObjetosMetodosComuns.textoTituloTelaEntregadeDocumentosResolucaodePendencias);
-     MetodosSiare.inserirDadoNoCampo("Teste Pendências de Esclarecimento", ObjetosMetodosComuns.campoRelato);
-     MetodosSiare.umClique(ObjetosMetodosComuns.comandoConfirmarSuspensaoProtocolo); 
-}
- 
-	/**
-	 * Método que auxilia a execução do método presumirDAEPeloNumeroDoProtocolo
-	 * @author Fábio Heller
-	 */
-    public static void presuncaoDeQuitacaoDeDocumentoDeArrecadacao(String valorDoDAE, boolean efetuarLoginELogoffComAdministrador){
-    	MetodosSiare.inserirDadoNoCampo(valorDoDAE, ObjetosMetodosComuns.campoValorDoDAE);        
-        MetodosSiare.umClique(ObjetosMetodosComuns.campoBanco);
-        MetodosSiare.umClique(ObjetosMetodosComuns.campoSelecaoBanco);
-        MetodosSiare.inserirDadoNoCampo("3782", ObjetosMetodosComuns.campoAgencia); 
-        MetodosSiare.inserirDadoNoCampo(MetodosSiare.retornaDataAtualOuPosteriorOuAnteriorDaDataAtualDoSistema(0, true), 
-        		ObjetosMetodosComuns.campoDataPagamento);
-        MetodosSiare.inserirDadoNoCampo("12345abcd", ObjetosMetodosComuns.campoNSU); 
-        MetodosSiare.doisCliques(ObjetosMetodosComuns.comandoConfirmarSuspensaoProtocolo, ObjetosMetodosComuns.comandoConfirmarSuspensaoProtocolo);
-        if(efetuarLoginELogoffComAdministrador)
-        	MetodosSiare.umClique(ObjetosMetodosComuns.linkSairSiareSICAF);
-    }
+	public static void acessarMenuHomeAtendimentoEntregadeDocumentosResolucaodePendenciasPendenciasdeDocumentacao(
+			String subPastaDiretorio, String nomeDoArquivoProtocolo) throws IOException {
+		MetodosSiare.umClique(ObjetosMetodosComuns.abaHomeSiareSICAF);
+		MetodosSiare.doisCliques(ObjetosMetodosComuns.menuAtendimento,
+				ObjetosMetodosComuns.submenuEntregadeDocumentosResolucaodePendencias);
+		MetodosSiare.validarTexto("Entrega de Documentos / Resolução de Pendências",
+				ObjetosMetodosComuns.textoTituloTelaEntregadeDocumentosResolucaodePendencias);
+		MetodosSiare.inserirDadoNoCampo(lerArquivoTextoERetornaDadoDaPrimeiraLinha(subPastaDiretorio,
+				nomeDoArquivoProtocolo).replace(".", "").replace("-", ""), ObjetosMetodosComuns.campoProtocolo);
+		MetodosSiare.umClique(ObjetosMetodosComuns.comandoPesquisarPendencias);
+		MetodosSiare.umClique(ObjetosMetodosComuns.selecaoRegistro);
+		MetodosSiare.umClique(ObjetosMetodosComuns.linkResolvePendencia);
+		MetodosSiare.validarTexto("Pendências",
+				ObjetosMetodosComuns.textoTituloTelaEntregadeDocumentosResolucaodePendencias);
+		MetodosSiare.umClique(ObjetosMetodosComuns.selecaoRegistroPendenciasdeDocumentacao);
+		MetodosSiare.umClique(ObjetosMetodosComuns.comandoRegistrarEntrega);
+		MetodosSiare.validarTexto("Entrega de documentos pendentes",
+				ObjetosMetodosComuns.textoTituloTelaEntregadeDocumentosResolucaodePendencias);
+		MetodosSiare.inserirDadoNoCampo("Teste Pendência de Documentação", ObjetosMetodosComuns.campoObservacoes);
+		MetodosSiare.umClique(ObjetosMetodosComuns.comandoConfirmarEntregaDocumento);
+		MetodosSiare.validaJanelaPopUpDetalhamento("Página 1");
+		MetodosSiare.fecharDriverAposJanelaPopUpDetalhamento();
+	}
 
 	/**
-	 * Método que executa o fluxo de presunção do DAE pelo número do protocolo sem formatação
+	 * Método que executa o fluxo para a Resolução de Pendência de um protocolo
+	 * - Pendências de Esclarecimento
+	 * 
+	 * @author jacqueline.lucas
+	 */
+	public static void acessarMenuHomeAtendimentoEntregadeDocumentosResolucaodePendenciasPendenciasdeEsclarecimento(
+			String subPastaDiretorio, String nomeDoArquivoProtocolo) throws IOException {
+		MetodosSiare.umClique(ObjetosMetodosComuns.abaHomeSiareSICAF);
+		MetodosSiare.doisCliques(ObjetosMetodosComuns.menuAtendimento,
+				ObjetosMetodosComuns.submenuEntregadeDocumentosResolucaodePendencias);
+		MetodosSiare.validarTexto("Entrega de Documentos / Resolução de Pendências",
+				ObjetosMetodosComuns.textoTituloTelaEntregadeDocumentosResolucaodePendencias);
+		MetodosSiare.inserirDadoNoCampo(lerArquivoTextoERetornaDadoDaPrimeiraLinha(subPastaDiretorio,
+				nomeDoArquivoProtocolo).replace(".", "").replace("-", ""), ObjetosMetodosComuns.campoProtocolo);		
+		MetodosSiare.umClique(ObjetosMetodosComuns.comandoPesquisarPendencias);
+		MetodosSiare.umClique(ObjetosMetodosComuns.selecaoRegistro);
+		MetodosSiare.umClique(ObjetosMetodosComuns.linkResolvePendencia);
+		MetodosSiare.validarTexto("Pendências",
+				ObjetosMetodosComuns.textoTituloTelaEntregadeDocumentosResolucaodePendencias);
+		MetodosSiare.umClique(ObjetosMetodosComuns.checkProtocoloCaixaDeServico);
+		MetodosSiare.umClique(ObjetosMetodosComuns.comandoResolver);
+		MetodosSiare.validarTexto("Resolver Pendências de Esclarecimento",
+				ObjetosMetodosComuns.textoTituloTelaEntregadeDocumentosResolucaodePendencias);
+		MetodosSiare.inserirDadoNoCampo("Teste Pendências de Esclarecimento", ObjetosMetodosComuns.campoRelato);
+		MetodosSiare.umClique(ObjetosMetodosComuns.comandoConfirmarSuspensaoProtocolo);
+	}
+
+	/**
+	 * Método que auxilia a execução do método presumirDAEPeloNumeroDoProtocolo 
+	 * @author Fábio Heller
+	 */
+	public static void presuncaoDeQuitacaoDeDocumentoDeArrecadacao(String valorDoDAE,boolean efetuarLoginELogoffComAdministrador) {
+		MetodosSiare.inserirDadoNoCampo(valorDoDAE, ObjetosMetodosComuns.campoValorDoDAE);
+		MetodosSiare.umClique(ObjetosMetodosComuns.campoBanco);
+		MetodosSiare.umClique(ObjetosMetodosComuns.campoSelecaoBanco);
+		MetodosSiare.inserirDadoNoCampo("3782", ObjetosMetodosComuns.campoAgencia);
+		MetodosSiare.inserirDadoNoCampo(MetodosSiare.retornaDataAtualOuPosteriorOuAnteriorDaDataAtualDoSistema(0, true),
+				ObjetosMetodosComuns.campoDataPagamento);
+		MetodosSiare.inserirDadoNoCampo("12345abcde", ObjetosMetodosComuns.campoNSU);
+		MetodosSiare.umClique(ObjetosMetodosComuns.comandoConfirmarSuspensaoProtocolo);
+		if (MetodosSiare.verificaSeOElementoEstaVisivel(ObjetosMetodosComuns.comandoConfirmarSuspensaoProtocolo))
+			MetodosSiare.umClique(ObjetosMetodosComuns.comandoConfirmarSuspensaoProtocolo);
+		if (efetuarLoginELogoffComAdministrador)
+			MetodosSiare.umClique(ObjetosMetodosComuns.linkSairSiareSICAF);
+	}
+
+	/**
+	 * Método que executa o fluxo de presunção do DAE pelo número do protocolo sem formatação 
 	 * Observação para o parâmetro boolean efetuarLoginELogoffComAdministrador: 
 	 * (true) - será efetuado login com administrador no SICAF o fluxo será executado e ao fim será feito logoff
 	 * (false) - não será efetuado login e logoff, sendo pré-condição analista logado no SICAF com perfil apto para presumir DAE
-	 * @author Fábio Heller
-	 */
-    public static void presumirDAEPeloNumeroDoProtocolo(String subPastaDiretorioProtocolo, boolean efetuarLoginELogoffComAdministrador) throws IOException{
-    	String valorTotalDoDAE;
-        if(efetuarLoginELogoffComAdministrador)
-        	MetodosSiare.logarComAdministrador();
-        MetodosSiare.doisCliques(ObjetosMetodosComuns.menuDocumentodeArrecadacaoDAE, ObjetosMetodosComuns.subMenuManutençãoDAE);
-        MetodosSiare.lerArquivoTexto(subPastaDiretorioProtocolo, "ProtocoloSemFormatacao",
-                ObjetosMetodosComuns.campoProtocolo);        
-        //MetodosSiare.inserirDadoNoCampo(numeroDoProtocoloSemFormatacao, ObjetosMetodosComuns.campoProtocolo);   
-        MetodosSiare.umClique(ObjetosMetodosComuns.comandoPesquisar);
-        valorTotalDoDAE = driver.findElement(ObjetosMetodosComuns.campoValorTotalDoDAE).getText();
-        MetodosSiare.umClique(ObjetosMetodosComuns.checkProtocoloCaixaDeServico);
-        MetodosSiare.umClique(ObjetosMetodosComuns.linkPresumirQuitacaoDAE);
-        MetodosSiare.presuncaoDeQuitacaoDeDocumentoDeArrecadacao(valorTotalDoDAE, efetuarLoginELogoffComAdministrador);        
-    }
-    
-	/**
-	 * Método que executa o fluxo de presunção do DAE pelo número do protocolo sem formatação
-	 * Observação para o parâmetro boolean efetuarLoginELogoffComAdministrador: 
-	 * (true) - será efetuado login com administrador no SICAF o fluxo será executado e ao fim será feito logoff
-	 * (false) - não será efetuado login e logoff, sendo pré-condição analista logado no SICAF com perfil apto para presumir DAE
-	 * @author Fábio Heller
-	 */
-	public static void presumirDAEPeloNumeroDoDAE(String subPastaDiretorioProtocolo, String dataInicial, boolean efetuarLoginELogoffComAdministrador) throws IOException, ParseException{
-    	String valorTotalDoDAE;
-    	if(efetuarLoginELogoffComAdministrador)
-    		MetodosSiare.logarComAdministrador();
-        MetodosSiare.doisCliques(ObjetosMetodosComuns.menuDocumentodeArrecadacaoDAE, ObjetosMetodosComuns.subMenuManutençãoDAE);
-        MetodosSiare.lerArquivoTexto(subPastaDiretorioProtocolo, "ProtocoloSemFormatacao",
-                ObjetosMetodosComuns.campoProtocolo);        
-        //MetodosSiare.inserirDadoNoCampo(numeroDoDAESemFormatacao.substring(1, numeroDoDAESemFormatacao.length()).replace("-", ""), ObjetosMetodosComuns.campoNumeroDAE);    
-        MetodosSiare.inserirDadoNoCampo(dataInicial, ObjetosMetodosComuns.campoPeriodoDeEmissaoInicial);  
-        MetodosSiare.inserirDadoNoCampo(acrescentarDiasEmUmaData(dataInicial, 180), ObjetosMetodosComuns.campoPeriodoDeEmissaoFinal);
-        MetodosSiare.umClique(ObjetosMetodosComuns.comandoPesquisar);
-        valorTotalDoDAE = driver.findElement(ObjetosMetodosComuns.campoValorTotalDoDAE).getText();
-        MetodosSiare.umClique(ObjetosMetodosComuns.checkProtocoloCaixaDeServico);
-        MetodosSiare.umClique(ObjetosMetodosComuns.linkPresumirQuitacaoDAE);       
-        MetodosSiare.presuncaoDeQuitacaoDeDocumentoDeArrecadacao(valorTotalDoDAE, efetuarLoginELogoffComAdministrador);        
-    }
-    
-	/**
-	 * Método que acrescenta mais dias a partir de uma data informada
 	 * @author Fábio Heller
 	 * @throws ParseException 
 	 */
-    @SuppressWarnings({ "deprecation", "static-access" })
-	public static String acrescentarDiasEmUmaData (String dataInicial, int quantidadeDeDiasAcrescentar) throws ParseException{
-		DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
-		Date dateInicial = (Date)formatter.parse(dataInicial);
-    	dateInicial.parse(dataInicial);
-    	dateInicial.setDate(dateInicial.getDate()+180);
-    	formatter.format(dateInicial);
-    	return 	String.valueOf(formatter.format(dateInicial));
-    }
+	public static void presumirDAEPeloNumeroDoProtocolo(String subPastaDiretorio,String nomeDoArquivoProtocolo, String dataInicial,
+			boolean efetuarLoginELogoffComAdministrador) throws IOException, ParseException {
+		String valorTotalDoDAE;
+		if (efetuarLoginELogoffComAdministrador)
+			MetodosSiare.logarComAdministrador();
+		MetodosSiare.doisCliques(ObjetosMetodosComuns.menuDocumentodeArrecadacaoDAE,ObjetosMetodosComuns.subMenuManutencaoDAE);
+		MetodosSiare.inserirDadoNoCampo(lerArquivoTextoERetornaDadoDaPrimeiraLinha(subPastaDiretorio,
+				nomeDoArquivoProtocolo).replace(".", "").replace("-", ""), ObjetosMetodosComuns.campoProtocolo);
+		MetodosSiare.inserirDadoNoCampo(dataInicial, ObjetosMetodosComuns.campoPeriodoDeEmissaoInicial);
+		MetodosSiare.inserirDadoNoCampo(MetodosSiare.acrescentarDiasEmUmaData(dataInicial, 180), ObjetosMetodosComuns.campoPeriodoDeEmissaoFinal);
+		MetodosSiare.umClique(ObjetosMetodosComuns.comandoPesquisar);
+		valorTotalDoDAE = driver.findElement(ObjetosMetodosComuns.campoValorTotalDoDAE).getText();
+		MetodosSiare.umClique(ObjetosMetodosComuns.checkProtocoloCaixaDeServico);
+		MetodosSiare.umClique(ObjetosMetodosComuns.linkPresumirQuitacaoDAE);
+		MetodosSiare.presuncaoDeQuitacaoDeDocumentoDeArrecadacao(valorTotalDoDAE, efetuarLoginELogoffComAdministrador);
+	}
 
-	/*
-	*****************************METODOS DEFINIDOS E JÁ UTLIZADOS NO ARCHETYPE*****************************
-	**/
-    
-    public static String diretorioPrincipal = new String ("Z:\\ArtefatosWebdriver\\");
-    
 	/**
-	 * Instância privada do WebDriver que virá da suite de teste
-	 * Objetivo: Definir o objetivo que será utilizado. No caso, o WebDriver 
+	 * Método que executa o fluxo de presunção do DAE pelo número do protocolo sem formatação 
+	 * Observação para o parâmetro boolean efetuarLoginELogoffComAdministrador: 
+	 * (true) - será efetuado login com administrador no SICAF o fluxo será executado e ao fim será feito logoff
+	 * (false) - não será efetuado login e logoff, sendo pré-condição analista logado no SICAF com perfil apto para presumir DAE 
+	 * @author Fábio Heller
+	 */
+	public static void presumirDAEPeloNumeroDoDAE(String subPastaDiretorio, String nomeDoArquivoDae,
+			String dataInicial, boolean efetuarLoginELogoffComAdministrador) throws IOException, ParseException {
+		String valorTotalDoDAE, numeroDoDAE = lerArquivoTextoERetornaDadoDaPrimeiraLinha(subPastaDiretorio, nomeDoArquivoDae).replace("-", "");
+		if (efetuarLoginELogoffComAdministrador)
+			MetodosSiare.logarComAdministrador();
+		MetodosSiare.doisCliques(ObjetosMetodosComuns.menuDocumentodeArrecadacaoDAE, ObjetosMetodosComuns.subMenuManutencaoDAE);
+		if (numeroDoDAE.length() > 12)
+			numeroDoDAE = numeroDoDAE.substring(numeroDoDAE.length() - 12,numeroDoDAE.length());
+		MetodosSiare.inserirDadoNoCampo(numeroDoDAE,ObjetosMetodosComuns.campoNumeroDAE);
+		MetodosSiare.inserirDadoNoCampo(dataInicial, ObjetosMetodosComuns.campoPeriodoDeEmissaoInicial);
+		MetodosSiare.inserirDadoNoCampo(MetodosSiare.acrescentarDiasEmUmaData(dataInicial, 180), ObjetosMetodosComuns.campoPeriodoDeEmissaoFinal);
+		MetodosSiare.umClique(ObjetosMetodosComuns.comandoPesquisar);
+		valorTotalDoDAE = driver.findElement(ObjetosMetodosComuns.campoValorTotalDoDAE).getText();
+		MetodosSiare.umClique(ObjetosMetodosComuns.checkProtocoloCaixaDeServico);
+		MetodosSiare.umClique(ObjetosMetodosComuns.linkPresumirQuitacaoDAE);
+		MetodosSiare.presuncaoDeQuitacaoDeDocumentoDeArrecadacao(valorTotalDoDAE, efetuarLoginELogoffComAdministrador);
+	}
+
+	/**
+	 * Método que acrescenta mais dias a partir de uma data informada
+	 * 
+	 * @author Fábio Heller
+	 * @throws ParseException
+	 */
+	@SuppressWarnings({ "deprecation", "static-access" })
+	public static String acrescentarDiasEmUmaData(String dataInicial, int quantidadeDeDiasAcrescentar)
+			throws ParseException {
+		DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+		Date dateInicial = (Date) formatter.parse(dataInicial);
+		dateInicial.parse(dataInicial);
+		dateInicial.setDate(dateInicial.getDate() + 180);
+		formatter.format(dateInicial);
+		return String.valueOf(formatter.format(dateInicial));
+	}
+
+	/**
+	 ***************************** METODOS DEFINIDOS E JÁ UTLIZADOS NO ARCHETYPE*****************************
+	 */
+
+	public static String diretorioPrincipal = new String("Z:\\ArtefatosWebdriver\\");
+
+	/**
+	 * Instância privada do WebDriver que virá da suite de teste Objetivo:
+	 * Definir o objetivo que será utilizado. No caso, o WebDriver
+	 * 
 	 * @Author Fábio Heller
 	 */
 	private static WebDriver driver;
 	private static WebDriverWait wait;
-	
+
 	/**
-	 * Construtor que ira adicionar a instância do WebDriver para utilização dos métodos
+	 * Construtor que ira adicionar a instância do WebDriver para utilização dos
+	 * métodos
+	 * 
 	 * @Author Fábio Heller
 	 */
 	@BeforeClass
-	public static void setAmbienteSol (){
+	public static void setAmbienteSol() {
 		driver = SeleniumSol.getDriver();
 		wait = new WebDriverWait(driver, 30);
 		driver.navigate().to(PropertySol.SITE_ADDRESS);
 		driver.manage().window().maximize();
 	}
+
 	@BeforeClass
-	public static void setAmbienteSicaf (){
+	public static void setAmbienteSicaf() {
 		driver = SeleniumSicaf.getDriver();
 		wait = new WebDriverWait(driver, 30);
 		driver.navigate().to(PropertySicaf.SITE_ADDRESS);
 		driver.manage().window().maximize();
-		
+
 	}
-	
+
 	/**
-	 * Construtor que irá fechar a instância que foi aberta na anotação BeforeClasse
+	 * Construtor que irá fechar a instância que foi aberta na anotação
+	 * BeforeClasse
+	 * 
 	 * @Author Antonio Bernardo
 	 */
 	public static Boolean isAllTestsExecution = true;
-	
+
 	@AfterClass
 	public static void quitAmbiente() throws Exception {
 		driver.quit();
 	}
-	
+
 	public static WebDriverWait getWait() {
 		return wait;
 	}
 }
-

@@ -141,7 +141,7 @@ public class ObjetosMetodosComuns {
 	 * @author Fábio Heller
 	 */
     public static By  menuDocumentodeArrecadacaoDAE = By.linkText("Documento de Arrecadação DAE");
-    public static By  subMenuManutençãoDAE = By.linkText("Manutenção de DAE");
+    public static By  subMenuManutencaoDAE = By.linkText("Manutenção de DAE");
     public static By  campoNumeroDAE = By.name("nossoNumero");
     public static By  campoPeriodoDeEmissaoInicial = By.name("dtIniEmissoa");
     public static By  campoPeriodoDeEmissaoFinal = By.name("dtFimEmissao");
