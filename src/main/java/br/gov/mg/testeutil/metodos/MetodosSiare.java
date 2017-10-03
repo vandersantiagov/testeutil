@@ -1122,8 +1122,18 @@ public class MetodosSiare {
 				ObjetosMetodosComuns.textoTituloTelaEntregadeDocumentosResolucaodePendencias);
 		MetodosSiare.inserirDadoNoCampo("Teste Pendência de Documentação", ObjetosMetodosComuns.campoObservacoes);
 		MetodosSiare.umClique(ObjetosMetodosComuns.comandoConfirmarEntregaDocumento);
-		MetodosSiare.validaJanelaPopUpDetalhamento("Página 1");
-		MetodosSiare.fecharDriverAposJanelaPopUpDetalhamento();
+		Set<String> janelas = driver.getWindowHandles();
+		for (String janela : janelas) {
+			if (driver.switchTo().window(janela).getTitle().equals("")) {
+				driver.close();
+			}
+		}		
+		janelas = driver.getWindowHandles();
+		for (String janela : janelas) {
+			if (driver.switchTo().window(janela).getTitle().equals("SIARE - Sistema Integrado de Administração da Receita Estadual")) {
+				break;
+			}
+		}
 	}
 
 	/**
