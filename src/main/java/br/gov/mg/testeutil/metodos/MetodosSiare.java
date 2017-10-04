@@ -46,7 +46,7 @@ import br.gov.mg.testeutil.util.sol.SeleniumSol;
 public class MetodosSiare {
 
 	/*
-	 ***************************** METODOS GLOBAIS PARA CHAMADA NAS CLASSES*****************************
+	 *****************************METODOS GLOBAIS PARA CHAMADA NAS CLASSES*****************************
 	 **/
 
 	/**
@@ -168,11 +168,11 @@ public class MetodosSiare {
 	 * 
 	 * @Author Fábio Heller
 	 */
-	public static void validaJanelaPopUpDetalhamento(String NomePopup) {
+	public static void validaJanelaPopUpDetalhamento(String instanciaDriverPopup) {
 		Set<String> janelas = driver.getWindowHandles();
 		for (String janela : janelas) {
 			driver.switchTo().window(janela);
-			if (janela.equals("NomePopup")) {
+			if (janela.equals(instanciaDriverPopup)) {
 				break;
 			}
 		}
@@ -1101,9 +1101,13 @@ public class MetodosSiare {
 	 * - Pendências de Documentacao
 	 * 
 	 * @author jacqueline.lucas
+	 * @throws InterruptedException 
 	 */
 	public static void acessarMenuHomeAtendimentoEntregadeDocumentosResolucaodePendenciasPendenciasdeDocumentacao(
-			String subPastaDiretorio, String nomeDoArquivoProtocolo) throws IOException {
+			String subPastaDiretorio, String nomeDoArquivoProtocolo) throws IOException, InterruptedException {
+		Set<String> janelas;
+		String[] janela;
+		boolean achou = false;
 		MetodosSiare.umClique(ObjetosMetodosComuns.abaHomeSiareSICAF);
 		MetodosSiare.doisCliques(ObjetosMetodosComuns.menuAtendimento,
 				ObjetosMetodosComuns.submenuEntregadeDocumentosResolucaodePendencias);
@@ -1121,19 +1125,24 @@ public class MetodosSiare {
 		MetodosSiare.validarTexto("Entrega de documentos pendentes",
 				ObjetosMetodosComuns.textoTituloTelaEntregadeDocumentosResolucaodePendencias);
 		MetodosSiare.inserirDadoNoCampo("Teste Pendência de Documentação", ObjetosMetodosComuns.campoObservacoes);
-		MetodosSiare.umClique(ObjetosMetodosComuns.comandoConfirmarEntregaDocumento);
-		Set<String> janelas = driver.getWindowHandles();
-		for (String janela : janelas) {
-			if (driver.switchTo().window(janela).getTitle().equals("")) {
-				driver.close();
-			}
-		}		
+		MetodosSiare.umClique(ObjetosMetodosComuns.comandoConfirmarEntregaDocumento);	
 		janelas = driver.getWindowHandles();
-		for (String janela : janelas) {
-			if (driver.switchTo().window(janela).getTitle().equals("SIARE - Sistema Integrado de Administração da Receita Estadual")) {
-				break;
+		janela = janelas.toArray(new String[0]);
+		do {
+			if (janela.length > 1) {
+				driver.switchTo().window(janela[janela.length - 1]).close();
+				janelas = driver.getWindowHandles();
+				janela = janelas.toArray(new String[0]);
+			} else {
+				MetodosSiare.aguardarOProximoPasso(200);
+				janelas = driver.getWindowHandles();
+				janela = janelas.toArray(new String[0]);
 			}
-		}
+			if(janela.length == 1){
+				driver.switchTo().window(janela[0]);
+				achou = true;
+			}
+		} while (!achou);
 	}
 
 	/**
@@ -1248,6 +1257,22 @@ public class MetodosSiare {
 		dateInicial.setDate(dateInicial.getDate() + 180);
 		formatter.format(dateInicial);
 		return String.valueOf(formatter.format(dateInicial));
+	}	
+
+	/**
+	 * Método que aponta o foco em uma janela especifica
+	 * @author Fábio Heller
+	 */
+	public static void focaEmPaginaEspecificaDoNavegador(String InstanciaDoDriverDaPagina){
+		driver.switchTo().window(InstanciaDoDriverDaPagina);
+	}
+	
+	/**
+	 * Método que retorna a instância do driver em foco
+	 * @author Fábio Heller
+	 */
+	public static String retornaInstanciaDoDriverDaPaginaAtual(){
+		return driver.getWindowHandle();
 	}
 
 	/**
