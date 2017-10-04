@@ -155,6 +155,11 @@ public class ObjetosMetodosComuns {
     public static By campoDataPagamento = By.name("DataPagamento");
     public static By campoNSU = By.name("NSU");
 
+    /**
+     * PRIORIZAR PROTOCOLO MÉTODO priorizoarProtocolo
+	 * @author Antônio Bernardo
+     */
+    public static By checkEnviarAnlaistaResponsavelSim = By.name("enviarAnalistaResp");
 
 
 

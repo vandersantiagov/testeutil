@@ -1274,6 +1274,30 @@ public class MetodosSiare {
 	public static String retornaInstanciaDoDriverDaPaginaAtual(){
 		return driver.getWindowHandle();
 	}
+	
+    /**
+     * PRIORIZAR PROTOCOLO MÉTODO priorizoarProtocolo
+	 * @author Antônio Bernardo
+     */
+      public static void priorizoarProtocolo(String subPastaProjeto, String nomeDoArquivo)
+                 throws InterruptedException, IOException {
+           MetodosSiare.umClique(ObjetosMetodosComuns.linkHomeSiare);
+           MetodosSiare.validarTexto("Suas tarefas para o momento :", ObjetosMetodosComuns.textoValidarTituloHome);
+           MetodosSiare.tresCliques(ObjetosMetodosComuns.menuAdiministracaoDeServico, ObjetosMetodosComuns.subMenuServico,
+                         ObjetosMetodosComuns.subMenuPriorizacao);
+           MetodosSiare.validarTexto("Manutenção de Priorização de Serviços", ObjetosMetodosComuns.textoValidarTituloHome);
+           MetodosSiare.lerArquivoTexto(subPastaProjeto, nomeDoArquivo, ObjetosMetodosComuns.campoProtocoloPriorizacao);
+           MetodosSiare.umClique(ObjetosMetodosComuns.comandoPesquisar);
+           MetodosSiare.validarTexto("Manutenção de Priorização de Serviços", ObjetosMetodosComuns.textoValidarTituloHome);
+           MetodosSiare.umClique(ObjetosMetodosComuns.selecionarProtocoloPesquisado);
+           MetodosSiare.umClique(ObjetosMetodosComuns.linkPriorizar);
+           MetodosSiare.validarTexto("Priorizar Serviços", ObjetosMetodosComuns.textoValidarTituloHome);
+           MetodosSiare.umClique(ObjetosMetodosComuns.checkEnviarAnlaistaResponsavelSim);
+           MetodosSiare.umClique(ObjetosMetodosComuns.comandoPriorizar);
+           MetodosSiare.aguardarOProximoPasso(3000);
+           MetodosSiare.validarTexto("Solicitação efetuada com sucesso.", ObjetosMetodosComuns.mensagemDeSucesso);
+ }
+
 
 	/**
 	 ***************************** METODOS DEFINIDOS E JÁ UTLIZADOS NO ARCHETYPE*****************************
