@@ -168,11 +168,11 @@ public class MetodosSiare {
 	 * 
 	 * @Author Fábio Heller
 	 */
-	public static void validaJanelaPopUpDetalhamento(String instanciaDriverPopup) {
+	public static void validaJanelaPopUpDetalhamento(String NomePopup) {
 		Set<String> janelas = driver.getWindowHandles();
 		for (String janela : janelas) {
 			driver.switchTo().window(janela);
-			if (janela.equals(instanciaDriverPopup)) {
+			if (janela.equals(NomePopup)) {
 				break;
 			}
 		}
