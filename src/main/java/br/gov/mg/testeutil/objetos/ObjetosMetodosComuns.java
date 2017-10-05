@@ -129,7 +129,7 @@ public class ObjetosMetodosComuns {
     public static By comandoPesquisarPendencias = By.name("pesquisar");
     public static By selecaoRegistro =  By.name("Selecao_Todos");
     public static By linkResolvePendencia = By.name("lkResolvePendencia");
-    public static By selecaoRegistroPendenciasdeDocumentacao = By.name("Selecao_Documento");
+    public static By selecaoRegistroPendenciasdeDocumentacao = By.name("chkSelecaoTodos");
     public static By comandoRegistrarEntrega = By.name("Registrar_Entrega");
     public static By campoObservacoes = By.name("txtDesRelato");
     public static By comandoConfirmarEntregaDocumento = By.name("ActConfirmar");
