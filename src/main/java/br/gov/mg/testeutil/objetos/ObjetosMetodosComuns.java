@@ -127,9 +127,9 @@ public class ObjetosMetodosComuns {
     public static By submenuEntregadeDocumentosResolucaodePendencias = By.linkText("Entrega de Documentos/Resolução de Pendências");
     public static By textoTituloTelaEntregadeDocumentosResolucaodePendencias = By.className("tit");
     public static By comandoPesquisarPendencias = By.name("pesquisar");
-    public static By selecaoRegistro =  By.name("Selecao_Todos");
+    public static By selecaoRegistro =  By.name("ufw_selecao_registro");
     public static By linkResolvePendencia = By.name("lkResolvePendencia");
-    public static By selecaoRegistroPendenciasdeDocumentacao = By.name("chkSelecaoTodos");
+    public static By selecaoRegistroPendenciasdeDocumentacao = By.name("Selecao_Todos");
     public static By comandoRegistrarEntrega = By.name("Registrar_Entrega");
     public static By campoObservacoes = By.name("txtDesRelato");
     public static By comandoConfirmarEntregaDocumento = By.name("ActConfirmar");
