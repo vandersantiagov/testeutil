@@ -1311,8 +1311,8 @@ public class MetodosSiare {
 	 * 
 	 * @Author Fábio Heller
 	 */
-	private static WebDriver driver;
-	private static WebDriverWait wait;
+	public static WebDriver driver;
+	public static WebDriverWait wait;
 
 	/**
 	 * Construtor que ira adicionar a instância do WebDriver para utilização dos
