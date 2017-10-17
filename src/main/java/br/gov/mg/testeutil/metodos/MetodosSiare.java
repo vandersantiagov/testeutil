@@ -3,6 +3,9 @@ package br.gov.mg.testeutil.metodos;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
+import java.awt.AWTException;
+import java.awt.Robot;
+import java.awt.event.KeyEvent;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -1297,8 +1300,38 @@ public class MetodosSiare {
            MetodosSiare.aguardarOProximoPasso(3000);
            MetodosSiare.validarTexto("Solicitação efetuada com sucesso.", ObjetosMetodosComuns.mensagemDeSucesso);
  }
-
-
+      /**
+       * Mover a janela como Page Down e Page Up
+       * @author antonio.bernardo
+       * @throws AWTException
+       */
+     public static void pageDown() throws AWTException {
+		Robot robot = new Robot();
+		robot.keyPress(KeyEvent.VK_PAGE_DOWN);
+	}
+	
+	public static void pageUp() throws AWTException {
+		Robot robot = new Robot();
+		robot.keyPress(KeyEvent.VK_PAGE_UP);
+	}
+	
+	/**
+	 * Mover a janela com o Page Down e Page Up com a janela Maximizada.
+	 * @author antonio.bernardo
+	 * @throws AWTException
+	 */
+	public static void pageDownJanelaMaximizada() throws AWTException {
+		driver.manage().window().maximize();
+		Robot robot = new Robot();
+		robot.keyPress(KeyEvent.VK_PAGE_DOWN);
+	} 
+	
+	public static void pageUpJanelaMaximizad() throws AWTException {
+		driver.manage().window().maximize();
+		Robot robot = new Robot();
+		robot.keyPress(KeyEvent.VK_PAGE_UP);
+	}
+      
 	/**
 	 ***************************** METODOS DEFINIDOS E JÁ UTLIZADOS NO ARCHETYPE*****************************
 	 */
