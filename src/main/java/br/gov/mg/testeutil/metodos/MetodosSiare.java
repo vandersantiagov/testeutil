@@ -1331,6 +1331,15 @@ public class MetodosSiare {
 		Robot robot = new Robot();
 		robot.keyPress(KeyEvent.VK_PAGE_UP);
 	}
+	/**
+	 * Método que insere um valor em um campo
+	 * @author antonio.bernardo
+	 */
+	public static void limparDadoNoCampo(By nomeElemento) {
+		wait.until(ExpectedConditions.visibilityOfElementLocated(nomeElemento));
+		driver.findElement(nomeElemento);
+		driver.findElement(nomeElemento).clear();
+	}
       
 	/**
 	 ***************************** METODOS DEFINIDOS E JÁ UTLIZADOS NO ARCHETYPE*****************************
