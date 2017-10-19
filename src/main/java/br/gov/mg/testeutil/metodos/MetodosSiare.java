@@ -34,6 +34,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import br.gov.mg.testeutil.objetos.ObjetosMetodosComuns;
@@ -1340,7 +1341,16 @@ public class MetodosSiare {
 		driver.findElement(nomeElemento);
 		driver.findElement(nomeElemento).clear();
 	}
-      
+	/**
+	 * Método para seleciona opção no campo Combobox Tipo String
+	 * @param ElementoOpcaoClick1
+	 * @param textoaSerSelecionado
+	 * @author antonio.bernardo
+	 */	
+	public static void selecionarOpcaoCombobox(By ElementoOpcaoClick1, String textoaSerSelecionado) {
+	new Select(driver.findElement(ElementoOpcaoClick1)).selectByVisibleText(textoaSerSelecionado);
+	} 
+	      
 	/**
 	 ***************************** METODOS DEFINIDOS E JÁ UTLIZADOS NO ARCHETYPE*****************************
 	 */
