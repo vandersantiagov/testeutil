@@ -1350,6 +1350,38 @@ public class MetodosSiare {
 	public static void selecionarOpcaoCombobox(By ElementoOpcaoClick1, String textoaSerSelecionado) {
 	new Select(driver.findElement(ElementoOpcaoClick1)).selectByVisibleText(textoaSerSelecionado);
 	} 
+	
+	/**
+	 * Método utlizado para introdução manualmente do texto exibido pela imagem do captcha 
+	 * @param elementoCapcha
+	 * @param elementoPesquisar
+	 * @throws InterruptedException
+	 * @author Jacqueline.lucas e Fábio Heller
+	 */
+	public static void aguardarInsercaoDeTextoDaImagemCapcha(By elementoCapcha, By elementoPesquisar) throws InterruptedException {
+		boolean processa = true, saida = false;
+		int cont = 0;
+		MetodosSiare.umClique(elementoCapcha);
+		while (!saida) {
+			if (processa) {
+				MetodosSiare.aguardarOProximoPasso(10000);
+				if (!MetodosSiare.driver.findElement(elementoCapcha).getAttribute("value").equals("")) {
+					MetodosSiare.umClique(elementoPesquisar);
+					cont++;
+				}
+				if (MetodosSiare.verificaSeOElementoEstaVisivel(elementoPesquisar)) {
+					MetodosSiare.umClique(elementoCapcha);
+					if (!MetodosSiare.verificaSeOElementoPossuiInformacao(ObjetosMetodosComuns.mensagemCapcha)
+							&& cont > 0)
+						saida = true;
+				} else {
+					processa = false;
+					saida = true;
+				}
+			}
+		}
+	}
+
 	      
 	/**
 	 ***************************** METODOS DEFINIDOS E JÁ UTLIZADOS NO ARCHETYPE*****************************
