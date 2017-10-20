@@ -1383,6 +1383,8 @@ public class MetodosSiare {
 	}
 	/**
 	 * Método para Leitura de um valor, incrementar um outro valor e atualizar o arquivo com o valor incrementado.
+	 * OBS.: Para esse método precisa criar um subdiretório dentro da pastas do projeto no Z: 
+	 * 		 e ter os aqruivos de parametrização criados dentro deste novo subdiretório. 
 	 * @param subPastaProjeto
 	 * @param nomeDoArquivo
 	 * @param valorIncrementado
