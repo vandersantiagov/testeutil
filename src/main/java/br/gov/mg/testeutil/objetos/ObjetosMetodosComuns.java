@@ -161,7 +161,10 @@ public class ObjetosMetodosComuns {
      */
     public static By checkEnviarAnlaistaResponsavelSim = By.name("enviarAnalistaResp");
 
+	/**
+	 * Tela do captcha
+	 */
 
-
+    public static By mensagemCapcha = By.id("message");
 
 }
