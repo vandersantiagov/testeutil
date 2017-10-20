@@ -1381,7 +1381,55 @@ public class MetodosSiare {
 			}
 		}
 	}
+	/**
+	 * Método para Leitura de um valor, incrementar um outro valor e atualizar o arquivo com o valor incrementado.
+	 * @param subPastaProjeto
+	 * @param nomeDoArquivo
+	 * @param valorIncrementado
+	 * @return
+	 * @throws IOException
+	 * @author antonio.bernardo
+	 * Data 19-10-2017
+	 */
+	public static String lerArquivoTextoEIncrementarValorSalvarEmArquivo(String subPastaProjeto, String nomeDoArquivo, String valorIncrementado, String nomeDoArquivo1)
+			throws IOException {
+		int valor, contador;
+		String resultado, conteudo = "";
+		try {
+			//Método para Ler o arquivo texto e incrementar o valor passado como o paramentro.
+			BufferedReader ler = new BufferedReader(
+			new FileReader(diretorioPrincipal + subPastaProjeto + "\\" + nomeDoArquivo + ".txt"));
+			String linha = ler.readLine();	
+			valor = Integer.parseInt(linha);
+			contador = Integer.parseInt(valorIncrementado);
+			resultado = Integer.toString(valor+contador);
+			
+			//Método para escrever em arquivo do valor já incrementado.		
+			FileWriter canal = new FileWriter(
+					new File(diretorioPrincipal + subPastaProjeto + "\\" + nomeDoArquivo1 + ".txt"));
+			PrintWriter escrever = new PrintWriter(canal);
+			String guardaValor = null;
+			guardaValor = resultado;
+			escrever.println(guardaValor);
+			escrever.close();
+		try {
+				linha = ler.readLine();
+				while (linha != null) {
+					conteudo += linha + "\r\n";
+					linha = ler.readLine();
+				}
+				ler.close();
 
+			} catch (IOException ex) {
+				System.out.println("Erro: Não foi possivel ler arquivo!");
+			}catch (Exception ex) {
+				ex.printStackTrace();
+			}
+		} catch (FileNotFoundException ex) {
+
+		}
+		return conteudo;
+	}
 	      
 	/**
 	 ***************************** METODOS DEFINIDOS E JÁ UTLIZADOS NO ARCHETYPE*****************************
