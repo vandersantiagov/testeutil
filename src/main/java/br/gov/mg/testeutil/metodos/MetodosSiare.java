@@ -925,7 +925,7 @@ public class MetodosSiare {
 				MetodosSiare.umClique(MetodosSiare.campoXpath(arrayprotocolos[contador][1]));
 				MetodosSiare.umClique(botaoAcao);
 			}
-			if (qtdDeRegistros > 10) {
+			if (qtdDeRegistros > 10  && achou == false) {
 				if (contador == 9) {
 					contador = 0;
 					MetodosSiare.umClique(MetodosSiare.campoLinkText(">"));
@@ -934,7 +934,7 @@ public class MetodosSiare {
 					contador++;
 					iteracaoQtdDeRegistros++;
 				}
-			} else {
+			} else if (!achou) {
 				if (contador + 1 == qtdDeRegistros) {
 					contador = 0;
 					iteracaoQtdDeRegistros = 0;
