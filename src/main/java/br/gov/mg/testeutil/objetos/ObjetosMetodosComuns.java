@@ -159,7 +159,7 @@ public class ObjetosMetodosComuns {
      * PRIORIZAR PROTOCOLO MÉTODO priorizoarProtocolo
 	 * @author Antônio Bernardo
      */
-    public static By checkEnviarAnlaistaResponsavelSim = By.name("enviarAnalistaResp");
+    public static By checkEnviarAnalistaResponsavelSim = By.name("enviarAnalistaResp");
 
 	/**
 	 * Tela do captcha

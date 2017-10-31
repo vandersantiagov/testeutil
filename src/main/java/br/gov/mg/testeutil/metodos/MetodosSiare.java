@@ -1296,7 +1296,7 @@ public class MetodosSiare {
            MetodosSiare.umClique(ObjetosMetodosComuns.selecionarProtocoloPesquisado);
            MetodosSiare.umClique(ObjetosMetodosComuns.linkPriorizar);
            MetodosSiare.validarTexto("Priorizar Serviços", ObjetosMetodosComuns.textoValidarTituloHome);
-           MetodosSiare.umClique(ObjetosMetodosComuns.checkEnviarAnlaistaResponsavelSim);
+           MetodosSiare.umClique(ObjetosMetodosComuns.checkEnviarAnalistaResponsavelSim);
            MetodosSiare.umClique(ObjetosMetodosComuns.comandoPriorizar);
            MetodosSiare.aguardarOProximoPasso(3000);
            MetodosSiare.validarTexto("Solicitação efetuada com sucesso.", ObjetosMetodosComuns.mensagemDeSucesso);
