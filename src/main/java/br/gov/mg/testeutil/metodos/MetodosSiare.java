@@ -105,6 +105,7 @@ public class MetodosSiare {
 	 */
 	public static void umClique(By ElementoOpcaoClick1) {
 		By correctLocator = null;
+		wait.until(ExpectedConditions.visibilityOfElementLocated(ElementoOpcaoClick1));
 		correctLocator = ElementoOpcaoClick1;
 		driver.findElement(correctLocator).click();
 	}
@@ -116,8 +117,10 @@ public class MetodosSiare {
 	 */
 	public static void doisCliques(By ElementoOpcaoClick1, By ElementoOpcaoClik2) {
 		By correctLocator = null;
+		wait.until(ExpectedConditions.visibilityOfElementLocated(ElementoOpcaoClick1));
 		correctLocator = ElementoOpcaoClick1;
 		driver.findElement(correctLocator).click();
+		wait.until(ExpectedConditions.visibilityOfElementLocated(ElementoOpcaoClik2));
 		correctLocator = ElementoOpcaoClik2;
 		driver.findElement(correctLocator).click();
 	}
@@ -129,10 +132,13 @@ public class MetodosSiare {
 	 */
 	public static void tresCliques(By ElementoOpcaoClick1, By ElementoOpcaoClik2, By ElementoOpcaoClik3) {
 		By correctLocator = null;
+		wait.until(ExpectedConditions.visibilityOfElementLocated(ElementoOpcaoClick1));
 		correctLocator = ElementoOpcaoClick1;
 		driver.findElement(correctLocator).click();
+		wait.until(ExpectedConditions.visibilityOfElementLocated(ElementoOpcaoClik2));
 		correctLocator = ElementoOpcaoClik2;
 		driver.findElement(correctLocator).click();
+		wait.until(ExpectedConditions.visibilityOfElementLocated(ElementoOpcaoClik3));
 		correctLocator = ElementoOpcaoClik3;
 		driver.findElement(correctLocator).click();
 	}
@@ -145,12 +151,16 @@ public class MetodosSiare {
 	public static void quatroCliques(By ElementoOpcaoClick1, By ElementoOpcaoClik2, By ElementoOpcaoClik3,
 			By ElementoOpcaoClik4) {
 		By correctLocator = null;
+		wait.until(ExpectedConditions.visibilityOfElementLocated(ElementoOpcaoClick1));
 		correctLocator = ElementoOpcaoClick1;
 		driver.findElement(correctLocator).click();
+		wait.until(ExpectedConditions.visibilityOfElementLocated(ElementoOpcaoClik2));
 		correctLocator = ElementoOpcaoClik2;
 		driver.findElement(correctLocator).click();
+		wait.until(ExpectedConditions.visibilityOfElementLocated(ElementoOpcaoClik3));
 		correctLocator = ElementoOpcaoClik3;
 		driver.findElement(correctLocator).click();
+		wait.until(ExpectedConditions.visibilityOfElementLocated(ElementoOpcaoClik4));
 		correctLocator = ElementoOpcaoClik4;
 		driver.findElement(correctLocator).click();
 	}
@@ -260,6 +270,7 @@ public class MetodosSiare {
 	 */
 	public static void selecionarOpcaoEmCombobox(By combobox, By opcaoCombobox) throws InterruptedException {
 		Actions action = new Actions(driver);
+		wait.until(ExpectedConditions.visibilityOfElementLocated(combobox));
 		driver.findElement(combobox).click();
 		WebElement element = driver.findElement(opcaoCombobox);
 		action.moveToElement(element).build().perform();
