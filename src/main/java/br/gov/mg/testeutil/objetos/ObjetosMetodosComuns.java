@@ -1,28 +1,8 @@
 package br.gov.mg.testeutil.objetos;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.support.ui.WebDriverWait;
-
-import br.gov.mg.testeutil.util.sicaf.SeleniumSicaf;
 
 public class ObjetosMetodosComuns {
-
-	/**
-	 * Instância privada do webDriver que vira da suite de teste
-	 */
-	private static final WebDriver driver;
-	@SuppressWarnings("unused")
-	private static final WebDriverWait wait;
-
-	/**
-	 * Construtor que ira adicionar a instancia do WebDriver para utilizacao dos
-	 * metodos
-	 */
-	static {
-		driver = SeleniumSicaf.getDriver();
-		wait = new WebDriverWait(driver, 10);
-	}
 
 	public static By linkSairSiareSICAF = By.linkText("Sair");
 	public static By abaConultaSiareSICAF = By.linkText("Consulta");

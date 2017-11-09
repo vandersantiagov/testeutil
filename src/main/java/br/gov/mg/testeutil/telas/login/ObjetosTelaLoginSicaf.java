@@ -4,31 +4,15 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
-
-import br.gov.mg.testeutil.util.sicaf.SeleniumSicaf;
+import br.gov.mg.testeutil.metodos.MetodosSiare;
 import br.gov.mg.testeutil.util.sicaf.UtilsSicaf;
 
 
 
 public class ObjetosTelaLoginSicaf {
 	
-	/**
-	 * Instancia privada do webDriver que vira da suite de teste
-	 */
-	private static final WebDriver driver;
-	private static final WebDriverWait wait;
-	
-	/**
-	 * Construtor que ira adicionar a instancia do WebDriver para utilizacao dos metodos
-	 */
-	static {
-		driver = SeleniumSicaf.getDriver();
-		wait = new WebDriverWait(driver, 10);
-	}
-	
+
 	/**
 	 * Defini��o T�cnica dos locators utilizados na p�gina
 	 * Tela de Login Intranet do SIARE
@@ -44,7 +28,7 @@ public class ObjetosTelaLoginSicaf {
 	 * Validação do  Titulo da tela de Login
 	 */
 	public static void tituloPaginaLoginCorreto(String expectedTitle){
-		assertThat("Título incorreto!",  driver.findElement(validacaoTituloCorretoLogin).getText(), is(expectedTitle));
+		assertThat("Título incorreto!",  MetodosSiare.driver.findElement(validacaoTituloCorretoLogin).getText(), is(expectedTitle));
 	}
 	
 	/**
@@ -52,9 +36,9 @@ public class ObjetosTelaLoginSicaf {
 	 */
 	public static void performSearchCpf (String searchTextCpf) { 
 		//Utils.isClickable(cpfField);
-		wait.until(ExpectedConditions.visibilityOfElementLocated(cpfField));
-		driver.findElement(cpfField).clear();
-		driver.findElement(cpfField).sendKeys(searchTextCpf);
+		MetodosSiare.wait.until(ExpectedConditions.visibilityOfElementLocated(cpfField));
+		MetodosSiare.driver.findElement(cpfField).clear();
+		MetodosSiare.driver.findElement(cpfField).sendKeys(searchTextCpf);
 	}
 	
 	/**
@@ -62,8 +46,8 @@ public class ObjetosTelaLoginSicaf {
 	 */
 	public static void performSearchSenha(String searchTextSenha) { 
 		UtilsSicaf.isClickable(senhaField);
-		driver.findElement(senhaField).clear();
-		driver.findElement(senhaField).sendKeys(searchTextSenha);
+		MetodosSiare.driver.findElement(senhaField).clear();
+		MetodosSiare.driver.findElement(senhaField).sendKeys(searchTextSenha);
 	}
 	
 	/**
@@ -72,7 +56,7 @@ public class ObjetosTelaLoginSicaf {
 	 *
 	 */
 	public static void clickSearchButtonLogin() { 
-		wait.until(ExpectedConditions.visibilityOfElementLocated(confirmarFieldLogin));
-		driver.findElement(confirmarFieldLogin).click(); 
+		MetodosSiare.wait.until(ExpectedConditions.visibilityOfElementLocated(confirmarFieldLogin));
+		MetodosSiare.driver.findElement(confirmarFieldLogin).click(); 
 	}
 }

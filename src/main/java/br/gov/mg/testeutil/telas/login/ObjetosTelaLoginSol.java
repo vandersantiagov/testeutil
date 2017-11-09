@@ -4,27 +4,13 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
-import br.gov.mg.testeutil.util.sol.SeleniumSol;
+import br.gov.mg.testeutil.metodos.MetodosSiare;
+
 //import br.gov.mg.testeutil.util.Utils;
 
 public class ObjetosTelaLoginSol {
-	/**
-	 * Instancia privada do webDriver que vira da suite de teste
-	 */
-	private static final WebDriver driver;
-	private static final WebDriverWait wait;
-	
-	/**
-	 * Construtor que ira adicionar a instancia do WebDriver para utilizacao dos metodos
-	 */
-	static {
-		driver = SeleniumSol.getDriver();
-		wait = new WebDriverWait(driver, 10);
-	}
 	/**
 	 * Defini��o T�cnica dos locators utilizados na p�gina
 	 * Tela de Login Internet do SIARE
@@ -59,8 +45,8 @@ public class ObjetosTelaLoginSol {
 	 * Valida��o do Titulo da tela de Login Internet
 	 */
 	public static void tituloPaginaLoginCorretoInternet(String expectedTitle){
-		wait.until(ExpectedConditions.visibilityOfElementLocated(validacaoTituloCorretoLogin));
-		assertThat("Texto Incorreto!",  driver.findElement(validacaoTituloCorretoLogin).getText(), is(expectedTitle));
+		MetodosSiare.wait.until(ExpectedConditions.visibilityOfElementLocated(validacaoTituloCorretoLogin));
+		assertThat("Texto Incorreto!",  MetodosSiare.driver.findElement(validacaoTituloCorretoLogin).getText(), is(expectedTitle));
 	}
 	
 	/**
@@ -68,20 +54,20 @@ public class ObjetosTelaLoginSol {
 	 * Tela de Login Internet 
 	 */
 	public static void comboTipoIdentificacaoSujeitoPassivo() throws InterruptedException{
-		driver.findElement(selecionarTipoDeUsuario).click();
-		driver.findElement(selecionarIE).click(); // Inscri��o Estadual
-//		driver.findElement(selecionarProtocolo).click(); // Protocolo
-//		driver.findElement(selecionarCPF).click(); // CPF
-//		driver.findElement(selecionarCNPJ).click(); // CNPJ
-//		driver.findElement(selecionarProdutorRural).click(); // Produtor Rural
-//		driver.findElement(selecionarDespachanteCPF).click(); // DESPACHANTE CPF
-//		driver.findElement(selecionarDespachanteCNPJ).click(); // DESPACHANTE CNPJ
-//		driver.findElement(selecionarRecintoAlfandegadoPessoaJuridica).click(); // CNPJ
-//		driver.findElement(selecionarCERM_TFRMPessoaFisica).click(); // TFRM PF
-//		driver.findElement(selecionarCERM_TFRMPessoaJuridica).click(); // TFRM CNPJ
-//		driver.findElement(selecionarVAFEspecial).click(); // VAF IE
-//		driver.findElement(selecionarContribuinteInterestadual).click(); // Contribuinte Interestadual
-//		wait.equals(50000);
+		MetodosSiare.driver.findElement(selecionarTipoDeUsuario).click();
+		MetodosSiare.driver.findElement(selecionarIE).click(); // Inscri��o Estadual
+//		MetodosSiare.driver.findElement(selecionarProtocolo).click(); // Protocolo
+//		MetodosSiare.driver.findElement(selecionarCPF).click(); // CPF
+//		MetodosSiare.driver.findElement(selecionarCNPJ).click(); // CNPJ
+//		MetodosSiare.driver.findElement(selecionarProdutorRural).click(); // Produtor Rural
+//		MetodosSiare.driver.findElement(selecionarDespachanteCPF).click(); // DESPACHANTE CPF
+//		MetodosSiare.driver.findElement(selecionarDespachanteCNPJ).click(); // DESPACHANTE CNPJ
+//		MetodosSiare.driver.findElement(selecionarRecintoAlfandegadoPessoaJuridica).click(); // CNPJ
+//		MetodosSiare.driver.findElement(selecionarCERM_TFRMPessoaFisica).click(); // TFRM PF
+//		MetodosSiare.driver.findElement(selecionarCERM_TFRMPessoaJuridica).click(); // TFRM CNPJ
+//		MetodosSiare.driver.findElement(selecionarVAFEspecial).click(); // VAF IE
+//		MetodosSiare.driver.findElement(selecionarContribuinteInterestadual).click(); // Contribuinte Interestadual
+//		MetodosSiare.wait.equals(50000);
 	}
 	
 	/**
@@ -89,10 +75,10 @@ public class ObjetosTelaLoginSol {
 	 */
 	public static void preencheCampoCpf(String searchTextCpf) { 
 		//Utils.isClickable(preencherCampoCPF);
-		wait.until(ExpectedConditions.visibilityOfElementLocated(preencherCampoCPF));
-		driver.findElement(preencherCampoCPF).click();
-		driver.findElement(preencherCampoCPF).clear();
-		driver.findElement(preencherCampoCPF).sendKeys(searchTextCpf);
+		MetodosSiare.wait.until(ExpectedConditions.visibilityOfElementLocated(preencherCampoCPF));
+		MetodosSiare.driver.findElement(preencherCampoCPF).click();
+		MetodosSiare.driver.findElement(preencherCampoCPF).clear();
+		MetodosSiare.driver.findElement(preencherCampoCPF).sendKeys(searchTextCpf);
 	}
 	
 	/**
@@ -100,18 +86,18 @@ public class ObjetosTelaLoginSol {
 	 */
 	public static void preencheCampoSenha(String searchTextSenha) { 
 		//Utils.isClickable(preencherSenhaAtual);
-		wait.until(ExpectedConditions.visibilityOfElementLocated(preencherSenhaAtual));
-		driver.findElement(preencherSenhaAtual).click();
-		driver.findElement(preencherSenhaAtual).clear();
-		driver.findElement(preencherSenhaAtual).sendKeys(searchTextSenha);
+		MetodosSiare.wait.until(ExpectedConditions.visibilityOfElementLocated(preencherSenhaAtual));
+		MetodosSiare.driver.findElement(preencherSenhaAtual).click();
+		MetodosSiare.driver.findElement(preencherSenhaAtual).clear();
+		MetodosSiare.driver.findElement(preencherSenhaAtual).sendKeys(searchTextSenha);
 	}
 	
 	/**
 	 * Clica no comando Login Internet
 	 */
 	public static void clickComandoLogin () { 
-		wait.until(ExpectedConditions.visibilityOfElementLocated(comandoConfirmarLoginInternet));
-		driver.findElement(comandoConfirmarLoginInternet).click(); 
+		MetodosSiare.wait.until(ExpectedConditions.visibilityOfElementLocated(comandoConfirmarLoginInternet));
+		MetodosSiare.driver.findElement(comandoConfirmarLoginInternet).click(); 
 	}
 	
 	
@@ -121,17 +107,17 @@ public class ObjetosTelaLoginSol {
 	 *
 	 */
 	public static void clickSearchButtonLogin() { 
-		wait.until(ExpectedConditions.visibilityOfElementLocated(comandoConfirmarLoginInternet));
-		driver.findElement(comandoConfirmarLoginInternet).click(); 
+		MetodosSiare.wait.until(ExpectedConditions.visibilityOfElementLocated(comandoConfirmarLoginInternet));
+		MetodosSiare.driver.findElement(comandoConfirmarLoginInternet).click(); 
 	}
 
 	/**
 	 * Compo identificacao visivel
 	 */
 	public static void preencheCampoIdentificacao(String searchTextIdentificacao){ 
-		wait.until(ExpectedConditions.visibilityOfElementLocated(preencherCampoIdentificacao));
-		driver.findElement(preencherCampoIdentificacao).click();
-		driver.findElement(preencherCampoIdentificacao).clear();
-		driver.findElement(preencherCampoIdentificacao).sendKeys(searchTextIdentificacao);
+		MetodosSiare.wait.until(ExpectedConditions.visibilityOfElementLocated(preencherCampoIdentificacao));
+		MetodosSiare.driver.findElement(preencherCampoIdentificacao).click();
+		MetodosSiare.driver.findElement(preencherCampoIdentificacao).clear();
+		MetodosSiare.driver.findElement(preencherCampoIdentificacao).sendKeys(searchTextIdentificacao);
 		}
 }
