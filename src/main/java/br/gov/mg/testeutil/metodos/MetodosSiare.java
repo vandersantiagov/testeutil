@@ -291,6 +291,7 @@ public class MetodosSiare {
 		try {
 			FileUtils.copyFile(scrFile, new File(diretorioPrincipal + subPastaProjeto + "\\" + fileName + ".jpeg"),
 					true);
+			ObjetosMetodosComuns.contadorTelas++;
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

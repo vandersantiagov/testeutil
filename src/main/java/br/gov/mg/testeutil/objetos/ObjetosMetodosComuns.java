@@ -146,5 +146,10 @@ public class ObjetosMetodosComuns {
 	 */
 
     public static By mensagemCapcha = By.id("message");
+    
+    /*
+     * Contador de Telas
+     */
+    public static int contadorTelas;
 
 }
