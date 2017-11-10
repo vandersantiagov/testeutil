@@ -1443,6 +1443,77 @@ public class MetodosSiare {
 		}
 		return conteudo;
 	}
+	
+	/*
+	 * Método que percorre a caixa de relatórios afim de localizar o relatório
+	 * informado, quando encontrado o sistema irá selecionar o registro e
+	 * acionar o botão infomado no parâmetro do método.
+	 * @author Fábio Heller
+	 */
+	public static void sicafCaixaDeRelatoriosSolicitados(String protocolo, By botaoAcao) throws InterruptedException {
+		boolean achou = false;
+		int contador = 0, iteracaoQtdDeRegistros = 0, qtdDeRegistros = MetodosSiare.obterQTDDeRegistrosNaCaixa(
+				MetodosSiare.campoXpath(".//*[@id='containerConteudoPrincipal']/div/form/table[2]/tbody/tr[1]/td[2]"));
+		String[][] arrayprotocolosAnalista = {
+				{ ".//*[@id='containerConteudoPrincipal']/div/form/table[2]/tbody/tr[3]/td[2]",
+						".//*[@id='containerConteudoPrincipal']/div/form/table[2]/tbody/tr[3]/td[1]/input" },
+				{ ".//*[@id='containerConteudoPrincipal']/div/form/table[2]/tbody/tr[4]/td[2]",
+						".//*[@id='containerConteudoPrincipal']/div/form/table[2]/tbody/tr[4]/td[1]/input" },
+				{ ".//*[@id='containerConteudoPrincipal']/div/form/table[2]/tbody/tr[5]/td[2]",
+						".//*[@id='containerConteudoPrincipal']/div/form/table[2]/tbody/tr[5]/td[1]/input" },
+				{ ".//*[@id='containerConteudoPrincipal']/div/form/table[2]/tbody/tr[6]/td[2]",
+						".//*[@id='containerConteudoPrincipal']/div/form/table[2]/tbody/tr[6]/td[1]/input" },
+				{ ".//*[@id='containerConteudoPrincipal']/div/form/table[2]/tbody/tr[7]/td[2]",
+						".//*[@id='containerConteudoPrincipal']/div/form/table[2]/tbody/tr[7]/td[1]/input" },
+				{ ".//*[@id='containerConteudoPrincipal']/div/form/table[2]/tbody/tr[8]/td[2]",
+						".//*[@id='containerConteudoPrincipal']/div/form/table[2]/tbody/tr[8]/td[1]/input" },
+				{ ".//*[@id='containerConteudoPrincipal']/div/form/table[2]/tbody/tr[9]/td[2]",
+						".//*[@id='containerConteudoPrincipal']/div/form/table[2]/tbody/tr[9]/td[1]/input" },
+				{ ".//*[@id='containerConteudoPrincipal']/div/form/table[2]/tbody/tr[10]/td[2]",
+						".//*[@id='containerConteudoPrincipal']/div/form/table[2]/tbody/tr[10]/td[1]/input" },
+				{ ".//*[@id='containerConteudoPrincipal']/div/form/table[2]/tbody/tr[11]/td[2]",
+						".//*[@id='containerConteudoPrincipal']/div/form/table[2]/tbody/tr[11]/td[1]/input" },
+				{ ".//*[@id='containerConteudoPrincipal']/div/form/table[2]/tbody/tr[12]/td[2]",
+						".//*[@id='containerConteudoPrincipal']/div/form/table[2]/tbody/tr[12]/td[1]/input" } };
+		do {
+			if (iteracaoQtdDeRegistros + 1 > qtdDeRegistros) {
+				contador = 0;
+				iteracaoQtdDeRegistros = 0;
+				MetodosSiare.umClique(MetodosSiare.campoLinkText("Relatório"));
+				qtdDeRegistros = MetodosSiare
+						.obterQTDDeRegistrosNaCaixa(MetodosSiare.campoXpath(".//*[@id='ufw_total_linhas']"));
+				MetodosSiare.inserirDadoNoCampo("1", MetodosSiare.campoXpath(
+						".//*[@id='containerConteudoPrincipal']/div/form/table[2]/tbody/tr[1]/td/table/tbody/tr/td[2]/table/tbody/tr/td/input"));
+				MetodosSiare.umClique(MetodosSiare.campoLinkText("Ir"));
+				MetodosSiare.aguardarOProximoPasso(5000);
+			}
+			if (protocolo.equals(textoDoElemento(MetodosSiare.campoXpath(arrayprotocolosAnalista[contador][0])))) {
+				achou = true;
+				MetodosSiare.umClique(MetodosSiare.campoXpath(arrayprotocolosAnalista[contador][1]));
+				MetodosSiare.umClique(botaoAcao);
+			}
+			if (qtdDeRegistros > 10 && achou == false) {
+				if (contador == 9) {
+					contador = 0;
+					MetodosSiare.umClique(MetodosSiare.campoLinkText(">"));
+					iteracaoQtdDeRegistros++;
+				} else {
+					contador++;
+					iteracaoQtdDeRegistros++;
+				}
+			} else if (!achou) {
+				if (contador + 1 == qtdDeRegistros) {
+					contador = 0;
+					iteracaoQtdDeRegistros = 0;
+					MetodosSiare.umClique(MetodosSiare.campoLinkText("Relatório"));
+					qtdDeRegistros = MetodosSiare.obterQTDDeRegistrosNaCaixa(By.xpath(".//*[@id='ufw_total_linhas']"));
+				} else {
+					contador++;
+					iteracaoQtdDeRegistros++;
+				}
+			}
+		} while (!achou);
+	}
 	      
 	/**
 	 ***************************** METODOS DEFINIDOS E JÁ UTLIZADOS NO ARCHETYPE*****************************
