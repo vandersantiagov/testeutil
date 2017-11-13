@@ -1381,7 +1381,7 @@ public class MetodosSiare {
 					MetodosSiare.umClique(elementoPesquisar);
 					cont++;
 				}
-				if (MetodosSiare.verificaSeOElementoEstaVisivel(elementoPesquisar)) {
+				if (MetodosSiare.verificaSeOElementoEstaVisivel(elementoCapcha)) {
 					MetodosSiare.umClique(elementoCapcha);
 					if (!MetodosSiare.verificaSeOElementoPossuiInformacao(ObjetosMetodosComuns.mensagemCapcha)
 							&& cont > 0)
