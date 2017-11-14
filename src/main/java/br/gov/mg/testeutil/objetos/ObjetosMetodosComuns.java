@@ -145,7 +145,8 @@ public class ObjetosMetodosComuns {
 	 * Tela do captcha
 	 */
 
-    public static By mensagemCapcha = By.id("message");
+    public static By menssagemCapcha = By.id("messagem");
+    public static By menssageCapcha = By.id("message");
     
     /*
      * Contador de Telas
