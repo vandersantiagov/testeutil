@@ -1383,10 +1383,13 @@ public class MetodosSiare {
 				}
 				if (MetodosSiare.verificaSeOElementoEstaVisivel(elementoCapcha)) {
 					MetodosSiare.umClique(elementoCapcha);
-					if(MetodosSiare.verificaSeOElementoEstaVisivel(ObjetosMetodosComuns.menssagemCapcha) || MetodosSiare.verificaSeOElementoEstaVisivel(ObjetosMetodosComuns.menssageCapcha)){
-                        if (!MetodosSiare.verificaSeOElementoPossuiInformacao(ObjetosMetodosComuns.menssagemCapcha) || !MetodosSiare.verificaSeOElementoPossuiInformacao(ObjetosMetodosComuns.menssageCapcha)
-                                     && cont > 0)
-                              saida = true;
+					if (MetodosSiare.verificaSeOElementoEstaVisivel(ObjetosMetodosComuns.menssagemCapcha)) {
+						if (!MetodosSiare.verificaSeOElementoPossuiInformacao(ObjetosMetodosComuns.menssagemCapcha) && cont > 0)
+                            saida = true;
+					}
+					if (MetodosSiare.verificaSeOElementoEstaVisivel(ObjetosMetodosComuns.menssageCapcha)){
+                        if (!MetodosSiare.verificaSeOElementoPossuiInformacao(ObjetosMetodosComuns.menssageCapcha) && cont > 0)
+                            saida = true;
 					}
 				} else {
 					processa = false;
