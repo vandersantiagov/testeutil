@@ -2,6 +2,7 @@ package br.gov.mg.testeutil.report.rules;
 
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Objects;
 
 import org.junit.runner.Description;
 
@@ -52,7 +53,7 @@ public class RuleReportSuiteProjeto {
 					SuiteSiare.suitePrincipalVO.getSuitesFilhasByNome().put(keyMap, suiteFilhaVO);
 
 					suiteFilhaVO.setDataFimExecucao(new Date());
-					if (isChamadaSuitePrincipal) {
+					if (Objects.equals(SuiteSiare.idSuite, idSuite_)) {
 						SuiteSiare.finalizeReport(idSuiteFilha);
 					}
 				} catch (Throwable e) {
