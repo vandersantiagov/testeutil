@@ -25,8 +25,6 @@ import com.lowagie.text.PageSize;
 import com.lowagie.text.Paragraph;
 import com.lowagie.text.pdf.PdfWriter;
 import org.apache.commons.io.FileUtils;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
 import org.openqa.selenium.By;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
@@ -36,9 +34,9 @@ import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
-
 import br.gov.mg.testeutil.objetos.ObjetosMetodosComuns;
 import br.gov.mg.testeutil.telas.login.ObjetosTelaLoginSicaf;
+import br.gov.mg.testeutil.util.FileUtil;
 import br.gov.mg.testeutil.util.sicaf.PropertySicaf;
 import br.gov.mg.testeutil.util.sicaf.SeleniumSicaf;
 import br.gov.mg.testeutil.util.sol.PropertySol;
@@ -50,7 +48,7 @@ import br.gov.mg.testeutil.util.sol.SeleniumSol;
 public class MetodosSiare {
 
 	/*
-	 *****************************METODOS GLOBAIS PARA CHAMADA NAS CLASSES*****************************
+	 ***************************** METODOS GLOBAIS PARA CHAMADA NAS CLASSES*****************************
 	 **/
 
 	/**
@@ -294,6 +292,8 @@ public class MetodosSiare {
 			ObjetosMetodosComuns.contadorTelas++;
 		} catch (IOException e) {
 			e.printStackTrace();
+		} catch (Throwable e) {
+			e.printStackTrace();
 		}
 	}
 
@@ -303,7 +303,8 @@ public class MetodosSiare {
 	 */
 	public static void deletarArquivosDaSubpasta(String subPastaProjeto) {
 		try {
-			File pasta = new File(diretorioPrincipal + subPastaProjeto + "\\");
+			String enderecoCriacaoPasta = diretorioPrincipal + subPastaProjeto + "\\";
+			File pasta = FileUtil.createPastaCaseNotExists(enderecoCriacaoPasta);
 			File[] arquivos = pasta.listFiles();
 			for (File arquivo : arquivos) {
 				if (arquivo.getName().endsWith("jpeg") || arquivo.getName().endsWith("sql")
@@ -937,7 +938,7 @@ public class MetodosSiare {
 				MetodosSiare.umClique(MetodosSiare.campoXpath(arrayprotocolos[contador][1]));
 				MetodosSiare.umClique(botaoAcao);
 			}
-			if (qtdDeRegistros > 10  && achou == false) {
+			if (qtdDeRegistros > 10 && achou == false) {
 				if (contador == 9) {
 					contador = 0;
 					MetodosSiare.umClique(MetodosSiare.campoLinkText(">"));
@@ -1117,7 +1118,7 @@ public class MetodosSiare {
 	 * - Pendências de Documentacao
 	 * 
 	 * @author jacqueline.lucas
-	 * @throws InterruptedException 
+	 * @throws InterruptedException
 	 */
 	public static void acessarMenuHomeAtendimentoEntregadeDocumentosResolucaodePendenciasPendenciasdeDocumentacao(
 			String subPastaDiretorio, String nomeDoArquivoProtocolo) throws IOException, InterruptedException {
@@ -1141,7 +1142,7 @@ public class MetodosSiare {
 		MetodosSiare.validarTexto("Entrega de documentos pendentes",
 				ObjetosMetodosComuns.textoTituloTelaEntregadeDocumentosResolucaodePendencias);
 		MetodosSiare.inserirDadoNoCampo("Teste Pendência de Documentação", ObjetosMetodosComuns.campoObservacoes);
-		MetodosSiare.umClique(ObjetosMetodosComuns.comandoConfirmarEntregaDocumento);	
+		MetodosSiare.umClique(ObjetosMetodosComuns.comandoConfirmarEntregaDocumento);
 		janelas = driver.getWindowHandles();
 		janela = janelas.toArray(new String[0]);
 		do {
@@ -1154,7 +1155,7 @@ public class MetodosSiare {
 				janelas = driver.getWindowHandles();
 				janela = janelas.toArray(new String[0]);
 			}
-			if(janela.length == 1){
+			if (janela.length == 1) {
 				driver.switchTo().window(janela[0]);
 				achou = true;
 			}
@@ -1175,7 +1176,7 @@ public class MetodosSiare {
 		MetodosSiare.validarTexto("Entrega de Documentos / Resolução de Pendências",
 				ObjetosMetodosComuns.textoTituloTelaEntregadeDocumentosResolucaodePendencias);
 		MetodosSiare.inserirDadoNoCampo(lerArquivoTextoERetornaDadoDaPrimeiraLinha(subPastaDiretorio,
-				nomeDoArquivoProtocolo).replace(".", "").replace("-", ""), ObjetosMetodosComuns.campoProtocolo);		
+				nomeDoArquivoProtocolo).replace(".", "").replace("-", ""), ObjetosMetodosComuns.campoProtocolo);
 		MetodosSiare.umClique(ObjetosMetodosComuns.comandoPesquisarPendencias);
 		MetodosSiare.umClique(ObjetosMetodosComuns.selecaoRegistro);
 		MetodosSiare.umClique(ObjetosMetodosComuns.linkResolvePendencia);
@@ -1190,10 +1191,10 @@ public class MetodosSiare {
 	}
 
 	/**
-	 * Método que auxilia a execução do método presumirDAEPeloNumeroDoProtocolo 
+	 * Método que auxilia a execução do método presumirDAEPeloNumeroDoProtocolo
 	 * @author Fábio Heller
 	 */
-	public static void presuncaoDeQuitacaoDeDocumentoDeArrecadacao(String valorDoDAE,boolean efetuarLoginELogoffComAdministrador) {
+	public static void presuncaoDeQuitacaoDeDocumentoDeArrecadacao(String valorDoDAE, boolean efetuarLoginELogoffComAdministrador) {
 		MetodosSiare.inserirDadoNoCampo(valorDoDAE, ObjetosMetodosComuns.campoValorDoDAE);
 		MetodosSiare.umClique(ObjetosMetodosComuns.campoBanco);
 		MetodosSiare.umClique(ObjetosMetodosComuns.campoSelecaoBanco);
@@ -1216,12 +1217,12 @@ public class MetodosSiare {
 	 * @author Fábio Heller
 	 * @throws ParseException 
 	 */
-	public static void presumirDAEPeloNumeroDoProtocolo(String subPastaDiretorio,String nomeDoArquivoProtocolo, String dataInicial,
+	public static void presumirDAEPeloNumeroDoProtocolo(String subPastaDiretorio, String nomeDoArquivoProtocolo, String dataInicial,
 			boolean efetuarLoginELogoffComAdministrador) throws IOException, ParseException {
 		String valorTotalDoDAE;
 		if (efetuarLoginELogoffComAdministrador)
 			MetodosSiare.logarComAdministrador();
-		MetodosSiare.doisCliques(ObjetosMetodosComuns.menuDocumentodeArrecadacaoDAE,ObjetosMetodosComuns.subMenuManutencaoDAE);
+		MetodosSiare.doisCliques(ObjetosMetodosComuns.menuDocumentodeArrecadacaoDAE, ObjetosMetodosComuns.subMenuManutencaoDAE);
 		MetodosSiare.inserirDadoNoCampo(lerArquivoTextoERetornaDadoDaPrimeiraLinha(subPastaDiretorio,
 				nomeDoArquivoProtocolo).replace(".", "").replace("-", ""), ObjetosMetodosComuns.campoProtocolo);
 		MetodosSiare.inserirDadoNoCampo(dataInicial, ObjetosMetodosComuns.campoPeriodoDeEmissaoInicial);
@@ -1247,8 +1248,8 @@ public class MetodosSiare {
 			MetodosSiare.logarComAdministrador();
 		MetodosSiare.doisCliques(ObjetosMetodosComuns.menuDocumentodeArrecadacaoDAE, ObjetosMetodosComuns.subMenuManutencaoDAE);
 		if (numeroDoDAE.length() > 12)
-			numeroDoDAE = numeroDoDAE.substring(numeroDoDAE.length() - 12,numeroDoDAE.length());
-		MetodosSiare.inserirDadoNoCampo(numeroDoDAE,ObjetosMetodosComuns.campoNumeroDAE);
+			numeroDoDAE = numeroDoDAE.substring(numeroDoDAE.length() - 12, numeroDoDAE.length());
+		MetodosSiare.inserirDadoNoCampo(numeroDoDAE, ObjetosMetodosComuns.campoNumeroDAE);
 		MetodosSiare.inserirDadoNoCampo(dataInicial, ObjetosMetodosComuns.campoPeriodoDeEmissaoInicial);
 		MetodosSiare.inserirDadoNoCampo(MetodosSiare.acrescentarDiasEmUmaData(dataInicial, 180), ObjetosMetodosComuns.campoPeriodoDeEmissaoFinal);
 		MetodosSiare.umClique(ObjetosMetodosComuns.comandoPesquisar);
@@ -1273,61 +1274,62 @@ public class MetodosSiare {
 		dateInicial.setDate(dateInicial.getDate() + 180);
 		formatter.format(dateInicial);
 		return String.valueOf(formatter.format(dateInicial));
-	}	
+	}
 
 	/**
 	 * Método que aponta o foco em uma janela especifica
 	 * @author Fábio Heller
 	 */
-	public static void focaEmPaginaEspecificaDoNavegador(String InstanciaDoDriverDaPagina){
+	public static void focaEmPaginaEspecificaDoNavegador(String InstanciaDoDriverDaPagina) {
 		driver.switchTo().window(InstanciaDoDriverDaPagina);
 	}
-	
+
 	/**
 	 * Método que retorna a instância do driver em foco
 	 * @author Fábio Heller
 	 */
-	public static String retornaInstanciaDoDriverDaPaginaAtual(){
+	public static String retornaInstanciaDoDriverDaPaginaAtual() {
 		return driver.getWindowHandle();
 	}
-	
-    /**
-     * PRIORIZAR PROTOCOLO MÉTODO priorizoarProtocolo
+
+	/**
+	 * PRIORIZAR PROTOCOLO MÉTODO priorizoarProtocolo
 	 * @author Antônio Bernardo
-     */
-      public static void priorizoarProtocolo(String subPastaProjeto, String nomeDoArquivo)
-                 throws InterruptedException, IOException {
-           MetodosSiare.umClique(ObjetosMetodosComuns.linkHomeSiare);
-           MetodosSiare.validarTexto("Suas tarefas para o momento :", ObjetosMetodosComuns.textoValidarTituloHome);
-           MetodosSiare.tresCliques(ObjetosMetodosComuns.menuAdiministracaoDeServico, ObjetosMetodosComuns.subMenuServico,
-                         ObjetosMetodosComuns.subMenuPriorizacao);
-           MetodosSiare.validarTexto("Manutenção de Priorização de Serviços", ObjetosMetodosComuns.textoValidarTituloHome);
-           MetodosSiare.lerArquivoTexto(subPastaProjeto, nomeDoArquivo, ObjetosMetodosComuns.campoProtocoloPriorizacao);
-           MetodosSiare.umClique(ObjetosMetodosComuns.comandoPesquisar);
-           MetodosSiare.validarTexto("Manutenção de Priorização de Serviços", ObjetosMetodosComuns.textoValidarTituloHome);
-           MetodosSiare.umClique(ObjetosMetodosComuns.selecionarProtocoloPesquisado);
-           MetodosSiare.umClique(ObjetosMetodosComuns.linkPriorizar);
-           MetodosSiare.validarTexto("Priorizar Serviços", ObjetosMetodosComuns.textoValidarTituloHome);
-           MetodosSiare.umClique(ObjetosMetodosComuns.checkEnviarAnalistaResponsavelSim);
-           MetodosSiare.umClique(ObjetosMetodosComuns.comandoPriorizar);
-           MetodosSiare.aguardarOProximoPasso(3000);
-           MetodosSiare.validarTexto("Solicitação efetuada com sucesso.", ObjetosMetodosComuns.mensagemDeSucesso);
- }
-      /**
-       * Mover a janela como Page Down e Page Up
-       * @author antonio.bernardo
-       * @throws AWTException
-       */
-     public static void pageDown() throws AWTException {
+	 */
+	public static void priorizoarProtocolo(String subPastaProjeto, String nomeDoArquivo)
+			throws InterruptedException, IOException {
+		MetodosSiare.umClique(ObjetosMetodosComuns.linkHomeSiare);
+		MetodosSiare.validarTexto("Suas tarefas para o momento :", ObjetosMetodosComuns.textoValidarTituloHome);
+		MetodosSiare.tresCliques(ObjetosMetodosComuns.menuAdiministracaoDeServico, ObjetosMetodosComuns.subMenuServico,
+				ObjetosMetodosComuns.subMenuPriorizacao);
+		MetodosSiare.validarTexto("Manutenção de Priorização de Serviços", ObjetosMetodosComuns.textoValidarTituloHome);
+		MetodosSiare.lerArquivoTexto(subPastaProjeto, nomeDoArquivo, ObjetosMetodosComuns.campoProtocoloPriorizacao);
+		MetodosSiare.umClique(ObjetosMetodosComuns.comandoPesquisar);
+		MetodosSiare.validarTexto("Manutenção de Priorização de Serviços", ObjetosMetodosComuns.textoValidarTituloHome);
+		MetodosSiare.umClique(ObjetosMetodosComuns.selecionarProtocoloPesquisado);
+		MetodosSiare.umClique(ObjetosMetodosComuns.linkPriorizar);
+		MetodosSiare.validarTexto("Priorizar Serviços", ObjetosMetodosComuns.textoValidarTituloHome);
+		MetodosSiare.umClique(ObjetosMetodosComuns.checkEnviarAnalistaResponsavelSim);
+		MetodosSiare.umClique(ObjetosMetodosComuns.comandoPriorizar);
+		MetodosSiare.aguardarOProximoPasso(3000);
+		MetodosSiare.validarTexto("Solicitação efetuada com sucesso.", ObjetosMetodosComuns.mensagemDeSucesso);
+	}
+
+	/**
+	 * Mover a janela como Page Down e Page Up
+	 * @author antonio.bernardo
+	 * @throws AWTException
+	 */
+	public static void pageDown() throws AWTException {
 		Robot robot = new Robot();
 		robot.keyPress(KeyEvent.VK_PAGE_DOWN);
 	}
-	
+
 	public static void pageUp() throws AWTException {
 		Robot robot = new Robot();
 		robot.keyPress(KeyEvent.VK_PAGE_UP);
 	}
-	
+
 	/**
 	 * Mover a janela com o Page Down e Page Up com a janela Maximizada.
 	 * @author antonio.bernardo
@@ -1337,13 +1339,14 @@ public class MetodosSiare {
 		driver.manage().window().maximize();
 		Robot robot = new Robot();
 		robot.keyPress(KeyEvent.VK_PAGE_DOWN);
-	} 
-	
+	}
+
 	public static void pageUpJanelaMaximizad() throws AWTException {
 		driver.manage().window().maximize();
 		Robot robot = new Robot();
 		robot.keyPress(KeyEvent.VK_PAGE_UP);
 	}
+
 	/**
 	 * Método que insere um valor em um campo
 	 * @author antonio.bernardo
@@ -1353,16 +1356,17 @@ public class MetodosSiare {
 		driver.findElement(nomeElemento);
 		driver.findElement(nomeElemento).clear();
 	}
+
 	/**
 	 * Método para seleciona opção no campo Combobox Tipo String
 	 * @param ElementoOpcaoClick1
 	 * @param textoaSerSelecionado
 	 * @author antonio.bernardo
-	 */	
+	 */
 	public static void selecionarOpcaoCombobox(By ElementoOpcaoClick1, String textoaSerSelecionado) {
-	new Select(driver.findElement(ElementoOpcaoClick1)).selectByVisibleText(textoaSerSelecionado);
-	} 
-	
+		new Select(driver.findElement(ElementoOpcaoClick1)).selectByVisibleText(textoaSerSelecionado);
+	}
+
 	/**
 	 * Método utlizado para introdução manualmente do texto exibido pela imagem do captcha 
 	 * @param elementoCapcha
@@ -1385,11 +1389,11 @@ public class MetodosSiare {
 					MetodosSiare.umClique(elementoCapcha);
 					if (MetodosSiare.verificaSeOElementoEstaVisivel(ObjetosMetodosComuns.menssagemCapcha)) {
 						if (!MetodosSiare.verificaSeOElementoPossuiInformacao(ObjetosMetodosComuns.menssagemCapcha) && cont > 0)
-                            saida = true;
+							saida = true;
 					}
-					if (MetodosSiare.verificaSeOElementoEstaVisivel(ObjetosMetodosComuns.menssageCapcha)){
-                        if (!MetodosSiare.verificaSeOElementoPossuiInformacao(ObjetosMetodosComuns.menssageCapcha) && cont > 0)
-                            saida = true;
+					if (MetodosSiare.verificaSeOElementoEstaVisivel(ObjetosMetodosComuns.menssageCapcha)) {
+						if (!MetodosSiare.verificaSeOElementoPossuiInformacao(ObjetosMetodosComuns.menssageCapcha) && cont > 0)
+							saida = true;
 					}
 				} else {
 					processa = false;
@@ -1398,6 +1402,7 @@ public class MetodosSiare {
 			}
 		}
 	}
+
 	/**
 	 * Método para Leitura de um valor, incrementar um outro valor e atualizar o arquivo com o valor incrementado.
 	 * OBS.: Para esse método precisa criar um subdiretório dentro da pastas do projeto no Z: 
@@ -1411,19 +1416,19 @@ public class MetodosSiare {
 	 * Data 19-10-2017
 	 */
 	public static String lerArquivoTextoEIncrementarValorSalvarEmArquivo(String subPastaProjeto, String nomeDoArquivo, String valorIncrementado, String nomeDoArquivo1)
-			throws IOException {
+					throws IOException {
 		int valor, contador;
 		String resultado, conteudo = "";
 		try {
 			//Método para Ler o arquivo texto e incrementar o valor passado como o paramentro.
 			BufferedReader ler = new BufferedReader(
-			new FileReader(diretorioPrincipal + subPastaProjeto + "\\" + nomeDoArquivo + ".txt"));
-			String linha = ler.readLine();	
+					new FileReader(diretorioPrincipal + subPastaProjeto + "\\" + nomeDoArquivo + ".txt"));
+			String linha = ler.readLine();
 			valor = Integer.parseInt(linha);
 			contador = Integer.parseInt(valorIncrementado);
-			resultado = Integer.toString(valor+contador);
-			
-			//Método para escrever em arquivo do valor já incrementado.		
+			resultado = Integer.toString(valor + contador);
+
+			// Método para escrever em arquivo do valor já incrementado.
 			FileWriter canal = new FileWriter(
 					new File(diretorioPrincipal + subPastaProjeto + "\\" + nomeDoArquivo1 + ".txt"));
 			PrintWriter escrever = new PrintWriter(canal);
@@ -1431,7 +1436,7 @@ public class MetodosSiare {
 			guardaValor = resultado;
 			escrever.println(guardaValor);
 			escrever.close();
-		try {
+			try {
 				linha = ler.readLine();
 				while (linha != null) {
 					conteudo += linha + "\r\n";
@@ -1441,7 +1446,7 @@ public class MetodosSiare {
 
 			} catch (IOException ex) {
 				System.out.println("Erro: Não foi possivel ler arquivo!");
-			}catch (Exception ex) {
+			} catch (Exception ex) {
 				ex.printStackTrace();
 			}
 		} catch (FileNotFoundException ex) {
@@ -1449,8 +1454,8 @@ public class MetodosSiare {
 		}
 		return conteudo;
 	}
-	
-	/*
+
+	/**
 	 * Método que percorre a caixa de relatórios afim de localizar o relatório
 	 * informado, quando encontrado o sistema irá selecionar o registro e
 	 * acionar o botão infomado no parâmetro do método.
@@ -1520,7 +1525,7 @@ public class MetodosSiare {
 			}
 		} while (!achou);
 	}
-	      
+
 	/**
 	 ***************************** METODOS DEFINIDOS E JÁ UTLIZADOS NO ARCHETYPE*****************************
 	 */
@@ -1542,7 +1547,6 @@ public class MetodosSiare {
 	 * 
 	 * @Author Fábio Heller
 	 */
-	@BeforeClass
 	public static void setAmbienteSol() {
 		driver = SeleniumSol.getDriver();
 		wait = new WebDriverWait(driver, 30);
@@ -1550,7 +1554,6 @@ public class MetodosSiare {
 		driver.manage().window().maximize();
 	}
 
-	@BeforeClass
 	public static void setAmbienteSicaf() {
 		driver = SeleniumSicaf.getDriver();
 		wait = new WebDriverWait(driver, 30);
@@ -1566,8 +1569,7 @@ public class MetodosSiare {
 	 * @Author Antonio Bernardo
 	 */
 	public static Boolean isAllTestsExecution = true;
-
-	@AfterClass
+	
 	public static void quitAmbiente() throws Exception {
 		driver.quit();
 	}
