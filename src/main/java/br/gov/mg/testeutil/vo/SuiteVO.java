@@ -2,7 +2,7 @@ package br.gov.mg.testeutil.vo;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -18,7 +18,7 @@ public class SuiteVO {
 	private String nomeProjeto;
 	private Date dataInicioExecucao;
 	private Date dataFimExecucao;
-	private Map<String, ClasseDeTesteVO> classesDeTesteByName = new HashMap<String, ClasseDeTesteVO>();
+	private Map<String, ClasseDeTesteVO> classesDeTesteByName = new LinkedHashMap<String, ClasseDeTesteVO>();
 	private List<ExceptionVO> exceptions;
 	private QuantitativoRunVO quantitativoRunVO = new QuantitativoRunVO();
 

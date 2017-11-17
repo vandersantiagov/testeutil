@@ -4,7 +4,7 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -86,7 +86,7 @@ public class ClasseDeTesteVO {
 
 	public Map<String, BigDecimal> getTempoPorClasse() {
 		if (tempoPorClasse == null) {
-			tempoPorClasse = new HashMap<String, BigDecimal>();
+			tempoPorClasse = new LinkedHashMap<String, BigDecimal>();
 		}
 		return tempoPorClasse;
 	}

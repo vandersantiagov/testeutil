@@ -2,7 +2,7 @@ package br.gov.mg.testeutil.vo;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -10,7 +10,7 @@ import br.gov.mg.testeutil.util.DateUtil;
 
 public class SuitePrincipalVO {
 	private boolean isSuitePrincipal;
-	private Map<KeyMapVO<String, String>, SuiteVO> suitesFilhasByNome = new HashMap<KeyMapVO<String, String>, SuiteVO>();
+	private Map<KeyMapVO<String, String>, SuiteVO> suitesFilhasByNome = new LinkedHashMap<KeyMapVO<String, String>, SuiteVO>();
 	private Date dataInicioExecucao;
 	private Date dataFimExecucao;
 	private List<ExceptionVO> exceptions;

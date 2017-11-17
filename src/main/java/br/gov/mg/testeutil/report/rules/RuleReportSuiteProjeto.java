@@ -1,7 +1,7 @@
 package br.gov.mg.testeutil.report.rules;
 
 import java.util.Date;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 
 import org.apache.commons.lang3.BooleanUtils;
 import org.junit.runner.Description;
@@ -44,7 +44,7 @@ public class RuleReportSuiteProjeto {
 				try {
 					if (SuiteSiare.suitePrincipalVO.getSuitesFilhasByNome() == null) {
 						SuiteSiare.suitePrincipalVO
-								.setSuitesFilhasByNome(new HashMap<KeyMapVO<String, String>, SuiteVO>());
+								.setSuitesFilhasByNome(new LinkedHashMap<KeyMapVO<String, String>, SuiteVO>());
 					}
 					KeyMapVO<String, String> keyMap = new KeyMapVO<String, String>(suiteFilhaVO.getNomeProjeto(),
 							suiteFilhaVO.getNomeSuite());

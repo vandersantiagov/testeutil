@@ -2,7 +2,7 @@ package br.gov.mg.testeutil.report.html;
 
 import java.io.IOException;
 import java.util.Date;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 
 import br.gov.mg.testeutil.vo.KeyMapVO;
 import br.gov.mg.testeutil.vo.SuitePrincipalVO;
@@ -27,7 +27,7 @@ public class TestaHTML {
 		suiteVO.setNomeSuite("Suite Teste");
 
 		if (suitePrincipalVO.getSuitesFilhasByNome() == null) {
-			suitePrincipalVO.setSuitesFilhasByNome(new HashMap<KeyMapVO<String, String>, SuiteVO>());
+			suitePrincipalVO.setSuitesFilhasByNome(new LinkedHashMap<KeyMapVO<String, String>, SuiteVO>());
 		}
 
 		KeyMapVO<String, String> keySuite = new KeyMapVO<String, String>(suiteVO.getNomeProjeto(),

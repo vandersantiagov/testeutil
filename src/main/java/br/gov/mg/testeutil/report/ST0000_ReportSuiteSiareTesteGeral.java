@@ -5,7 +5,7 @@ import org.junit.BeforeClass;
 
 import br.gov.mg.testeutil.report.rules.SuiteSiare;
 
-public class ST0000_ReportSuiteSiareTeste {
+public class ST0000_ReportSuiteSiareTesteGeral {
 
 	@BeforeClass
 	public static void beforeClass() {
