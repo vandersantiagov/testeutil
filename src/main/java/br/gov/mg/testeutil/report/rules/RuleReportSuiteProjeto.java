@@ -2,8 +2,8 @@ package br.gov.mg.testeutil.report.rules;
 
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Objects;
 
+import org.apache.commons.lang3.BooleanUtils;
 import org.junit.runner.Description;
 
 import br.gov.mg.testeutil.vo.KeyMapVO;
@@ -20,12 +20,11 @@ public class RuleReportSuiteProjeto {
 	public static String nomeSuite;
 	public static String nomeProjeto;
 	public static Date dateInicioSuiteTestes = new Date();
-	private static boolean isChamadaSuitePrincipal;
+	public static Boolean isChamadaSuitePrincipal;
 	public static Integer idSuiteFilha;
 
-	public static RuleReport startTestesSuiteFilha(Integer idSuite_) {
-		idSuiteFilha = idSuite_;
-		SuiteSiare.startReport(idSuite_);
+	public static RuleReport startTestesSuiteFilha() {
+		SuiteSiare.startReport();
 
 		return new RuleReport(true) {
 
@@ -53,8 +52,8 @@ public class RuleReportSuiteProjeto {
 					SuiteSiare.suitePrincipalVO.getSuitesFilhasByNome().put(keyMap, suiteFilhaVO);
 
 					suiteFilhaVO.setDataFimExecucao(new Date());
-					if (Objects.equals(SuiteSiare.idSuite, idSuite_)) {
-						SuiteSiare.finalizeReport(idSuiteFilha);
+					if (BooleanUtils.isTrue(RuleReportSuiteProjeto.isChamadaSuitePrincipal)) {
+						SuiteSiare.finalizeReport();
 					}
 				} catch (Throwable e) {
 					SuiteSiare.addExceptionVO(e, suiteFilhaVO.getExceptions());

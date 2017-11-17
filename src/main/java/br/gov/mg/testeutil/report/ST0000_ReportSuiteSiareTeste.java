@@ -9,11 +9,11 @@ public class ST0000_ReportSuiteSiareTeste {
 
 	@BeforeClass
 	public static void beforeClass() {
-		SuiteSiare.startReport(Integer.valueOf(1));
+		SuiteSiare.startReport();
 	}
 
 	@AfterClass
 	public static void afterClass() throws Exception {
-		SuiteSiare.finalizeReport(Integer.valueOf(1));
+		SuiteSiare.finalizeReport();
 	}
 }

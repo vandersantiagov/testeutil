@@ -2,9 +2,9 @@ package br.gov.mg.testeutil.report.rules;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Objects;
 import java.util.regex.Pattern;
 
+import org.apache.commons.lang3.BooleanUtils;
 import org.junit.runner.Description;
 
 import br.gov.mg.testeutil.metodos.MetodosSiare;
@@ -18,17 +18,14 @@ import br.gov.mg.testeutil.vo.SuiteVO;
  * @author sandra.rodrigues
  */
 public class SuiteSiare {
-	public SuiteSiare() {
-	}
 
 	public static SuitePrincipalVO suitePrincipalVO;
 	public static List<SuiteVO> suites;
-	public static Integer idSuite;
 
-	public static void startReport(Integer idSuite_) {
+	public static void startReport() {
 		try {
-			if (idSuite == null) {
-				idSuite = idSuite_;
+			if (RuleReportSuiteProjeto.isChamadaSuitePrincipal == null) {
+				RuleReportSuiteProjeto.isChamadaSuitePrincipal = Boolean.TRUE;
 				suitePrincipalVO = new SuitePrincipalVO();
 				suitePrincipalVO.setQuantitativoRun(new QuantitativoRunVO());
 				suitePrincipalVO.setDataInicioExecucao(new Date());
@@ -39,16 +36,16 @@ public class SuiteSiare {
 		}
 	}
 
-	public static void finalizeReport(Integer idSuiteCall) throws Exception {
+	public static void finalizeReport() throws Exception {
 		try {
-			if (Objects.equals(idSuiteCall, idSuite)) {
+			if (BooleanUtils.isTrue(RuleReportSuiteProjeto.isChamadaSuitePrincipal)) {
 				quiteAmbiente();
 			}
 		} catch (Throwable e) {
 			addExceptionVO(e, suitePrincipalVO.getExceptions());
 		} finally {
 			try {
-				if (Objects.equals(idSuiteCall, idSuite)) {
+				if (BooleanUtils.isTrue(RuleReportSuiteProjeto.isChamadaSuitePrincipal)) {
 					Date dataFimExecucao = new Date();
 					suitePrincipalVO.setDataFimExecucao(dataFimExecucao);
 					ReportHTML.createHTML(suitePrincipalVO);
