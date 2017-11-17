@@ -12,13 +12,13 @@
 		<phantomjs.plugin.version>0.4</phantomjs.plugin.version>
 	</properties>
 
-	<dependencies>		
- 		<dependency>
+	<dependencies>
+		<dependency>
 			<groupId>org.seleniumhq.selenium</groupId>
 			<artifactId>selenium-remote-driver</artifactId>
 			<version>3.4.0</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.seleniumhq.selenium</groupId>
 			<artifactId>selenium-chrome-driver</artifactId>
@@ -43,22 +43,34 @@
 			<groupId>com.google.code.gson</groupId>
 			<artifactId>gson</artifactId>
 			<version>2.8.0</version>
-		</dependency>		
+		</dependency>
 		<dependency>
 			<groupId>org.apache.commons.net.ftp</groupId>
 			<artifactId>ftpclient</artifactId>
 			<version>1.4.1</version>
 		</dependency>
 		<dependency>
-	    	<groupId>com.codeborne</groupId>
-	    	<artifactId>phantomjsdriver</artifactId>
-	    	<version>1.4.0</version>
+			<groupId>com.codeborne</groupId>
+			<artifactId>phantomjsdriver</artifactId>
+			<version>1.4.0</version>
 		</dependency>
 		<dependency>
 			<groupId>com.lowagie</groupId>
 			<artifactId>itext</artifactId>
 			<version>1.3.1</version>
-		</dependency>		
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/javax.validation/validation-api -->
+		<dependency>
+			<groupId>javax.validation</groupId>
+			<artifactId>validation-api</artifactId>
+			<version>1.0.0.GA</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.apache.commons/commons-collections4 -->
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-collections4</artifactId>
+			<version>4.0</version>
+		</dependency>
 	</dependencies>
 	<parent>
 		<groupId>gov.sefmg</groupId>
