@@ -1171,7 +1171,7 @@ public class MetodosSiare {
 	public static void acessarMenuHomeAtendimentoEntregadeDocumentosResolucaodePendenciasPendenciasdeEsclarecimento(
 			String subPastaDiretorio, String nomeDoArquivoProtocolo) throws IOException {
 		MetodosSiare.umClique(ObjetosMetodosComuns.abaHomeSiareSICAF);
-		MetodosSiare.doisCliques(ObjetosMetodosComuns.menuAtendimento,
+		MetodosSiare.menuSubMenuNivel1(ObjetosMetodosComuns.menuAtendimento,
 				ObjetosMetodosComuns.submenuEntregadeDocumentosResolucaodePendencias);
 		MetodosSiare.validarTexto("Entrega de Documentos / Resolução de Pendências",
 				ObjetosMetodosComuns.textoTituloTelaEntregadeDocumentosResolucaodePendencias);
@@ -1222,7 +1222,7 @@ public class MetodosSiare {
 		String valorTotalDoDAE;
 		if (efetuarLoginELogoffComAdministrador)
 			MetodosSiare.logarComAdministrador();
-		MetodosSiare.doisCliques(ObjetosMetodosComuns.menuDocumentodeArrecadacaoDAE, ObjetosMetodosComuns.subMenuManutencaoDAE);
+		MetodosSiare.menuSubMenuNivel1(ObjetosMetodosComuns.menuDocumentodeArrecadacaoDAE, ObjetosMetodosComuns.subMenuManutencaoDAE);
 		MetodosSiare.inserirDadoNoCampo(lerArquivoTextoERetornaDadoDaPrimeiraLinha(subPastaDiretorio,
 				nomeDoArquivoProtocolo).replace(".", "").replace("-", ""), ObjetosMetodosComuns.campoProtocolo);
 		MetodosSiare.inserirDadoNoCampo(dataInicial, ObjetosMetodosComuns.campoPeriodoDeEmissaoInicial);
