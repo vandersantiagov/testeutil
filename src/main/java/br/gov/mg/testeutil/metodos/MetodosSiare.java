@@ -26,6 +26,7 @@ import com.lowagie.text.Paragraph;
 import com.lowagie.text.pdf.PdfWriter;
 import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
@@ -1524,6 +1525,26 @@ public class MetodosSiare {
 				}
 			}
 		} while (!achou);
+	}
+	
+	/**
+	 * Método que irá setar o atributo 'value' do elemento com um dado por meio do javaScript 
+	 * Para utilizar o método inserir Dado Pelo JavaScript é imprescindível que
+	 * seja informado o id do campo, se for informado um valor divergente do id
+	 * do campo, o JavascriptExecutor não vai encontrar o campo e
+	 * consequentemente não fará a inserção do dado
+	 * 
+	 * @param idCampo
+	 * @param valueDoCampo
+	 * @author Sandra Leodoro
+	 */
+	public static void inserirDadoNoCampoPeloValueDoElementoComJavaScript(By idCampo, String valueDoCampo) {
+		String texto = idCampo.toString();
+		String id = texto.replace(texto.substring(0, texto.indexOf(" ") + 1), "");
+		String script = "document.getElementById('" + id + "').value='" + valueDoCampo + "'";
+		JavascriptExecutor jse = (JavascriptExecutor) MetodosSiare.driver;
+		jse.executeScript(script);
+
 	}
 
 	/**
