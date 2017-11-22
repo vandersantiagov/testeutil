@@ -1073,7 +1073,7 @@ public class MetodosSiare {
 			if (element.isDisplayed())
 				visivel = true;
 		} catch (Exception e) {
-			System.out.println(e.getMessage());
+			e.printStackTrace();
 			visivel = false;
 		}
 		return visivel;
@@ -1110,7 +1110,7 @@ public class MetodosSiare {
 		try {
 			driver.switchTo().frame(driver.findElement(elemtentoFrame));
 		} catch (Exception e) {
-			System.out.println(e.getMessage());
+			e.printStackTrace();
 		}
 	}
 
@@ -1195,7 +1195,7 @@ public class MetodosSiare {
 	 * Método que auxilia a execução do método presumirDAEPeloNumeroDoProtocolo
 	 * @author Fábio Heller
 	 */
-	public static void presuncaoDeQuitacaoDeDocumentoDeArrecadacao(String valorDoDAE, boolean efetuarLoginELogoffComAdministrador) {
+	public static void presuncaoDeQuitacaoDeDocumentoDeArrecadacao(String valorDoDAE,boolean efetuarLoginELogoffComAdministrador) {
 		MetodosSiare.inserirDadoNoCampo(valorDoDAE, ObjetosMetodosComuns.campoValorDoDAE);
 		MetodosSiare.umClique(ObjetosMetodosComuns.campoBanco);
 		MetodosSiare.umClique(ObjetosMetodosComuns.campoSelecaoBanco);
@@ -1526,7 +1526,7 @@ public class MetodosSiare {
 			}
 		} while (!achou);
 	}
-	
+
 	/**
 	 * Método que irá setar o atributo 'value' do elemento com um dado por meio do javaScript 
 	 * Para utilizar o método inserir Dado Pelo JavaScript é imprescindível que
@@ -1590,7 +1590,7 @@ public class MetodosSiare {
 	 * @Author Antonio Bernardo
 	 */
 	public static Boolean isAllTestsExecution = true;
-	
+
 	public static void quitAmbiente() throws Exception {
 		driver.quit();
 	}
