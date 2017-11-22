@@ -3,7 +3,6 @@ package br.gov.mg.testeutil.report.rules;
 import java.util.Date;
 import java.util.LinkedHashMap;
 
-import org.apache.commons.lang3.BooleanUtils;
 import org.junit.runner.Description;
 
 import br.gov.mg.testeutil.vo.KeyMapVO;
@@ -20,12 +19,12 @@ public class RuleReportSuiteProjeto {
 	public static String nomeSuite;
 	public static String nomeProjeto;
 	public static Date dateInicioSuiteTestes = new Date();
-	public static Boolean isChamadaSuitePrincipal;
-	public static Integer idSuiteFilha;
+
+	public static boolean isSuiteTotal;
+	public static Integer idSuiteTotal;
 
 	public static RuleReport startTestesSuiteFilha() {
 		SuiteSiare.startReport();
-
 		return new RuleReport(true) {
 
 			@Override
@@ -33,6 +32,7 @@ public class RuleReportSuiteProjeto {
 				try {
 					suiteFilhaVO = new SuiteVO();
 					suiteFilhaVO.setQuantitativoRunVO(new QuantitativoRunVO());
+					dateInicioSuiteTestes = new Date();
 					suiteFilhaVO.setDataInicioExecucao(dateInicioSuiteTestes);
 				} catch (Throwable e) {
 					e.printStackTrace();
@@ -50,11 +50,7 @@ public class RuleReportSuiteProjeto {
 							suiteFilhaVO.getNomeSuite());
 
 					SuiteSiare.suitePrincipalVO.getSuitesFilhasByNome().put(keyMap, suiteFilhaVO);
-
-					suiteFilhaVO.setDataFimExecucao(new Date());
-					if (BooleanUtils.isTrue(RuleReportSuiteProjeto.isChamadaSuitePrincipal)) {
-						SuiteSiare.finalizeReport();
-					}
+					SuiteSiare.finalizeReport();
 				} catch (Throwable e) {
 					SuiteSiare.addExceptionVO(e, suiteFilhaVO.getExceptions());
 					e.printStackTrace();

@@ -10,7 +10,7 @@ import java.util.Locale;
  */
 public class DateUtil {
 
-	private Locale localeBR = new Locale("pt", "BR");
+	private static final Locale localeBR = new Locale("pt", "BR");
 
 	/**
 	 * yyyyMMdd
@@ -52,6 +52,22 @@ public class DateUtil {
 	 * 2017 16:38
 	 */
 	public static final String FORMATO_DATA5 = "dd 'de' MMMM 'de' yyyy HH:mm";
+
+	/**
+	 * dd 'de' MMMM 'de' yyyy HH:mm:ss
+	 * <br/>
+	 * Ex.: a hora 13/11/2017 16:38:00 será apresentada assim: 13 de Novembro de
+	 * 2017 16:38:00
+	 */
+	public static final String FORMATO_DATA6 = "dd 'de' MMMM 'de' yyyy HH:mm:ss";
+
+	/**
+	 * dd/mm/yyyy HH:mm:ss
+	 * <br/>
+	 * Ex.: a hora 13/11/2017 16:38:00 será apresentada assim: 13/11/2017
+	 * 16:38:00
+	 */
+	public static final String FORMATO_DATA7 = "dd/MM/yyyy HH:mm:ss";
 
 	private static SimpleDateFormat dateFormate;
 
@@ -104,12 +120,12 @@ public class DateUtil {
 		return dateFormate;
 	}
 
-	public void setDateFormateBR(SimpleDateFormat dateFormate, String formato) {
-		dateFormate = new SimpleDateFormat(formato, localeBR);
+	public static SimpleDateFormat getDateFormateByFormato(String formato) {
+		return new SimpleDateFormat(formato, localeBR);
 	}
 
-	public void setDateFormateBR(SimpleDateFormat dateFormate, String formato, Locale locale) {
-		dateFormate = new SimpleDateFormat(formato, locale);
+	public static SimpleDateFormat getDateFormateByFormatoAndLocale(String formato, Locale locale) {
+		return new SimpleDateFormat(formato, locale);
 	}
 
 	public static String getDataFormatadaByFormato(Date data, String formato) {
@@ -117,4 +133,36 @@ public class DateUtil {
 		return getDateFormate().format(data);
 	}
 
+	public static Date getDate(String dateString) {
+		try {
+			SimpleDateFormat dateFormateBR = getDateFormateByFormato(FORMATO_DATA7);
+			Date data = dateFormateBR.parse(dateString);
+			return data;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	public static Date getDate01011970() {
+		try {
+			SimpleDateFormat dateFormateBR = getDateFormateByFormato(FORMATO_DATA7);
+			Date data = dateFormateBR.parse("01/01/1970");
+			return data;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	public static Date getDate12123999() {
+		try {
+			SimpleDateFormat dateFormateBR = getDateFormateByFormato(FORMATO_DATA7);
+			Date data = dateFormateBR.parse("12/12/3999");
+			return data;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
 }

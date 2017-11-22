@@ -10,6 +10,7 @@ import br.gov.mg.testeutil.util.DateUtil;
 
 public class SuitePrincipalVO {
 	private boolean isSuitePrincipal;
+	private String nomeSuite;
 	private Map<KeyMapVO<String, String>, SuiteVO> suitesFilhasByNome = new LinkedHashMap<KeyMapVO<String, String>, SuiteVO>();
 	private Date dataInicioExecucao;
 	private Date dataFimExecucao;
@@ -22,6 +23,14 @@ public class SuitePrincipalVO {
 
 	public void setSuitePrincipal(boolean isSuitePrincipal) {
 		this.isSuitePrincipal = isSuitePrincipal;
+	}
+
+	public String getNomeSuite() {
+		return nomeSuite;
+	}
+
+	public void setNomeSuite(String nomeSuite) {
+		this.nomeSuite = nomeSuite;
 	}
 
 	public Map<KeyMapVO<String, String>, SuiteVO> getSuitesFilhasByNome() {

@@ -15,6 +15,18 @@ public class QuantitativoRunVO {
 	private int quantidadeSucesso;
 	private int quantidadeSkiped;
 
+	public QuantitativoRunVO() {
+	}
+
+	public QuantitativoRunVO(int quantidadeRun, int quantidadeFalha, int quantidadeErro, int quantidadeSucesso,
+			int quantidadeSkiped) {
+		this.quantidadeRun = quantidadeRun;
+		this.quantidadeFalha = quantidadeFalha;
+		this.quantidadeErro = quantidadeErro;
+		this.quantidadeSucesso = quantidadeSucesso;
+		this.quantidadeSkiped = quantidadeSkiped;
+	}
+
 	public int getQuantidadeRun() {
 		return quantidadeRun;
 	}

@@ -87,7 +87,8 @@ public class RuleReport extends TestWatcher {
 			classeDeTeste.getMetodos().add(metodo);
 			classeDeTeste.setDataFimExecucao(dataFimExecucao);
 			if (RuleReportSuiteProjeto.suiteFilhaVO.getClassesDeTesteByName() == null) {
-				RuleReportSuiteProjeto.suiteFilhaVO.setClassesDeTesteByName(new LinkedHashMap<String, ClasseDeTesteVO>());
+				RuleReportSuiteProjeto.suiteFilhaVO
+						.setClassesDeTesteByName(new LinkedHashMap<String, ClasseDeTesteVO>());
 			}
 			RuleReportSuiteProjeto.suiteFilhaVO.getClassesDeTesteByName().put(classeDeTeste.getNomeClasse(),
 					classeDeTeste);
@@ -152,8 +153,17 @@ public class RuleReport extends TestWatcher {
 
 			String identificacaoProblema = isFailed ? "FALHA " : "ERRO ";
 
-			MetodosSiare.capturaScreenDaTela(RuleReportSuiteProjeto.nomeSuite,
+			MetodosSiare.capturaScreenDaTela(RuleReportSuiteProjeto.nomeProjeto,
 					identificacaoProblema + description.getTestClass().getSimpleName());
+			// private static final String PATH_DIRETORIO_REPORT =
+			// FileUtil.getDiretorio(MetodosSiare.diretorioPrincipal, "Report");
+
+			// String pathProjeto = FileUtil.getDiretorio(PATH_DIRETORIO_REPORT
+			// + "\\", "Prints");
+			//
+			// MetodosSiare.capturaScreenDaTela(pathProjeto,
+			// identificacaoProblema +
+			// description.getTestClass().getSimpleName());
 
 			String caminhoPrint = MetodosSiare.diretorioPrincipal + RuleReportSuiteProjeto.nomeSuite + "\\"
 					+ identificacaoProblema + description.getTestClass().getSimpleName() + "." + TipoArquivoEnum.JPEG;

@@ -15,6 +15,7 @@ public class SuiteVO {
 
 	private boolean isSuitePrincipal;
 	private String nomeSuite;
+	private String nomeSuiteMae;
 	private String nomeProjeto;
 	private Date dataInicioExecucao;
 	private Date dataFimExecucao;
@@ -36,6 +37,14 @@ public class SuiteVO {
 
 	public void setNomeSuite(String nomeSuite) {
 		this.nomeSuite = nomeSuite;
+	}
+	
+	public String getNomeSuiteMae() {
+		return nomeSuiteMae;
+	}
+
+	public void setNomeSuiteMae(String nomeSuiteMae) {
+		this.nomeSuiteMae = nomeSuiteMae;
 	}
 
 	public String getNomeProjeto() {

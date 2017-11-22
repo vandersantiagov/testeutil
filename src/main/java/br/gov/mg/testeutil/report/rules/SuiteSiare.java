@@ -4,7 +4,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.regex.Pattern;
 
-import org.apache.commons.lang3.BooleanUtils;
 import org.junit.runner.Description;
 
 import br.gov.mg.testeutil.metodos.MetodosSiare;
@@ -21,15 +20,18 @@ public class SuiteSiare {
 
 	public static SuitePrincipalVO suitePrincipalVO;
 	public static List<SuiteVO> suites;
+	public static String nomePrimeiraSuite;
+	public static Integer idSuite = 0;
+	public static boolean quitAmbiente;
 
 	public static void startReport() {
 		try {
-			if (RuleReportSuiteProjeto.isChamadaSuitePrincipal == null) {
-				RuleReportSuiteProjeto.isChamadaSuitePrincipal = Boolean.TRUE;
+			if (suitePrincipalVO == null) {
 				suitePrincipalVO = new SuitePrincipalVO();
 				suitePrincipalVO.setQuantitativoRun(new QuantitativoRunVO());
 				suitePrincipalVO.setDataInicioExecucao(new Date());
 				suitePrincipalVO.setSuitePrincipal(true);
+				suitePrincipalVO.setNomeSuite(nomePrimeiraSuite);
 			}
 		} catch (Throwable e) {
 			addExceptionVO(e, suitePrincipalVO.getExceptions());
@@ -37,15 +39,17 @@ public class SuiteSiare {
 	}
 
 	public static void finalizeReport() throws Exception {
+		boolean suiteQueIniciouOsTestes = isSuiteQueIniciouOsTestes();
 		try {
-			if (BooleanUtils.isTrue(RuleReportSuiteProjeto.isChamadaSuitePrincipal)) {
-				quiteAmbiente();
+			if (suiteQueIniciouOsTestes && quitAmbiente) {
+				quitAmbiente();
 			}
 		} catch (Throwable e) {
 			addExceptionVO(e, suitePrincipalVO.getExceptions());
 		} finally {
 			try {
-				if (BooleanUtils.isTrue(RuleReportSuiteProjeto.isChamadaSuitePrincipal)) {
+				RuleReportSuiteProjeto.suiteFilhaVO.setDataFimExecucao(new Date());
+				if (suiteQueIniciouOsTestes) {
 					Date dataFimExecucao = new Date();
 					suitePrincipalVO.setDataFimExecucao(dataFimExecucao);
 					ReportHTML.createHTML(suitePrincipalVO);
@@ -56,7 +60,11 @@ public class SuiteSiare {
 		}
 	}
 
-	private static void quiteAmbiente() throws Exception {
+	public static boolean isSuiteQueIniciouOsTestes() {
+		return RuleReportSuiteProjeto.isSuiteTotal && idSuite == 0;
+	}
+
+	private static void quitAmbiente() throws Exception {
 		// Focar e fechar janela do Ambiente SICAF
 		MetodosSiare.setAmbienteSicaf();
 		MetodosSiare.quitAmbiente();
@@ -100,24 +108,22 @@ public class SuiteSiare {
 		return e instanceof AssertionError;
 	}
 
-	public static void setQuantitativoRunVOSuitePrincipal(QuantitativoRunVO quantitativoSuiteFilha,
-			QuantitativoRunVO quantitativoSuitePrincipal) {
+	public static void setQuantitativoRunVO(QuantitativoRunVO quantitativoOrigem,
+			QuantitativoRunVO quantitativoDestino) {
 
-		int countRun = quantitativoSuiteFilha.getQuantidadeRun() + quantitativoSuitePrincipal.getQuantidadeRun();
-		quantitativoSuitePrincipal.setQuantidadeRun(countRun);
+		int countRun = quantitativoOrigem.getQuantidadeRun() + quantitativoDestino.getQuantidadeRun();
+		quantitativoDestino.setQuantidadeRun(countRun);
 
-		int countErro = quantitativoSuiteFilha.getQuantidadeErro() + quantitativoSuitePrincipal.getQuantidadeErro();
-		quantitativoSuitePrincipal.setQuantidadeErro(countErro);
+		int countErro = quantitativoOrigem.getQuantidadeErro() + quantitativoDestino.getQuantidadeErro();
+		quantitativoDestino.setQuantidadeErro(countErro);
 
-		int countFailed = quantitativoSuiteFilha.getQuantidadeFalha() + quantitativoSuitePrincipal.getQuantidadeFalha();
-		quantitativoSuitePrincipal.setQuantidadeFalha(countFailed);
+		int countFailed = quantitativoOrigem.getQuantidadeFalha() + quantitativoDestino.getQuantidadeFalha();
+		quantitativoDestino.setQuantidadeFalha(countFailed);
 
-		int countSuccess = quantitativoSuiteFilha.getQuantidadeSucesso()
-				+ quantitativoSuitePrincipal.getQuantidadeSucesso();
-		quantitativoSuitePrincipal.setQuantidadeSucesso(countSuccess);
+		int countSuccess = quantitativoOrigem.getQuantidadeSucesso() + quantitativoDestino.getQuantidadeSucesso();
+		quantitativoDestino.setQuantidadeSucesso(countSuccess);
 
-		int countSkiped = quantitativoSuiteFilha.getQuantidadeSkiped()
-				+ quantitativoSuitePrincipal.getQuantidadeSkiped();
-		quantitativoSuitePrincipal.setQuantidadeSkiped(countSkiped);
+		int countSkiped = quantitativoOrigem.getQuantidadeSkiped() + quantitativoDestino.getQuantidadeSkiped();
+		quantitativoDestino.setQuantidadeSkiped(countSkiped);
 	}
 }

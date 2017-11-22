@@ -155,4 +155,65 @@ public class FileUtil {
 		File file = new File(caminhoArquivo + tipoArquivo.getTipoArquivo());
 		return file;
 	}
+
+	/**
+	 * Retorna o caminho do diretório (pasta) com o nome informado no parâmetro
+	 * "nomeDiretorio" e o caminho informado na variável local.
+	 * Caso o diretório não exista o mesmo é criado.
+	 * <br/>
+	 * <b>Atenção:</b> Caminho do diretório deve ser informado da seguinte
+	 * forma:
+	 * "Z:\\ArtefatosWebdriver\\", com duas contra-barras (barras invertidas
+	 * ("\\")).
+	 * Informando o local dessa forma a pasta será criada dentro de
+	 * ArtefatosWebdriver existente em "Z:".
+	 * 
+	 * @param local
+	 * @param nomeDiretorio
+	 * @return
+	 *
+	 * @author sandra.rodrigues
+	 *         16 de nov de 2017 08:45:34
+	 * @throws IOException
+	 *
+	 */
+	public static String getDiretorio(String local, String nomeDiretorio) throws IOException {
+		String pasta = local + nomeDiretorio;
+		// FileUtil.createPastaCaseNotExists(pasta);
+		createDiretorios(pasta);
+		return pasta;
+	}
+
+	/**
+	 * Cria arquivo.
+	 * 
+	 * @param caminhoArquivo
+	 * @param tipoArquivo
+	 * @return
+	 * @throws IOException
+	 *
+	 * @author sandra.rodrigues
+	 *         16 de nov de 2017 09:45:30
+	 *
+	 */
+	public static File createArquivo(String caminhoArquivo, TipoArquivoEnum tipoArquivo) throws IOException {
+		File file = new File(caminhoArquivo + tipoArquivo.getTipoArquivo());
+		return file;
+	}
+
+	/**
+	 * Cria arquivo.
+	 * 
+	 * @param caminhoArquivo
+	 * @param tipoArquivo
+	 * @return
+	 * @throws IOException
+	 *
+	 * @author sandra.rodrigues
+	 *         16 de nov de 2017 09:45:30
+	 *
+	 */
+	public static void createDiretorios(String caminhoArquivo) throws IOException {
+		Files.createDirectories(Paths.get(caminhoArquivo));
+	}
 }
