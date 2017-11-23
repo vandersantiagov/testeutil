@@ -1,5 +1,6 @@
 package br.gov.mg.testeutil.report.html;
 
+import java.io.File;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -12,6 +13,7 @@ import java.util.Objects;
 
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.collections4.MapUtils;
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import br.gov.mg.testeutil.report.rules.SuiteSiare;
@@ -30,6 +32,7 @@ import br.gov.mg.testeutil.vo.SuiteVO;
  */
 public class ReportHTML {
 
+	private static final String SEPARATOR_RESULT_FINAL = "======================================================================================";
 	private static final String FAILED = "FAILED";
 	private static final String SUCCESS = "SUCCESS";
 	private static final String ERRO = "ERRO";
@@ -42,6 +45,8 @@ public class ReportHTML {
 	private static final String TEXTO_SUITE = "Suite: ";
 	private static final String TEXTO_CLASSE = "Classe: ";
 	private static final String TEXTO_METODO = " Método: ";
+	private static final String TEXTO_NUMERO_FALHA = "Número de Falhas: ";
+	private static final String TEXTO_NUMERO_SUCESSO = "Número de Sucessos: ";
 
 	private static final String HTML_COLOR_SUCCESS = "#00AA00";
 	private static final String HTML_COLOR_FAILED = "#446691";
@@ -73,14 +78,17 @@ public class ReportHTML {
 
 	private static StringBuilder sbReportGeralSuite = new StringBuilder();
 	private static StringBuilder sbReportFalhaSuite = new StringBuilder();
+	private static int countFalhasSuites;
+	private static int countSucessoSuites;
 	// private static String diretorioPrints;
 
 	public static void createHTML(SuitePrincipalVO suitePrincipalVO) throws IOException {
 		String nomeProjetoAnterior = "";
 		SuiteVO suiteVO = null;
+		String[] caminhoFileGeralProjeto = null;
 
 		// Cria o arquivo html geral na pasta report.
-		FileHTML.createFilesGeral();
+		String[] caminhoFileGeral = FileHTML.createFilesGeral();
 
 		// Abre a tagHTML para os arquivos.
 		appendArquivosHTMLPastaReport();
@@ -105,26 +113,21 @@ public class ReportHTML {
 						sbReportGeralProjeto = new StringBuilder();
 						sbReportFalhaProjeto = new StringBuilder();
 						sbReportSucessoProjeto = new StringBuilder();
-						FileHTML.createFilesProjeto(key.getKey1());
+						caminhoFileGeralProjeto = FileHTML.createFilesProjeto(key.getKey1());
 						appendArquivosHTMLPastaProjeto(key.getKey1());
 					}
 				} else {
-					FileHTML.createFilesProjeto(key.getKey1());
+					caminhoFileGeralProjeto = FileHTML.createFilesProjeto(key.getKey1());
 					appendArquivosHTMLPastaProjeto(key.getKey1());
 				}
 
 				suiteVO = suiteByKey.getValue();
 				nomeProjetoAnterior = key.getKey1();
 				appendCabecalho(suitePrincipalVO, suiteVO);
-				appendClassesDeTeste(suiteVO);
+				appendClassesDeTeste(suiteVO, caminhoFileGeral, caminhoFileGeralProjeto);
 
 				SuiteSiare.setQuantitativoRunVO(suiteVO.getQuantitativoRunVO(), suitePrincipalVO.getQuantitativoRun());
 			}
-			// Date dataInicioExecucao =
-			// suiteVO.getClassesDeTesteByName().entrySet().stream()
-			// .map(u ->
-			// u.getValue().getDataInicioExecucao()).min(Date::compareTo).get();
-
 			appendResultRun(suiteVO.getQuantitativoRunVO(), suiteVO.getDataInicioExecucao(),
 					suiteVO.getDataFimExecucao(), sbReportGeralProjeto);
 
@@ -154,10 +157,12 @@ public class ReportHTML {
 				HTML_QUEBRA_LINHA);
 		appendReportGeral(SEPARADOR, HTML_QUEBRA_LINHA);
 
-		// Date dataInicioExecucao =
-		// suiteVO.getClassesDeTesteByName().entrySet().stream()
-		// .map(u ->
-		// u.getValue().getDataInicioExecucao()).min(Date::compareTo).get();
+		appendReportFalha(SEPARADOR, HTML_QUEBRA_LINHA);
+		appendReportFalha(HTML_OPEN_NEGRITO, TEXTO_PROJETO, HTML_CLOSE_NEGRITO, suiteVO.getNomeProjeto(),
+				HTML_QUEBRA_LINHA);
+		appendReportFalha(HTML_OPEN_NEGRITO, TEXTO_SUITE, HTML_CLOSE_NEGRITO, suiteVO.getNomeSuite(),
+				HTML_QUEBRA_LINHA);
+		appendReportFalha(SEPARADOR, HTML_QUEBRA_LINHA);
 
 		appendDataInicioTestesProjeto(suiteVO.getDataInicioExecucao());
 		appendReportGeralProjeto(HTML_OPEN_NEGRITO, TEXTO_SUITE_PRINCIPAL, HTML_CLOSE_NEGRITO,
@@ -168,19 +173,27 @@ public class ReportHTML {
 		appendReportGeralProjeto(HTML_OPEN_NEGRITO, TEXTO_SUITE, HTML_CLOSE_NEGRITO, suiteVO.getNomeSuite(),
 				HTML_QUEBRA_LINHA);
 		appendReportGeralProjeto(SEPARADOR, HTML_QUEBRA_LINHA);
+
+		appendReportFalhaProjeto(HTML_OPEN_NEGRITO, TEXTO_SUITE_PRINCIPAL, HTML_CLOSE_NEGRITO,
+				suitePrincipalVO.getNomeSuite(), HTML_QUEBRA_LINHA);
+		appendReportFalhaProjeto(SEPARADOR, HTML_QUEBRA_LINHA);
+		appendReportFalhaProjeto(HTML_OPEN_NEGRITO, TEXTO_PROJETO, HTML_CLOSE_NEGRITO, suiteVO.getNomeProjeto(),
+				HTML_QUEBRA_LINHA);
+		appendReportFalhaProjeto(HTML_OPEN_NEGRITO, TEXTO_SUITE, HTML_CLOSE_NEGRITO, suiteVO.getNomeSuite(),
+				HTML_QUEBRA_LINHA);
+		appendReportFalhaProjeto(SEPARADOR, HTML_QUEBRA_LINHA);
+
+		appendReportSucessoProjeto(HTML_OPEN_NEGRITO, TEXTO_SUITE_PRINCIPAL, HTML_CLOSE_NEGRITO,
+				suitePrincipalVO.getNomeSuite(), HTML_QUEBRA_LINHA);
+		appendReportSucessoProjeto(SEPARADOR, HTML_QUEBRA_LINHA);
+		appendReportSucessoProjeto(HTML_OPEN_NEGRITO, TEXTO_PROJETO, HTML_CLOSE_NEGRITO, suiteVO.getNomeProjeto(),
+				HTML_QUEBRA_LINHA);
+		appendReportSucessoProjeto(HTML_OPEN_NEGRITO, TEXTO_SUITE, HTML_CLOSE_NEGRITO, suiteVO.getNomeSuite(),
+				HTML_QUEBRA_LINHA);
+		appendReportSucessoProjeto(SEPARADOR, HTML_QUEBRA_LINHA);
 	}
 
 	private static void encerrarHTMLAnteriorProjeto(SuiteVO suiteVO) throws IOException {
-		// Date dataInicioExecucao =
-		// suiteVO.getClassesDeTesteByName().entrySet().stream()
-		// .map(u ->
-		// u.getValue().getDataInicioExecucao()).min(Date::compareTo).get();
-		//
-		// Date dataFimExecucao =
-		// suiteVO.getClassesDeTesteByName().entrySet().stream()
-		// .map(u ->
-		// u.getValue().getDataFimExecucao()).max(Date::compareTo).get();
-
 		appendResultRun(suiteVO.getQuantitativoRunVO(), suiteVO.getDataInicioExecucao(), suiteVO.getDataFimExecucao(),
 				sbReportGeralProjeto);
 		appendReportGeralProjeto(HTML_QUEBRA_LINHA, HTML_OPEN_NEGRITO, TEXTO_FIM_DOS_TESTES,
@@ -189,12 +202,13 @@ public class ReportHTML {
 		escreverArquivosHTMLProjeto();
 	}
 
-	public static void appendClassesDeTeste(SuiteVO suiteVO) throws IOException {
+	public static void appendClassesDeTeste(SuiteVO suiteVO, String[] caminhoFileGeral,
+			String[] caminhoFileGeralProjeto) throws IOException {
 		Map<String, ClasseDeTesteVO> classesDeTesteByName = suiteVO.getClassesDeTesteByName();
 		if (MapUtils.isNotEmpty(classesDeTesteByName)) {
 			String classeAnterior = "";
 			for (Entry<String, ClasseDeTesteVO> ct : classesDeTesteByName.entrySet()) {
-				classeAnterior = treathClasseDeTeste(classeAnterior, ct);
+				classeAnterior = treathClasseDeTeste(classeAnterior, ct, caminhoFileGeral, caminhoFileGeralProjeto);
 			}
 		}
 	}
@@ -205,8 +219,8 @@ public class ReportHTML {
 				HTML_QUEBRA_LINHA);
 	}
 
-	private static String treathClasseDeTeste(String classeAnterior, Entry<String, ClasseDeTesteVO> ct)
-			throws IOException {
+	private static String treathClasseDeTeste(String classeAnterior, Entry<String, ClasseDeTesteVO> ct,
+			String[] caminhoFileGeral, String[] caminhoFileGeralProjeto) throws IOException {
 		ClasseDeTesteVO classeDeTeste = ct.getValue();
 		List<MetodoClasseTesteVO> metodos = classeDeTeste.getMetodos();
 		// Só entra nesse local uma vez a cada nome de classe diferente
@@ -225,7 +239,7 @@ public class ReportHTML {
 		}
 		if (CollectionUtils.isNotEmpty(metodos)) {
 			for (MetodoClasseTesteVO metodo : metodos) {
-				treathMetodos(classeDeTeste, metodo);
+				treathMetodos(classeDeTeste, metodo, caminhoFileGeral, caminhoFileGeralProjeto);
 			}
 		}
 		return classeAnterior;
@@ -237,15 +251,16 @@ public class ReportHTML {
 		return valorArredondado.toString();
 	}
 
-	private static void treathMetodos(ClasseDeTesteVO classeDeTeste, MetodoClasseTesteVO metodo) throws IOException {
+	private static void treathMetodos(ClasseDeTesteVO classeDeTeste, MetodoClasseTesteVO metodo,
+			String[] caminhoFileGeral, String[] caminhoFileGeralProjeto) throws IOException {
 		String openFontSuccess = openFont(HTML_COLOR_SUCCESS, "", "");
 		String openFontErro = openFont(HTML_COLOR_ERRO, "", "");
 		String openFontFalha = openFont(HTML_COLOR_FAILED, "", "");
 		String openFontSkiped = openFont(HTML_COLOR_SKIPED, "", "");
 		if (metodo.isFalha()) {
-			treathFalhaAndErro(classeDeTeste, metodo, openFontFalha, FAILED);
+			treathFalhaAndErro(classeDeTeste, metodo, openFontFalha, FAILED, caminhoFileGeral, caminhoFileGeralProjeto);
 		} else if (metodo.isErro()) {
-			treathFalhaAndErro(classeDeTeste, metodo, openFontErro, ERRO);
+			treathFalhaAndErro(classeDeTeste, metodo, openFontErro, ERRO, caminhoFileGeral, caminhoFileGeralProjeto);
 		} else if (metodo.isSucess()) {
 			appendInformacoesMetodo(metodo, openFontSuccess, metodo.getNome(), SUCCESS);
 		} else if (metodo.isSkiped()) {
@@ -254,14 +269,14 @@ public class ReportHTML {
 	}
 
 	private static void treathFalhaAndErro(ClasseDeTesteVO classeDeTeste, MetodoClasseTesteVO metodo, String openFont,
-			String tipoMetodo) throws IOException {
+			String tipoMetodo, String[] caminhoFileGeral, String[] caminhoFileGeralProjeto) throws IOException {
 		appendInformacoesMetodo(metodo, openFont, metodo.getNome(), tipoMetodo);
 		if (CollectionUtils.isNotEmpty(metodo.getExceptions())) {
 			for (ExceptionVO exception : metodo.getExceptions()) {
 				appendException(exception, openFont);
 			}
 		}
-		appendLinkProvaException(metodo.getCaminhoPrintErro());
+		appendLinkProvaException(metodo.getCaminhoPrintErro(), caminhoFileGeral, caminhoFileGeralProjeto);
 	}
 
 	private static void appendInformacoesMetodo(MetodoClasseTesteVO metodo, String openFont, String nomeMetodo,
@@ -273,10 +288,12 @@ public class ReportHTML {
 				metodo.getTextoTempoTotalExecucaoEmSegundos() + HTML_CLOSE_SPAN + HTML_CLOSE_FONT + HTML_QUEBRA_LINHA);
 
 		if (SUCCESS.equals(tipoOcorrencia)) {
+			countSucessoSuites += 1;
 			appendReportSucessoProjeto(openFont, HTML_OPEN_SPAN, TEXTO_METODO, nomeMetodo,
 					metodo.getTextoTempoTotalExecucaoEmSegundos() + HTML_CLOSE_SPAN + HTML_CLOSE_FONT
 							+ HTML_QUEBRA_LINHA);
 		} else if (FAILED.equals(tipoOcorrencia) || ERRO.equals(tipoOcorrencia)) {
+			countFalhasSuites += 1;
 			appendReportFalha(openFont, HTML_OPEN_SPAN, TEXTO_METODO, nomeMetodo,
 					metodo.getTextoTempoTotalExecucaoEmSegundos() + HTML_CLOSE_SPAN + HTML_CLOSE_FONT
 							+ HTML_QUEBRA_LINHA);
@@ -298,14 +315,14 @@ public class ReportHTML {
 		sbTitulo.append("<span style='color:").append(HTML_COLOR_BLACK).append("'>Total testes: ");
 
 		StringBuilder sbCountFailed = new StringBuilder();
-		sbCountFailed.append(" Failures: ").append(quantidadeFalha);
+		sbCountFailed.append("Failures: ").append(quantidadeFalha);
 
 		StringBuilder sbCountErro = new StringBuilder();
-		sbCountErro.append(" Erro: ").append(quantidadeErro).append(HTML_CLOSE_SPAN);
+		sbCountErro.append("Erro: ").append(quantidadeErro).append(HTML_CLOSE_SPAN);
 
 		StringBuilder sbPercentualSuccess = new StringBuilder();
 		sbPercentualSuccess.append("Success: ")
-				.append(arredondaValor((Double.valueOf(quantidadeSucesso) / Double.valueOf(quantidadeRun)) * 100, 0))
+				.append(arredondaValor((Double.valueOf(quantidadeSucesso) / Double.valueOf(quantidadeRun)) * 100, 2))
 				.append(simboloPercentual);
 
 		StringBuilder sbPercentualFailed = new StringBuilder();
@@ -316,22 +333,28 @@ public class ReportHTML {
 		sbPercentualErro.append("Erro: ").append(getTotal(quantidadeRun, quantidadeErro)).append(simboloPercentual);
 
 		StringBuilder sbResultCount = new StringBuilder();
-		sbResultCount.append(sbTitulo.toString()).append(HTML_OPEN_P).append("Quantidade runs: ").append(quantidadeRun)
-				.append(sbCountFailed.toString()).append(sbCountErro.toString());
+		sbResultCount.append(sbTitulo.toString()).append(HTML_OPEN_P).append("  Quantidade: ").append(HTML_QUEBRA_LINHA)
+				.append(HTML_OPEN_SPAN).append("Runs: ").append(quantidadeRun).append(HTML_CLOSE_SPAN)
+				.append(HTML_QUEBRA_LINHA).append(HTML_OPEN_SPAN).append(sbCountFailed.toString())
+				.append(HTML_CLOSE_SPAN).append(HTML_QUEBRA_LINHA).append(HTML_OPEN_SPAN).append(sbCountErro.toString())
+				.append(HTML_CLOSE_SPAN);
 
 		StringBuilder sbResultPercentual = new StringBuilder();
-		sbResultPercentual.append(HTML_OPEN_P).append("Percentual : ").append(sbPercentualSuccess.toString())
-				.append(sbPercentualFailed.toString()).append(sbPercentualErro.toString());
+		sbResultPercentual.append(HTML_OPEN_P).append("  Percentual: ").append(HTML_QUEBRA_LINHA).append(HTML_OPEN_SPAN)
+				.append(sbPercentualSuccess.toString()).append(HTML_CLOSE_SPAN).append(HTML_QUEBRA_LINHA)
+				.append(HTML_OPEN_SPAN).append(sbPercentualFailed.toString()).append(HTML_CLOSE_SPAN)
+				.append(HTML_QUEBRA_LINHA).append(HTML_OPEN_SPAN).append(sbPercentualErro.toString())
+				.append(HTML_CLOSE_SPAN);
 
 		String duracaoTestes = getTotalDuracaoTestes(dataFim, dataInicio);
 
 		sb.append(HTML_QUEBRA_LINHA);
-		sb.append("======================================================================================");
+		sb.append(SEPARATOR_RESULT_FINAL);
 		sb.append(HTML_OPEN_PRE).append(sbResultCount.toString()).append(HTML_CLOSE_PRE).append(HTML_CLOSE_P);
 		sb.append(HTML_OPEN_PRE).append(sbResultPercentual.toString()).append(HTML_CLOSE_PRE).append(HTML_CLOSE_P);
 		sb.append("<pre>Tempo total execução dos testes: ").append(duracaoTestes).append(HTML_CLOSE_PRE)
 				.append(HTML_CLOSE_P);
-		sb.append("======================================================================================");
+		sb.append(SEPARATOR_RESULT_FINAL);
 	}
 
 	/**
@@ -397,7 +420,7 @@ public class ReportHTML {
 
 	private static BigDecimal getTotal(int totalTestesExecutados, int value) {
 		return BigDecimal.ZERO.equals(BigDecimal.valueOf(totalTestesExecutados)) ? BigDecimal.ZERO
-				: arredondaValor((100 * value) / totalTestesExecutados, 0);
+				: arredondaValor(Double.valueOf(100 * value) / totalTestesExecutados, 2);
 	}
 
 	private static BigDecimal arredondaValor(double valor, int casasDecimais) {
@@ -493,24 +516,48 @@ public class ReportHTML {
 
 	}
 
-	private static void appendLinkProvaException(String caminhoPrint) throws IOException {
-		// if (StringUtils.isNotBlank(diretorioPrints)) {
-		// String copyArquivo = FileUtil.copyArquivo(diretorioPrints,
-		// caminhoPrint);
-		// if (StringUtils.isNotBlank(copyArquivo)) {
-		// caminhoPrint = copyArquivo;
-		// }
-		// }
+	private static void appendLinkProvaException(String caminhoOrigemPrint, String[] caminhoFileGeral,
+			String[] caminhoFileGeralProjeto) throws IOException {
+
+		int lastIndexOf = 0;
+		String destinoArquivo = "";
+		String destinoPrint = "";
 		String href = "<a href='file:///";
 		String tituloPrint = "'>Print do Erro</a>";
-		sbReportGeral.append(href).append(caminhoPrint).append(tituloPrint).append(HTML_QUEBRA_LINHA);
-		sbReportFalha.append(href).append(caminhoPrint).append(tituloPrint).append(HTML_QUEBRA_LINHA);
 
-		sbReportGeralProjeto.append(href).append(caminhoPrint).append(tituloPrint).append(HTML_QUEBRA_LINHA);
-		sbReportFalhaProjeto.append(href).append(caminhoPrint).append(tituloPrint).append(HTML_QUEBRA_LINHA);
+		String caminhoReportGeral = caminhoFileGeral[0];
+		lastIndexOf = caminhoReportGeral.lastIndexOf("\\");
+		destinoPrint = caminhoReportGeral.substring(0, lastIndexOf + 1);
+		destinoArquivo = copyArquivo(caminhoOrigemPrint, destinoPrint);
+		sbReportGeral.append(href).append(destinoArquivo).append(tituloPrint).append(HTML_QUEBRA_LINHA);
 
-		sbReportGeralSuite.append(href).append(caminhoPrint).append(tituloPrint).append(HTML_QUEBRA_LINHA);
-		sbReportFalhaSuite.append(href).append(caminhoPrint).append(tituloPrint).append(HTML_QUEBRA_LINHA);
+		String caminhoReportFalha = caminhoFileGeral[1];
+		lastIndexOf = caminhoReportFalha.lastIndexOf("\\");
+		destinoPrint = caminhoReportFalha.substring(0, lastIndexOf + 1);
+		destinoArquivo = copyArquivo(caminhoOrigemPrint, destinoPrint);
+		sbReportFalha.append(href).append(destinoArquivo).append(tituloPrint).append(HTML_QUEBRA_LINHA);
+
+		String caminhoReportGeralProjeto = caminhoFileGeralProjeto[0];
+		lastIndexOf = caminhoReportGeralProjeto.lastIndexOf("\\");
+		destinoPrint = caminhoReportGeralProjeto.substring(0, lastIndexOf + 1);
+		destinoArquivo = copyArquivo(caminhoOrigemPrint, destinoPrint);
+		sbReportGeralProjeto.append(href).append(destinoArquivo).append(tituloPrint).append(HTML_QUEBRA_LINHA);
+
+		String caminhoReportFalhaProjeto = caminhoFileGeralProjeto[1];
+		lastIndexOf = caminhoReportFalhaProjeto.lastIndexOf("\\");
+		destinoPrint = caminhoReportFalhaProjeto.substring(0, lastIndexOf + 1);
+		destinoArquivo = copyArquivo(caminhoOrigemPrint, destinoPrint);
+		sbReportFalhaProjeto.append(href).append(destinoArquivo).append(tituloPrint).append(HTML_QUEBRA_LINHA);
+
+		sbReportGeralSuite.append(href).append(destinoArquivo).append(tituloPrint).append(HTML_QUEBRA_LINHA);
+		sbReportFalhaSuite.append(href).append(destinoArquivo).append(tituloPrint).append(HTML_QUEBRA_LINHA);
+	}
+
+	private static String copyArquivo(String origemPrint, String destinoPrint) throws IOException {
+		File destinoDir = new File(destinoPrint);
+		File srcFile = new File(origemPrint);
+		FileUtils.copyFileToDirectory(srcFile, destinoDir, true);
+		return destinoDir.getPath() + "\\" + srcFile.getName();
 	}
 
 	public static void escreverArquivosHTMLGeral() throws IOException {
@@ -531,11 +578,24 @@ public class ReportHTML {
 
 	public static void escreverArquivosHTMLProjeto() throws IOException {
 		if (StringUtils.isNotBlank(sbReportSucessoProjeto.toString())) {
+
+			appendReportSucessoProjeto(HTML_QUEBRA_LINHA, SEPARADOR);
+			appendReportSucessoProjeto(HTML_QUEBRA_LINHA, HTML_OPEN_NEGRITO, TEXTO_NUMERO_SUCESSO,
+					Integer.toString(countSucessoSuites), HTML_CLOSE_NEGRITO);
+			appendReportSucessoProjeto(HTML_QUEBRA_LINHA, SEPARADOR);
+			countSucessoSuites = 0;
+
 			appendReportSucessoProjeto(HTML_CLOSE_HTML);
 			FileHTML.escreverArquivoSucessoProjeto(sbReportSucessoProjeto.toString());
 			FileHTML.closeSucessoProjeto();
 		}
 		if (StringUtils.isNotBlank(sbReportFalhaProjeto.toString())) {
+			appendReportFalhaProjeto(HTML_QUEBRA_LINHA, SEPARADOR);
+			appendReportFalhaProjeto(HTML_QUEBRA_LINHA, HTML_OPEN_NEGRITO, TEXTO_NUMERO_FALHA,
+					Integer.toString(countFalhasSuites), HTML_CLOSE_NEGRITO);
+			appendReportFalhaProjeto(HTML_QUEBRA_LINHA, SEPARADOR);
+			countFalhasSuites = 0;
+
 			appendReportFalhaProjeto(HTML_CLOSE_HTML);
 			FileHTML.escreverArquivoFalhaProjeto(sbReportFalhaProjeto.toString());
 			FileHTML.closeFalhaProjeto();

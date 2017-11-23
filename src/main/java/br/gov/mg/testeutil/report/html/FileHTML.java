@@ -47,7 +47,8 @@ public class FileHTML {
 	public static BufferedWriter bwReportSucessoSuite;
 
 	/**
-	 * Cria arquivos dentro da pasta Report.
+	 * Cria arquivos dentro da pasta Report e retorna o caminho do relatorio
+	 * geral.
 	 * 
 	 * @throws IOException
 	 *
@@ -55,7 +56,7 @@ public class FileHTML {
 	 *         16 de nov de 2017 09:18:51
 	 *
 	 */
-	public static void createFilesGeral() throws IOException {
+	public static String[] createFilesGeral() throws IOException {
 		String dataFormatada = getDataFormatada(FORMATO_DATA_CRIACAO_ARQUIVO);
 		String caminhoArquivo = PATH_DIRETORIO_REPORT + DUAS_CONTRA_BARRAS + dataFormatada;
 		createDiretorios(caminhoArquivo);
@@ -66,10 +67,14 @@ public class FileHTML {
 		fileReportFalha = createArquivo(caminhoArquivo + DUAS_CONTRA_BARRAS + dataFormatada + FALHA,
 				TipoArquivoEnum.HTML);
 		bwReportFalha = new BufferedWriter(new FileWriter(fileReportFalha, true));
+
+		String path[] = { fileReportGeral.getPath(), fileReportFalha.getPath() };
+		return path;
 	}
 
 	/**
-	 * Cria arquivos dentro da pasta projeto.
+	 * Cria arquivos dentro da pasta projeto e retorna o caminho do relatorio
+	 * geral.
 	 * 
 	 * @param nomeProjeto
 	 * @throws IOException
@@ -78,7 +83,7 @@ public class FileHTML {
 	 *         16 de nov de 2017 09:19:09
 	 *
 	 */
-	public static void createFilesProjeto(String nomeProjeto) throws IOException {
+	public static String[] createFilesProjeto(String nomeProjeto) throws IOException {
 		String dataFormatada = getDataFormatada(FORMATO_DATA_CRIACAO_ARQUIVO);
 		String caminhoArquivo = PATH_DIRETORIO_REPORT + DUAS_CONTRA_BARRAS + nomeProjeto + DUAS_CONTRA_BARRAS
 				+ dataFormatada;
@@ -94,6 +99,10 @@ public class FileHTML {
 		fileReportSucessoProjeto = createArquivo(caminhoArquivo + DUAS_CONTRA_BARRAS + dataFormatada + SUCESSO,
 				TipoArquivoEnum.HTML);
 		bwReportSucessoProjeto = new BufferedWriter(new FileWriter(fileReportSucessoProjeto, true));
+
+		String path[] = { fileReportGeralProjeto.getPath(), fileReportFalhaProjeto.getPath() };
+
+		return path;
 	}
 
 	/**

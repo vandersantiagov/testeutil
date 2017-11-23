@@ -1,5 +1,6 @@
 package br.gov.mg.testeutil.report.rules;
 
+import java.io.File;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.Date;
@@ -12,7 +13,6 @@ import org.junit.rules.TestWatcher;
 import org.junit.runner.Description;
 import org.junit.runners.model.Statement;
 
-import br.gov.mg.testeutil.enums.TipoArquivoEnum;
 import br.gov.mg.testeutil.metodos.MetodosSiare;
 import br.gov.mg.testeutil.vo.ClasseDeTesteVO;
 import br.gov.mg.testeutil.vo.ExceptionVO;
@@ -153,27 +153,14 @@ public class RuleReport extends TestWatcher {
 
 			String identificacaoProblema = isFailed ? "FALHA " : "ERRO ";
 
-			MetodosSiare.capturaScreenDaTela(RuleReportSuiteProjeto.nomeProjeto,
-					identificacaoProblema + description.getTestClass().getSimpleName());
-			// private static final String PATH_DIRETORIO_REPORT =
-			// FileUtil.getDiretorio(MetodosSiare.diretorioPrincipal, "Report");
-
-			// String pathProjeto = FileUtil.getDiretorio(PATH_DIRETORIO_REPORT
-			// + "\\", "Prints");
-			//
-			// MetodosSiare.capturaScreenDaTela(pathProjeto,
-			// identificacaoProblema +
-			// description.getTestClass().getSimpleName());
-
-			String caminhoPrint = MetodosSiare.diretorioPrincipal + RuleReportSuiteProjeto.nomeSuite + "\\"
-					+ identificacaoProblema + description.getTestClass().getSimpleName() + "." + TipoArquivoEnum.JPEG;
-
+			String fileName = identificacaoProblema + description.getTestClass().getSimpleName();
+			File fileCriado = MetodosSiare.capturaScreenDaTela(RuleReportSuiteProjeto.nomeProjeto, fileName);
 			setNomeMetodo(description);
 			setDescripcion(description);
 			setNomeProjeto();
 			setDataFimExecucaoMetodo();
 			addException(e, metodo.getExceptions());
-			metodo.setCaminhoPrintErro(caminhoPrint);
+			metodo.setCaminhoPrintErro(fileCriado.getPath());
 
 			if (isFailed) {
 				countFailed();

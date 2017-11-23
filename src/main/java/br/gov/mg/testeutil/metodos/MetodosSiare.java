@@ -285,17 +285,19 @@ public class MetodosSiare {
 	 *            - Nome do arquivo
 	 * @Athor Antonio Bernardo e Fábio Heller
 	 */
-	public static void capturaScreenDaTela(String subPastaProjeto, String fileName) {
+	public static File capturaScreenDaTela(String subPastaProjeto, String fileName) {
 		File scrFile = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
 		try {
-			FileUtils.copyFile(scrFile, new File(diretorioPrincipal + subPastaProjeto + "\\" + fileName + ".jpeg"),
-					true);
+			File destFile = new File(diretorioPrincipal + subPastaProjeto + "\\" + fileName + ".jpeg");
+			FileUtils.copyFile(scrFile, destFile, true);
 			ObjetosMetodosComuns.contadorTelas++;
+			return destFile;
 		} catch (IOException e) {
 			e.printStackTrace();
 		} catch (Throwable e) {
 			e.printStackTrace();
 		}
+		return null;
 	}
 
 	/**
