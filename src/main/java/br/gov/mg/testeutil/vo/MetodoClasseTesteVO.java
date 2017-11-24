@@ -25,6 +25,8 @@ public class MetodoClasseTesteVO {
 	private boolean isFalha;
 	private boolean isSkiped;
 	private String caminhoPrintErro;
+	private String caminhoArquivoPilhaErro;
+	private String caminhoPrintPilhaErro;
 	private Description description;
 	private String nomeSuite;
 
@@ -110,7 +112,23 @@ public class MetodoClasseTesteVO {
 	public void setCaminhoPrintErro(String caminhoPrintErro) {
 		this.caminhoPrintErro = caminhoPrintErro;
 	}
-	
+
+	public String getCaminhoArquivoPilhaErro() {
+		return caminhoArquivoPilhaErro;
+	}
+
+	public void setCaminhoArquivoPilhaErro(String caminhoArquivoPilhaErro) {
+		this.caminhoArquivoPilhaErro = caminhoArquivoPilhaErro;
+	}
+
+	public String getCaminhoPrintPilhaErro() {
+		return caminhoPrintPilhaErro;
+	}
+
+	public void setCaminhoPrintPilhaErro(String caminhoPrintPilhaErro) {
+		this.caminhoPrintPilhaErro = caminhoPrintPilhaErro;
+	}
+
 	public Description getDescription() {
 		return description;
 	}

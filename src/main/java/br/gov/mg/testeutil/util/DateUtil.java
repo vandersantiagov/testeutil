@@ -24,7 +24,7 @@ public class DateUtil {
 	 * <br/>
 	 * Ex.: a hora 13/11/2017 16:38:00 será apresentada assim: 20171113 163800
 	 */
-	public static final String FORMATO_DATA1 = "yyyyMMdd HHmmss";
+	public static final String FORMATO_DATA1 = "yyyyMMdd_HHmmss";
 
 	/**
 	 * yyyyddMM

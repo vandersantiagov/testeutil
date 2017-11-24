@@ -76,8 +76,6 @@ public class ReportHTML {
 	private static StringBuilder sbReportFalhaProjeto = new StringBuilder();
 	private static StringBuilder sbReportSucessoProjeto = new StringBuilder();
 
-	private static StringBuilder sbReportGeralSuite = new StringBuilder();
-	private static StringBuilder sbReportFalhaSuite = new StringBuilder();
 	private static int countFalhasSuites;
 	private static int countSucessoSuites;
 	// private static String diretorioPrints;
@@ -276,7 +274,8 @@ public class ReportHTML {
 				appendException(exception, openFont);
 			}
 		}
-		appendLinkProvaException(metodo.getCaminhoPrintErro(), caminhoFileGeral, caminhoFileGeralProjeto);
+		appendLinkProvaException(metodo.getCaminhoPrintErro(), metodo.getCaminhoArquivoPilhaErro(),
+				metodo.getCaminhoPrintPilhaErro(), caminhoFileGeral, caminhoFileGeralProjeto);
 	}
 
 	private static void appendInformacoesMetodo(MetodoClasseTesteVO metodo, String openFont, String nomeMetodo,
@@ -516,46 +515,85 @@ public class ReportHTML {
 
 	}
 
-	private static void appendLinkProvaException(String caminhoOrigemPrint, String[] caminhoFileGeral,
-			String[] caminhoFileGeralProjeto) throws IOException {
+	private static void appendLinkProvaException(String caminhoOrigemPrint, String caminhoOrigemArquivoPilhaErro,
+			String caminhoPrintPilhaErro, String[] caminhoFileGeral, String[] caminhoFileGeralProjeto)
+			throws IOException {
 
-		int lastIndexOf = 0;
-		String destinoArquivo = "";
-		String destinoPrint = "";
+		String destinoArquivoPrintErro = "";
+		String destinoArquivoPilhaErro = "";
+		String destinoPrintPilhaErro = "";
 		String href = "<a href='file:///";
 		String tituloPrint = "'>Print do Erro</a>";
+		String tituloPilhaErro = "'>Pilha de Erro</a>";
+		String tituloPrintPilhaErro = "'>Print Pilha de Erro</a>";
 
 		String caminhoReportGeral = caminhoFileGeral[0];
-		lastIndexOf = caminhoReportGeral.lastIndexOf("\\");
-		destinoPrint = caminhoReportGeral.substring(0, lastIndexOf + 1);
-		destinoArquivo = copyArquivo(caminhoOrigemPrint, destinoPrint);
-		sbReportGeral.append(href).append(destinoArquivo).append(tituloPrint).append(HTML_QUEBRA_LINHA);
+		destinoArquivoPrintErro = treathDestinoArquivo(caminhoOrigemPrint, caminhoReportGeral);
+		sbReportGeral.append(href).append(destinoArquivoPrintErro).append(tituloPrint).append(HTML_QUEBRA_LINHA);
+		if (StringUtils.isNotBlank(caminhoOrigemArquivoPilhaErro)) {
+			destinoArquivoPilhaErro = treathDestinoArquivo(caminhoOrigemArquivoPilhaErro, caminhoReportGeral);
+			sbReportGeral.append(href).append(destinoArquivoPilhaErro).append(tituloPilhaErro)
+					.append(HTML_QUEBRA_LINHA);
+			destinoPrintPilhaErro = treathDestinoArquivo(caminhoPrintPilhaErro, caminhoReportGeral);
+			sbReportGeral.append(href).append(destinoPrintPilhaErro).append(tituloPrintPilhaErro)
+					.append(HTML_QUEBRA_LINHA);
+		}
 
 		String caminhoReportFalha = caminhoFileGeral[1];
-		lastIndexOf = caminhoReportFalha.lastIndexOf("\\");
-		destinoPrint = caminhoReportFalha.substring(0, lastIndexOf + 1);
-		destinoArquivo = copyArquivo(caminhoOrigemPrint, destinoPrint);
-		sbReportFalha.append(href).append(destinoArquivo).append(tituloPrint).append(HTML_QUEBRA_LINHA);
+		destinoArquivoPrintErro = treathDestinoArquivo(caminhoOrigemPrint, caminhoReportFalha);
+		sbReportFalha.append(href).append(destinoArquivoPrintErro).append(tituloPrint).append(HTML_QUEBRA_LINHA);
+		if (StringUtils.isNotBlank(caminhoOrigemArquivoPilhaErro)) {
+			destinoArquivoPilhaErro = treathDestinoArquivo(caminhoOrigemArquivoPilhaErro, caminhoReportFalha);
+			sbReportFalha.append(href).append(destinoArquivoPilhaErro).append(tituloPilhaErro)
+					.append(HTML_QUEBRA_LINHA);
+
+			destinoPrintPilhaErro = treathDestinoArquivo(caminhoPrintPilhaErro, caminhoReportFalha);
+			sbReportFalha.append(href).append(destinoPrintPilhaErro).append(tituloPrintPilhaErro)
+					.append(HTML_QUEBRA_LINHA);
+		}
 
 		String caminhoReportGeralProjeto = caminhoFileGeralProjeto[0];
-		lastIndexOf = caminhoReportGeralProjeto.lastIndexOf("\\");
-		destinoPrint = caminhoReportGeralProjeto.substring(0, lastIndexOf + 1);
-		destinoArquivo = copyArquivo(caminhoOrigemPrint, destinoPrint);
-		sbReportGeralProjeto.append(href).append(destinoArquivo).append(tituloPrint).append(HTML_QUEBRA_LINHA);
+		destinoArquivoPrintErro = treathDestinoArquivo(caminhoOrigemPrint, caminhoReportGeralProjeto);
+		sbReportGeralProjeto.append(href).append(destinoArquivoPrintErro).append(tituloPrint).append(HTML_QUEBRA_LINHA);
+		if (StringUtils.isNotBlank(caminhoOrigemArquivoPilhaErro)) {
+			destinoArquivoPilhaErro = treathDestinoArquivo(caminhoOrigemArquivoPilhaErro, caminhoReportGeralProjeto);
+			sbReportGeralProjeto.append(href).append(destinoArquivoPilhaErro).append(tituloPilhaErro)
+					.append(HTML_QUEBRA_LINHA);
+			destinoPrintPilhaErro = treathDestinoArquivo(caminhoPrintPilhaErro, caminhoReportGeralProjeto);
+			sbReportGeralProjeto.append(href).append(destinoPrintPilhaErro).append(tituloPrintPilhaErro)
+					.append(HTML_QUEBRA_LINHA);
+		}
 
 		String caminhoReportFalhaProjeto = caminhoFileGeralProjeto[1];
-		lastIndexOf = caminhoReportFalhaProjeto.lastIndexOf("\\");
-		destinoPrint = caminhoReportFalhaProjeto.substring(0, lastIndexOf + 1);
-		destinoArquivo = copyArquivo(caminhoOrigemPrint, destinoPrint);
-		sbReportFalhaProjeto.append(href).append(destinoArquivo).append(tituloPrint).append(HTML_QUEBRA_LINHA);
+		destinoArquivoPrintErro = treathDestinoArquivo(caminhoOrigemPrint, caminhoReportFalhaProjeto);
+		sbReportFalhaProjeto.append(href).append(destinoArquivoPrintErro).append(tituloPrint).append(HTML_QUEBRA_LINHA);
+		if (StringUtils.isNotBlank(caminhoOrigemArquivoPilhaErro)) {
+			destinoArquivoPilhaErro = treathDestinoArquivo(caminhoOrigemArquivoPilhaErro, caminhoReportFalhaProjeto);
+			sbReportFalhaProjeto.append(href).append(destinoArquivoPilhaErro).append(tituloPilhaErro)
+					.append(HTML_QUEBRA_LINHA);
+			destinoPrintPilhaErro = treathDestinoArquivo(caminhoPrintPilhaErro, caminhoReportFalhaProjeto);
+			sbReportFalhaProjeto.append(href).append(destinoPrintPilhaErro).append(tituloPrintPilhaErro)
+					.append(HTML_QUEBRA_LINHA);
+		}
 
-		sbReportGeralSuite.append(href).append(destinoArquivo).append(tituloPrint).append(HTML_QUEBRA_LINHA);
-		sbReportFalhaSuite.append(href).append(destinoArquivo).append(tituloPrint).append(HTML_QUEBRA_LINHA);
 	}
 
-	private static String copyArquivo(String origemPrint, String destinoPrint) throws IOException {
-		File destinoDir = new File(destinoPrint);
-		File srcFile = new File(origemPrint);
+	private static String treathDestinoArquivo(String caminhoOrigem, String caminhoDestino) throws IOException {
+		if (StringUtils.isBlank(caminhoOrigem)) {
+			return "";
+		}
+		int lastIndexOf = 0;
+		String destinoPrint = "";
+		String destinoArquivo = "";
+		lastIndexOf = caminhoDestino.lastIndexOf("\\");
+		destinoPrint = caminhoDestino.substring(0, lastIndexOf + 1);
+		destinoArquivo = copyArquivo(caminhoOrigem, destinoPrint);
+		return destinoArquivo;
+	}
+
+	private static String copyArquivo(String origem, String destino) throws IOException {
+		File destinoDir = new File(destino);
+		File srcFile = new File(origem);
 		FileUtils.copyFileToDirectory(srcFile, destinoDir, true);
 		return destinoDir.getPath() + "\\" + srcFile.getName();
 	}

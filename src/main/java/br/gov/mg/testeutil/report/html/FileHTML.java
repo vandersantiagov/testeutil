@@ -1,5 +1,8 @@
 package br.gov.mg.testeutil.report.html;
 
+import static br.gov.mg.testeutil.util.FileUtil.createArquivo;
+import static br.gov.mg.testeutil.util.FileUtil.createDiretorios;
+
 import java.awt.Desktop;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -10,7 +13,6 @@ import java.util.Date;
 import br.gov.mg.testeutil.enums.TipoArquivoEnum;
 import br.gov.mg.testeutil.metodos.MetodosSiare;
 import br.gov.mg.testeutil.util.DateUtil;
-import static br.gov.mg.testeutil.util.FileUtil.*;
 
 /**
  * @author sandra.rodrigues
@@ -19,9 +21,9 @@ public class FileHTML {
 
 	public static final String PATH_DIRETORIO_REPORT = MetodosSiare.diretorioPrincipal + "Report";
 	private static final String FORMATO_DATA_CRIACAO_ARQUIVO = DateUtil.FORMATO_DATA1;
-	private static final String GERAL = " Geral";
-	private static final String SUCESSO = " Sucesso";
-	private static final String FALHA = " Falha";
+	private static final String GERAL = "_Geral";
+	private static final String SUCESSO = "_Sucesso";
+	private static final String FALHA = "_Falha";
 	private static final String DUAS_CONTRA_BARRAS = "\\";
 
 	private static File fileReportGeral;
@@ -549,5 +551,26 @@ public class FileHTML {
 
 	public static void openReportGeralInBrowser() throws IOException {
 		Desktop.getDesktop().browse(fileReportGeral.toURI());
+	}
+
+	public static String generateHTMLByText(String path, String... conteudo) {
+		File filePilhaErro = null;
+		try {
+
+			filePilhaErro = createArquivo(path, TipoArquivoEnum.HTML);
+			BufferedWriter bwEscrever = new BufferedWriter(new FileWriter(filePilhaErro, true));
+
+			if (bwEscrever != null) {
+				for (String texto : conteudo) {
+					bwEscrever.write(texto);
+				}
+			}
+
+			bwEscrever.close();
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return filePilhaErro.getPath();
 	}
 }

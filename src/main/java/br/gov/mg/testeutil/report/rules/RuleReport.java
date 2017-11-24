@@ -14,6 +14,7 @@ import org.junit.runner.Description;
 import org.junit.runners.model.Statement;
 
 import br.gov.mg.testeutil.metodos.MetodosSiare;
+import br.gov.mg.testeutil.report.html.FileHTML;
 import br.gov.mg.testeutil.vo.ClasseDeTesteVO;
 import br.gov.mg.testeutil.vo.ExceptionVO;
 import br.gov.mg.testeutil.vo.MetodoClasseTesteVO;
@@ -144,6 +145,9 @@ public class RuleReport extends TestWatcher {
 	@Override
 	protected void failed(Throwable e, Description description) {
 		boolean isFailed = SuiteSiare.isFailed(e);
+		String identificacaoProblema = isFailed ? "FALHA_" : "ERRO_";
+
+		String fileName = identificacaoProblema + description.getTestClass().getSimpleName();
 		try {
 			if (isCallSuite) {
 				return;
@@ -151,9 +155,6 @@ public class RuleReport extends TestWatcher {
 			metodo.setFalha(isFailed);
 			metodo.setErro(!isFailed);
 
-			String identificacaoProblema = isFailed ? "FALHA " : "ERRO ";
-
-			String fileName = identificacaoProblema + description.getTestClass().getSimpleName();
 			File fileCriado = MetodosSiare.capturaScreenDaTela(RuleReportSuiteProjeto.nomeProjeto, fileName);
 			setNomeMetodo(description);
 			setDescripcion(description);
@@ -171,6 +172,28 @@ public class RuleReport extends TestWatcher {
 		} catch (Throwable e1) {
 			countErro();
 			addException(e1, metodo.getExceptions());
+		} finally {
+			try {
+				// MetodosSiare.validarTexto("Erro ao tentar exibir tela.",
+				// ObjetosReport.validarMensagemPilhaDeErro);
+				boolean verificaSeOElementoEstaVisivel = MetodosSiare
+						.verificaSeOElementoEstaVisivel(ObjetosReport.comandoDetalharPilhaDeErro);
+				if (verificaSeOElementoEstaVisivel) {
+					MetodosSiare.umClique(ObjetosReport.comandoDetalharPilhaDeErro);
+					String nameArquivo = fileName + "_Pilha_Erro";
+					File capturaScreenDaTela = MetodosSiare.capturaScreenDaTela(RuleReportSuiteProjeto.nomeProjeto,
+							nameArquivo);
+					String pageSource = MetodosSiare.driver.getPageSource();
+					String path = MetodosSiare.diretorioPrincipal + RuleReportSuiteProjeto.nomeProjeto + "\\"
+							+ nameArquivo;
+					String pathFilePilhaErro = FileHTML.generateHTMLByText(path, pageSource);
+
+					metodo.setCaminhoArquivoPilhaErro(pathFilePilhaErro);
+					metodo.setCaminhoPrintPilhaErro(capturaScreenDaTela.getPath());
+				}
+			} catch (Exception e2) {
+				e2.printStackTrace();
+			}
 		}
 	}
 
