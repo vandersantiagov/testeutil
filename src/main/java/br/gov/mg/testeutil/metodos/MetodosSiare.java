@@ -606,12 +606,13 @@ public class MetodosSiare {
 				// Falha no momento de criar o diretório
 			}
 			boolean achou = false;
+			int contador = 0;
 			do {
 				FileWriter canal = new FileWriter(
 						new File(diretorioPrincipal + subPastaProjeto + "\\" + nomeDoArquivo + ".txt"));
 				PrintWriter escrever = new PrintWriter(canal);
 				String guardaValor = null;
-				int contador = 0, limiteDoContador = 15;
+				int limiteDoContador = 15;
 				guardaValor = driver.findElement(objetoCopiar).getText();
 				String str = guardaValor;
 				if (!str.equals("")) {
