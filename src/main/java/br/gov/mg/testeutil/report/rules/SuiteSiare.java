@@ -8,6 +8,9 @@ import org.junit.runner.Description;
 
 import br.gov.mg.testeutil.metodos.MetodosSiare;
 import br.gov.mg.testeutil.report.html.ReportHTML;
+import br.gov.mg.testeutil.util.naoSiare.PropertyNaoSiare;
+import br.gov.mg.testeutil.util.sicaf.PropertySicaf;
+import br.gov.mg.testeutil.util.sol.PropertySol;
 import br.gov.mg.testeutil.vo.ExceptionVO;
 import br.gov.mg.testeutil.vo.QuantitativoRunVO;
 import br.gov.mg.testeutil.vo.SuitePrincipalVO;
@@ -65,12 +68,21 @@ public class SuiteSiare {
 	}
 
 	private static void quitAmbiente() throws Exception {
-		// Focar e fechar janela do Ambiente SICAF
-		MetodosSiare.setAmbienteSicaf();
-		MetodosSiare.quitAmbiente();
-		// Focar e fechar janela do Ambiente SOL
-		MetodosSiare.setAmbienteSol();
-		MetodosSiare.quitAmbiente();
+		if (PropertySicaf.ambienteSICAF) {
+			// Focar e fechar janela do Ambiente SICAF
+			MetodosSiare.setAmbienteSicaf();
+			MetodosSiare.quitAmbiente();
+		}
+		if (PropertySol.ambienteSOL) {
+			// Focar e fechar janela do Ambiente SOL
+			MetodosSiare.setAmbienteSol();
+			MetodosSiare.quitAmbiente();
+		}
+		if (PropertyNaoSiare.ambienteNAOSIARE) {
+			// Focar e fechar janela do Ambiente Não Siare
+			MetodosSiare.setAmbienteNaoSiare();
+			MetodosSiare.quitAmbiente();
+		}
 	}
 
 	public static void addExceptionVO(Throwable e, List<ExceptionVO> exceptions) {

@@ -1,4 +1,4 @@
-package br.gov.mg.testeutil.util.sol;
+package br.gov.mg.testeutil.util.naoSiare;
 
 import java.io.IOException;
 import java.util.Properties;
@@ -6,15 +6,15 @@ import java.util.Properties;
 /**
 * @author Antonio Bernardo
 * Define o caminho do driver dos diferentes browsers
-* Acessa as configura��es definidas no config.properties e retorna a informa��o 
+* Acessa as configurações definidas no config.properties e retorna a informação 
 */
-public abstract class PropertySol {
+public abstract class PropertyNaoSiare {
 	public static final String BROWSER_NAME;
 	public static final String BROWSER_VERSION;
 	public static final String SITE_ADDRESS;
-	public static Boolean ambienteSOL = false;
+	public static Boolean ambienteNAOSIARE = false;
 	
-	private static final String PROPERTIES_FILE = "br/gov/siare/configSol.properties";
+	private static final String PROPERTIES_FILE = "br/gov/naosiare/configNaoSiare.properties";
 	
 	static{
 		BROWSER_NAME = get("browser.name");
@@ -30,7 +30,7 @@ public abstract class PropertySol {
 		Properties properties = new Properties();
 		String value = null;
 		try {
-			properties.load(PropertySol.class.getClassLoader().getResourceAsStream(PROPERTIES_FILE));
+			properties.load(PropertyNaoSiare.class.getClassLoader().getResourceAsStream(PROPERTIES_FILE));
 		    value = properties.getProperty(name);
 		} catch (IOException e) {
 			System.out.println("Arquivo não encontrado test/resources/" + PROPERTIES_FILE);

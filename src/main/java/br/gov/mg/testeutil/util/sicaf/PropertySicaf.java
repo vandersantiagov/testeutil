@@ -12,6 +12,7 @@ public abstract class PropertySicaf {
 	public static final String BROWSER_NAME;
 	public static final String BROWSER_VERSION;
 	public static final String SITE_ADDRESS;
+	public static Boolean ambienteSICAF = false;
 	
 	private static final String PROPERTIES_FILE = "br/gov/siare/configSicaf.properties";
 	

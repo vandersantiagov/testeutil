@@ -38,6 +38,8 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import br.gov.mg.testeutil.objetos.ObjetosMetodosComuns;
 import br.gov.mg.testeutil.telas.login.ObjetosTelaLoginSicaf;
 import br.gov.mg.testeutil.util.FileUtil;
+import br.gov.mg.testeutil.util.naoSiare.PropertyNaoSiare;
+import br.gov.mg.testeutil.util.naoSiare.SeleniumNaoSiare;
 import br.gov.mg.testeutil.util.sicaf.PropertySicaf;
 import br.gov.mg.testeutil.util.sicaf.SeleniumSicaf;
 import br.gov.mg.testeutil.util.sol.PropertySol;
@@ -1565,7 +1567,7 @@ public class MetodosSiare {
 	public static WebDriverWait wait;
 
 	/**
-	 * Construtor que ira adicionar a instância do WebDriver para utilização dos
+	 * Construtor que ira adicionar a instância do WebDriver nos amientes para utilização dos scripts
 	 * métodos
 	 * 
 	 * @Author Fábio Heller
@@ -1575,6 +1577,7 @@ public class MetodosSiare {
 		wait = new WebDriverWait(driver, 30);
 		driver.navigate().to(PropertySol.SITE_ADDRESS);
 		driver.manage().window().maximize();
+		PropertySol.ambienteSOL = true;
 	}
 
 	public static void setAmbienteSicaf() {
@@ -1582,7 +1585,15 @@ public class MetodosSiare {
 		wait = new WebDriverWait(driver, 30);
 		driver.navigate().to(PropertySicaf.SITE_ADDRESS);
 		driver.manage().window().maximize();
+		PropertySicaf.ambienteSICAF = true;
+	}
 
+	public static void setAmbienteNaoSiare() {
+		driver = SeleniumNaoSiare.getDriver();
+		wait = new WebDriverWait(driver, 30);
+		driver.navigate().to(PropertyNaoSiare.SITE_ADDRESS);
+		driver.manage().window().maximize();
+		PropertyNaoSiare.ambienteNAOSIARE = true;
 	}
 
 	/**
