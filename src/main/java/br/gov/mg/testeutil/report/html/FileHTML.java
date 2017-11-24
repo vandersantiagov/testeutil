@@ -19,6 +19,19 @@ import br.gov.mg.testeutil.util.DateUtil;
  */
 public class FileHTML {
 
+	public static final String HTML_OPEN_HTML = "<html><head><meta charset='UTF-8'></head><body>";
+	public static final String HTML_CLOSE_HTML = "</body></html>";
+	public static final String HTML_QUEBRA_LINHA = "<br/>";
+	public static final String HTML_OPEN_NEGRITO = "<b>";
+	public static final String HTML_CLOSE_NEGRITO = "</b>";
+	public static final String HTML_OPEN_SPAN = "<span style='padding-left: 1cm;'>";
+	public static final String HTML_CLOSE_SPAN = "</span>";
+	public static final String HTML_OPEN_PRE = "<pre>";
+	public static final String HTML_CLOSE_PRE = "</pre>";
+	public static final String HTML_OPEN_P = "<p>";
+	public static final String HTML_CLOSE_P = "</p>";
+	public static final String HTML_CLOSE_FONT = "</font>";
+
 	public static final String PATH_DIRETORIO_REPORT = MetodosSiare.diretorioPrincipal + "Report";
 	private static final String FORMATO_DATA_CRIACAO_ARQUIVO = DateUtil.FORMATO_DATA1;
 	private static final String GERAL = "_Geral";

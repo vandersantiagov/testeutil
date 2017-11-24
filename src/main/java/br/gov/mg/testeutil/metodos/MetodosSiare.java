@@ -313,8 +313,8 @@ public class MetodosSiare {
 			File[] arquivos = pasta.listFiles();
 			for (File arquivo : arquivos) {
 				if (arquivo.getName().endsWith("jpeg") || arquivo.getName().endsWith("sql")
-						|| arquivo.getName().endsWith("out") || arquivo.getName().endsWith("txt")
-						|| arquivo.getName().endsWith("pdf")) {
+						|| arquivo.getName().endsWith("html") || arquivo.getName().endsWith("out")
+						|| arquivo.getName().endsWith("txt") || arquivo.getName().endsWith("pdf")) {
 					arquivo.delete();
 				}
 			}

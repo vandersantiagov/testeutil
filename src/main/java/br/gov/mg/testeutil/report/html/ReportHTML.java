@@ -26,6 +26,7 @@ import br.gov.mg.testeutil.vo.QuantitativoRunVO;
 import br.gov.mg.testeutil.vo.StackTraceElementVO;
 import br.gov.mg.testeutil.vo.SuitePrincipalVO;
 import br.gov.mg.testeutil.vo.SuiteVO;
+import static br.gov.mg.testeutil.report.html.FileHTML.*;
 
 /**
  * @author sandra.rodrigues
@@ -54,18 +55,6 @@ public class ReportHTML {
 	private static final String HTML_COLOR_SKIPED = "#CCCC00";
 	private static final String HTML_COLOR_BLACK = "#000000";
 	private static final String HTML_COLOR_BLUE = "#0000ff";
-	private static final String HTML_OPEN_HTML = "<html><head><meta charset='UTF-8'></head><body>";
-	private static final String HTML_CLOSE_HTML = "</body></html>";
-	private static final String HTML_QUEBRA_LINHA = "<br/>";
-	private static final String HTML_OPEN_NEGRITO = "<b>";
-	private static final String HTML_CLOSE_NEGRITO = "</b>";
-	private static final String HTML_OPEN_SPAN = "<span style='padding-left: 1cm;'>";
-	private static final String HTML_CLOSE_SPAN = "</span>";
-	private static final String HTML_OPEN_PRE = "<pre>";
-	private static final String HTML_CLOSE_PRE = "</pre>";
-	private static final String HTML_OPEN_P = "<p>";
-	private static final String HTML_CLOSE_P = "</p>";
-	private static final String HTML_CLOSE_FONT = "</font>";
 
 	private static final String SEPARADOR = "-----------------------------------------------------------------------------";
 
@@ -86,7 +75,7 @@ public class ReportHTML {
 		String[] caminhoFileGeralProjeto = null;
 
 		// Cria o arquivo html geral na pasta report.
-		String[] caminhoFileGeral = FileHTML.createFilesGeral();
+		String[] caminhoFileGeral = createFilesGeral();
 
 		// Abre a tagHTML para os arquivos.
 		appendArquivosHTMLPastaReport();
@@ -111,11 +100,11 @@ public class ReportHTML {
 						sbReportGeralProjeto = new StringBuilder();
 						sbReportFalhaProjeto = new StringBuilder();
 						sbReportSucessoProjeto = new StringBuilder();
-						caminhoFileGeralProjeto = FileHTML.createFilesProjeto(key.getKey1());
+						caminhoFileGeralProjeto = createFilesProjeto(key.getKey1());
 						appendArquivosHTMLPastaProjeto(key.getKey1());
 					}
 				} else {
-					caminhoFileGeralProjeto = FileHTML.createFilesProjeto(key.getKey1());
+					caminhoFileGeralProjeto = createFilesProjeto(key.getKey1());
 					appendArquivosHTMLPastaProjeto(key.getKey1());
 				}
 
@@ -601,15 +590,15 @@ public class ReportHTML {
 	public static void escreverArquivosHTMLGeral() throws IOException {
 		if (StringUtils.isNotBlank(sbReportFalha.toString())) {
 			appendReportFalha(HTML_CLOSE_HTML);
-			FileHTML.escreverArquivoFalha(sbReportFalha.toString());
-			FileHTML.closeFalha();
+			escreverArquivoFalha(sbReportFalha.toString());
+			closeFalha();
 		}
 		if (StringUtils.isNotBlank(sbReportGeral.toString())) {
 			appendReportGeral(getLegenda());
 			appendReportGeral(HTML_CLOSE_HTML);
-			FileHTML.escreverArquivoGeral(sbReportGeral.toString());
-			FileHTML.closePastaGeral();
-			FileHTML.openReportGeralInBrowser();
+			escreverArquivoGeral(sbReportGeral.toString());
+			closePastaGeral();
+			openReportGeralInBrowser();
 		}
 
 	}
@@ -624,8 +613,8 @@ public class ReportHTML {
 			countSucessoSuites = 0;
 
 			appendReportSucessoProjeto(HTML_CLOSE_HTML);
-			FileHTML.escreverArquivoSucessoProjeto(sbReportSucessoProjeto.toString());
-			FileHTML.closeSucessoProjeto();
+			escreverArquivoSucessoProjeto(sbReportSucessoProjeto.toString());
+			closeSucessoProjeto();
 		}
 		if (StringUtils.isNotBlank(sbReportFalhaProjeto.toString())) {
 			appendReportFalhaProjeto(HTML_QUEBRA_LINHA, SEPARADOR);
@@ -635,14 +624,14 @@ public class ReportHTML {
 			countFalhasSuites = 0;
 
 			appendReportFalhaProjeto(HTML_CLOSE_HTML);
-			FileHTML.escreverArquivoFalhaProjeto(sbReportFalhaProjeto.toString());
-			FileHTML.closeFalhaProjeto();
+			escreverArquivoFalhaProjeto(sbReportFalhaProjeto.toString());
+			closeFalhaProjeto();
 		}
 		if (StringUtils.isNotBlank(sbReportGeralProjeto.toString())) {
 			appendReportGeralProjeto(getLegenda());
 			appendReportGeralProjeto(HTML_CLOSE_HTML);
-			FileHTML.escreverArquivoGeralProjeto(sbReportGeralProjeto.toString());
-			FileHTML.closeGeralProjeto();
+			escreverArquivoGeralProjeto(sbReportGeralProjeto.toString());
+			closeGeralProjeto();
 		}
 	}
 

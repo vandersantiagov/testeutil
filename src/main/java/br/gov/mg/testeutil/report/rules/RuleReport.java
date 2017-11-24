@@ -12,6 +12,7 @@ import org.junit.internal.AssumptionViolatedException;
 import org.junit.rules.TestWatcher;
 import org.junit.runner.Description;
 import org.junit.runners.model.Statement;
+import org.openqa.selenium.By;
 
 import br.gov.mg.testeutil.metodos.MetodosSiare;
 import br.gov.mg.testeutil.report.html.FileHTML;
@@ -174,27 +175,99 @@ public class RuleReport extends TestWatcher {
 			addException(e1, metodo.getExceptions());
 		} finally {
 			try {
-				// MetodosSiare.validarTexto("Erro ao tentar exibir tela.",
-				// ObjetosReport.validarMensagemPilhaDeErro);
-				boolean verificaSeOElementoEstaVisivel = MetodosSiare
-						.verificaSeOElementoEstaVisivel(ObjetosReport.comandoDetalharPilhaDeErro);
-				if (verificaSeOElementoEstaVisivel) {
-					MetodosSiare.umClique(ObjetosReport.comandoDetalharPilhaDeErro);
-					String nameArquivo = fileName + "_Pilha_Erro";
-					File capturaScreenDaTela = MetodosSiare.capturaScreenDaTela(RuleReportSuiteProjeto.nomeProjeto,
-							nameArquivo);
-					String pageSource = MetodosSiare.driver.getPageSource();
-					String path = MetodosSiare.diretorioPrincipal + RuleReportSuiteProjeto.nomeProjeto + "\\"
-							+ nameArquivo;
-					String pathFilePilhaErro = FileHTML.generateHTMLByText(path, pageSource);
-
-					metodo.setCaminhoArquivoPilhaErro(pathFilePilhaErro);
-					metodo.setCaminhoPrintPilhaErro(capturaScreenDaTela.getPath());
+				By comandoDetalharPilhaDeErro = ObjetosReportDetalhesErro.comandoDetalharPilhaDeErro;
+				boolean isBtnDetalheVisible = MetodosSiare.verificaSeOElementoEstaVisivel(comandoDetalharPilhaDeErro);
+				if (isBtnDetalheVisible) {
+					treathPilhaErro(fileName, comandoDetalharPilhaDeErro);
 				}
 			} catch (Exception e2) {
 				e2.printStackTrace();
 			}
 		}
+	}
+
+	private void treathPilhaErro(String fileName, By comandoDetalharPilhaDeErro) {
+		MetodosSiare.umClique(comandoDetalharPilhaDeErro);
+		String nameArquivo = fileName + "_Pilha_Erro";
+		File capturaScreenDaTela = MetodosSiare.capturaScreenDaTela(RuleReportSuiteProjeto.nomeProjeto, nameArquivo);
+
+		StringBuilder sb = new StringBuilder();
+		sb.append(FileHTML.HTML_OPEN_HTML);
+		// Erro
+		fundoETextoCinza("Erro", sb);
+		String textoDoElemento = MetodosSiare.textoDoElemento(ObjetosReportDetalhesErro.mensagemErro);
+		sb.append(textoDoElemento);
+
+		// Dados do Erro
+		fundoETextoCinza("Dados do Erro", sb);
+		fundoCinzaTextoVermelho(MetodosSiare.textoDoElemento(ObjetosReportDetalhesErro.lblAplicacaoErro), sb);
+		fundoCinzaTextoSemFormatacao(MetodosSiare.textoDoElemento(ObjetosReportDetalhesErro.aplicacaoErro), sb);
+		fundoCinzaTextoVermelho(MetodosSiare.textoDoElemento(ObjetosReportDetalhesErro.lblModuloErro), sb);
+		fundoCinzaTextoSemFormatacao(MetodosSiare.textoDoElemento(ObjetosReportDetalhesErro.moduloErro), sb);
+		fundoCinzaTextoVermelho(MetodosSiare.textoDoElemento(ObjetosReportDetalhesErro.lblTelaErro), sb);
+		fundoCinzaTextoSemFormatacao(MetodosSiare.textoDoElemento(ObjetosReportDetalhesErro.telaErro), sb);
+		fundoCinzaTextoVermelho(MetodosSiare.textoDoElemento(ObjetosReportDetalhesErro.lblAcaoErro), sb);
+		fundoCinzaTextoSemFormatacao(MetodosSiare.textoDoElemento(ObjetosReportDetalhesErro.acaoErro), sb);
+
+		// Pilha de Erros
+		fundoCinzaEscuroTextoVermelho(MetodosSiare.textoDoElemento(ObjetosReportDetalhesErro.lblUFWStackTrace), sb);
+		sb.append(MetodosSiare.textoDoElemento(ObjetosReportDetalhesErro.UFWStackTrace));
+
+		// Java Stack Trace
+		fundoCinzaEscuroTextoVermelho(MetodosSiare.textoDoElemento(ObjetosReportDetalhesErro.lblJavaStackTrace), sb);
+		sb.append(MetodosSiare.textoDoElemento(ObjetosReportDetalhesErro.javaStackTrace));
+
+		sb.append(FileHTML.HTML_CLOSE_HTML);
+
+		String path = MetodosSiare.diretorioPrincipal + RuleReportSuiteProjeto.nomeProjeto + "\\" + nameArquivo;
+		String pathFilePilhaErro = FileHTML.generateHTMLByText(path, sb.toString());
+
+		metodo.setCaminhoArquivoPilhaErro(pathFilePilhaErro);
+		metodo.setCaminhoPrintPilhaErro(capturaScreenDaTela.getPath());
+	}
+
+	private void fundoETextoCinza(String textoCabecalho, StringBuilder sb) {
+
+		String colorCinzaBackground = "#EFEFEF";
+		String colorCinzaEscuroFonte = "#5F5F5F";
+
+		String corDeFundo = "background-color:";
+		String corDeFonte = "color:";
+
+		sb.append("<p style='").append(corDeFonte).append(colorCinzaEscuroFonte).append(" ; ").append(corDeFundo)
+				.append(colorCinzaBackground).append("'>").append(textoCabecalho).append("</p>");
+	}
+
+	private void fundoCinzaTextoVermelho(String textoCabecalho, StringBuilder sb) {
+
+		String colorCinzaBackground = "#EFEFEF";
+		String colorRedFonte = "#CC0000";
+
+		String corDeFundo = "background-color:";
+		String corDeFonte = "color:";
+
+		sb.append("<p style='").append(corDeFonte).append(colorRedFonte).append(" ; ").append(corDeFundo)
+				.append(colorCinzaBackground).append("'>").append(textoCabecalho).append("</p>");
+	}
+
+	private void fundoCinzaTextoSemFormatacao(String textoCabecalho, StringBuilder sb) {
+		String colorCinzaBackground = "#EFEFEF";
+		String corDeFundo = "background-color:";
+
+		sb.append("<p style='").append(corDeFundo).append(colorCinzaBackground).append("'>").append(textoCabecalho)
+				.append("</p>");
+	}
+
+	private void fundoCinzaEscuroTextoVermelho(String textoCabecalho, StringBuilder sb) {
+
+		String colorCinzaEscuroBackground = "#C0C0C0";
+		String colorRedFonte = "#CC0000";
+
+		String corDeFundo = "background-color:";
+		String corDeFonte = "color:";
+
+		sb.append("<p style='").append(corDeFonte).append(colorRedFonte).append(" ; ").append(corDeFundo)
+				.append(colorCinzaEscuroBackground).append("'>").append(textoCabecalho).append("</p>");
 	}
 
 	private void setDataFimExecucaoMetodo() {
