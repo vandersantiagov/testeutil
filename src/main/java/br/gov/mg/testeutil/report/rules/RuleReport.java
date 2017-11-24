@@ -200,15 +200,44 @@ public class RuleReport extends TestWatcher {
 
 		// Dados do Erro
 		fundoETextoCinza("Dados do Erro", sb);
+		sb.append(FileHTML.HTML_OPEN_TABLE_HTML);
+		sb.append(FileHTML.HTML_OPEN_TR_HTML);
+		sb.append(FileHTML.HTML_OPEN_TD_HTML);
 		fundoCinzaTextoVermelho(MetodosSiare.textoDoElemento(ObjetosReportDetalhesErro.lblAplicacaoErro), sb);
+		sb.append(FileHTML.HTML_CLOSE_TD_HTML);
+		sb.append(FileHTML.HTML_OPEN_TD_HTML);
 		fundoCinzaTextoSemFormatacao(MetodosSiare.textoDoElemento(ObjetosReportDetalhesErro.aplicacaoErro), sb);
-		fundoCinzaTextoVermelho(MetodosSiare.textoDoElemento(ObjetosReportDetalhesErro.lblModuloErro), sb);
-		fundoCinzaTextoSemFormatacao(MetodosSiare.textoDoElemento(ObjetosReportDetalhesErro.moduloErro), sb);
-		fundoCinzaTextoVermelho(MetodosSiare.textoDoElemento(ObjetosReportDetalhesErro.lblTelaErro), sb);
-		fundoCinzaTextoSemFormatacao(MetodosSiare.textoDoElemento(ObjetosReportDetalhesErro.telaErro), sb);
-		fundoCinzaTextoVermelho(MetodosSiare.textoDoElemento(ObjetosReportDetalhesErro.lblAcaoErro), sb);
-		fundoCinzaTextoSemFormatacao(MetodosSiare.textoDoElemento(ObjetosReportDetalhesErro.acaoErro), sb);
+		sb.append(FileHTML.HTML_CLOSE_TD_HTML);
+		sb.append(FileHTML.HTML_CLOSE_TR_HTML);
 
+		sb.append(FileHTML.HTML_OPEN_TR_HTML);
+		sb.append(FileHTML.HTML_OPEN_TD_HTML);
+		fundoCinzaTextoVermelho(MetodosSiare.textoDoElemento(ObjetosReportDetalhesErro.lblModuloErro), sb);
+		sb.append(FileHTML.HTML_CLOSE_TD_HTML);
+		sb.append(FileHTML.HTML_OPEN_TD_HTML);
+		fundoCinzaTextoSemFormatacao(MetodosSiare.textoDoElemento(ObjetosReportDetalhesErro.moduloErro), sb);
+		sb.append(FileHTML.HTML_CLOSE_TD_HTML);
+		sb.append(FileHTML.HTML_CLOSE_TR_HTML);
+
+		sb.append(FileHTML.HTML_OPEN_TR_HTML);
+		sb.append(FileHTML.HTML_OPEN_TD_HTML);
+		fundoCinzaTextoVermelho(MetodosSiare.textoDoElemento(ObjetosReportDetalhesErro.lblTelaErro), sb);
+		sb.append(FileHTML.HTML_CLOSE_TD_HTML);
+		sb.append(FileHTML.HTML_OPEN_TD_HTML);
+		fundoCinzaTextoSemFormatacao(MetodosSiare.textoDoElemento(ObjetosReportDetalhesErro.telaErro), sb);
+		sb.append(FileHTML.HTML_CLOSE_TD_HTML);
+		sb.append(FileHTML.HTML_CLOSE_TR_HTML);
+
+		sb.append(FileHTML.HTML_OPEN_TR_HTML);
+		sb.append(FileHTML.HTML_OPEN_TD_HTML);
+		fundoCinzaTextoVermelho(MetodosSiare.textoDoElemento(ObjetosReportDetalhesErro.lblAcaoErro), sb);
+		sb.append(FileHTML.HTML_CLOSE_TD_HTML);
+		sb.append(FileHTML.HTML_OPEN_TD_HTML);
+		fundoCinzaTextoSemFormatacao(MetodosSiare.textoDoElemento(ObjetosReportDetalhesErro.acaoErro), sb);
+		sb.append(FileHTML.HTML_CLOSE_TD_HTML);
+		sb.append(FileHTML.HTML_CLOSE_TR_HTML);
+
+		sb.append(FileHTML.HTML_CLOSE_TABLE_HTML);
 		// Pilha de Erros
 		fundoCinzaEscuroTextoVermelho(MetodosSiare.textoDoElemento(ObjetosReportDetalhesErro.lblUFWStackTrace), sb);
 		sb.append(MetodosSiare.textoDoElemento(ObjetosReportDetalhesErro.UFWStackTrace));
@@ -239,7 +268,6 @@ public class RuleReport extends TestWatcher {
 	}
 
 	private void fundoCinzaTextoVermelho(String textoCabecalho, StringBuilder sb) {
-
 		String colorCinzaBackground = "#EFEFEF";
 		String colorRedFonte = "#CC0000";
 

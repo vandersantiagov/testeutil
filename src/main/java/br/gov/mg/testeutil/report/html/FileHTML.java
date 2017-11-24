@@ -21,6 +21,12 @@ public class FileHTML {
 
 	public static final String HTML_OPEN_HTML = "<html><head><meta charset='UTF-8'></head><body>";
 	public static final String HTML_CLOSE_HTML = "</body></html>";
+	public static final String HTML_OPEN_TABLE_HTML = "<table border='0' bgcolor = 'EFEFEF' width='100.0%' height='20'>";
+	public static final String HTML_CLOSE_TABLE_HTML = "</table>";
+	public static final String HTML_OPEN_TR_HTML = "<tr>";
+	public static final String HTML_CLOSE_TR_HTML = "</tr>";
+	public static final String HTML_OPEN_TD_HTML = "<td>";
+	public static final String HTML_CLOSE_TD_HTML = "</td>";
 	public static final String HTML_QUEBRA_LINHA = "<br/>";
 	public static final String HTML_OPEN_NEGRITO = "<b>";
 	public static final String HTML_CLOSE_NEGRITO = "</b>";
