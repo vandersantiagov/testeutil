@@ -140,8 +140,11 @@ public class ObjetosMetodosComuns {
 	 * @author Antônio Bernardo
      */
     public static By checkEnviarAnalistaResponsavelSim = By.name("enviarAnalistaResp");
+    public static By campoAnalistaResponsavel = By.id("usuario.nome");
+    public static By opcaoAnalistaResp = By.xpath("html/body/div[3]/div[2]/div/div[2]/div/form/table[3]/tbody/tr[5]/td[2]/div/div[2]/span");
+    public static By campoAnalistaResp = By.xpath("html/body/div[3]/div[2]/div/div[2]/div/form/table[3]/tbody/tr[5]/td[2]/div/div[1]");
 
-	/**
+    /**
 	 * Tela do captcha
 	 */
 
