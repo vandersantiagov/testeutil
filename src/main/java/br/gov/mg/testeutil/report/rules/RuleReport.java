@@ -8,18 +8,21 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Objects;
 
+import org.apache.commons.lang3.StringUtils;
 import org.junit.internal.AssumptionViolatedException;
 import org.junit.rules.TestWatcher;
 import org.junit.runner.Description;
 import org.junit.runners.model.Statement;
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
 
 import br.gov.mg.testeutil.metodos.MetodosSiare;
 import br.gov.mg.testeutil.report.html.FileHTML;
-import br.gov.mg.testeutil.vo.ClasseDeTesteVO;
-import br.gov.mg.testeutil.vo.ExceptionVO;
-import br.gov.mg.testeutil.vo.MetodoClasseTesteVO;
-import br.gov.mg.testeutil.vo.QuantitativoRunVO;
+import br.gov.mg.testeutil.report.vo.ClasseDeTesteVO;
+import br.gov.mg.testeutil.report.vo.ExceptionVO;
+import br.gov.mg.testeutil.report.vo.MetodoClasseTesteVO;
+import br.gov.mg.testeutil.report.vo.QuantitativoRunVO;
+import br.gov.mg.testeutil.util.FileUtil;
 
 /**
  * @author sandra.rodrigues
@@ -94,9 +97,13 @@ public class RuleReport extends TestWatcher {
 			}
 			RuleReportSuiteProjeto.suiteFilhaVO.getClassesDeTesteByName().put(classeDeTeste.getNomeClasse(),
 					classeDeTeste);
+
 			super.finished(description);
 		} catch (Throwable e) {
 			e.printStackTrace();
+		} finally {
+			String fileName = description.getTestClass().getSimpleName();
+			treathPilhaErro(fileName);
 		}
 	}
 
@@ -121,6 +128,9 @@ public class RuleReport extends TestWatcher {
 		} catch (Throwable e1) {
 			countErro();
 			addException(e1, metodo.getExceptions());
+		} finally {
+			String fileName = "SUCESSO_" + description.getTestClass().getSimpleName();
+			treathPilhaErro(fileName);
 		}
 	}
 
@@ -140,6 +150,9 @@ public class RuleReport extends TestWatcher {
 		} catch (Throwable e1) {
 			countErro();
 			addException(e1, metodo.getExceptions());
+		} finally {
+			String fileName = "SKIPED_" + description.getTestClass().getSimpleName();
+			treathPilhaErro(fileName);
 		}
 	}
 
@@ -175,22 +188,62 @@ public class RuleReport extends TestWatcher {
 			addException(e1, metodo.getExceptions());
 		} finally {
 			try {
-				By comandoDetalharPilhaDeErro = ObjetosReportDetalhesErro.comandoDetalharPilhaDeErro;
-				boolean isBtnDetalheVisible = MetodosSiare.verificaSeOElementoEstaVisivel(comandoDetalharPilhaDeErro);
-				if (isBtnDetalheVisible) {
-					treathPilhaErro(fileName, comandoDetalharPilhaDeErro);
-				}
+				treathPilhaErro(fileName);
 			} catch (Exception e2) {
 				e2.printStackTrace();
 			}
 		}
 	}
 
-	private void treathPilhaErro(String fileName, By comandoDetalharPilhaDeErro) {
-		MetodosSiare.umClique(comandoDetalharPilhaDeErro);
-		String nameArquivo = fileName + "_Pilha_Erro";
-		File capturaScreenDaTela = MetodosSiare.capturaScreenDaTela(RuleReportSuiteProjeto.nomeProjeto, nameArquivo);
+	private void treathPilhaErro(String fileName) {
+		By comandoDetalharPilhaDeErro = ObjetosReportDetalhesErro.comandoDetalharPilhaDeErro;
+		if (isTelaErro(comandoDetalharPilhaDeErro)) {
+			MetodosSiare.umClique(comandoDetalharPilhaDeErro);
+			String nameArquivo = fileName + "_Pilha_Erro";
+			File capturaScreenDaTela = MetodosSiare.capturaScreenDaTela(RuleReportSuiteProjeto.nomeProjeto,
+					nameArquivo);
 
+			StringBuilder textoToHTML = createHTML();
+			StringBuilder textoToTxt = createTxt();
+
+			String path = MetodosSiare.diretorioPrincipal + RuleReportSuiteProjeto.nomeProjeto + "\\" + nameArquivo;
+			String pathFileHTMLPilhaErro = FileHTML.generateHTMLByText(path, textoToHTML.toString());
+			String pathFileTxtPilhaErro = FileUtil.generateTxtByText(path, textoToTxt.toString());
+
+			metodo.setCaminhoArquivoHTMLPilhaErro(pathFileHTMLPilhaErro);
+			metodo.setCaminhoArquivoTXTPilhaErro(pathFileTxtPilhaErro);
+			metodo.setCaminhoPrintPilhaErro(capturaScreenDaTela.getPath());
+		}
+	}
+
+	private boolean isTelaErro(By comandoDetalharPilhaDeErro) {
+		boolean isTelaErro = false;
+		boolean isVisibleFormErro = true;
+		try {
+			By nameFormErro = ObjetosReportDetalhesErro.nameFormErro;
+			try {
+				MetodosSiare.driver.findElement(nameFormErro);
+			} catch (Exception e) {
+				isVisibleFormErro = false;
+			}
+			boolean formErroContainsTextoErro = false;
+			if (isVisibleFormErro) {
+				WebElement findElement = MetodosSiare.driver.findElement(nameFormErro);
+				String textErro = findElement.getText();
+				formErroContainsTextoErro = StringUtils.containsIgnoreCase(textErro, "Erro");
+
+			boolean isBtnDetalheVisible = MetodosSiare.verificaSeOElementoEstaVisivel(comandoDetalharPilhaDeErro);
+
+			isTelaErro = isVisibleFormErro && isBtnDetalheVisible && formErroContainsTextoErro;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return isTelaErro;
+	}
+
+	private StringBuilder createHTML() {
 		StringBuilder sb = new StringBuilder();
 		sb.append(FileHTML.HTML_OPEN_HTML);
 		// Erro
@@ -238,49 +291,82 @@ public class RuleReport extends TestWatcher {
 		sb.append(FileHTML.HTML_CLOSE_TR_HTML);
 
 		sb.append(FileHTML.HTML_CLOSE_TABLE_HTML);
+
 		// Pilha de Erros
 		fundoCinzaEscuroTextoVermelho(MetodosSiare.textoDoElemento(ObjetosReportDetalhesErro.lblUFWStackTrace), sb);
 		sb.append(MetodosSiare.textoDoElemento(ObjetosReportDetalhesErro.UFWStackTrace));
 
 		// Java Stack Trace
 		fundoCinzaEscuroTextoVermelho(MetodosSiare.textoDoElemento(ObjetosReportDetalhesErro.lblJavaStackTrace), sb);
-		sb.append(MetodosSiare.textoDoElemento(ObjetosReportDetalhesErro.javaStackTrace));
+		String javaStackTrace = MetodosSiare.textoDoElemento(ObjetosReportDetalhesErro.javaStackTrace);
+		String javaStackTraceComQuebra = javaStackTrace.replace(" at ", " at <br/>");
+		sb.append(javaStackTraceComQuebra);
 
 		sb.append(FileHTML.HTML_CLOSE_HTML);
 
-		String path = MetodosSiare.diretorioPrincipal + RuleReportSuiteProjeto.nomeProjeto + "\\" + nameArquivo;
-		String pathFilePilhaErro = FileHTML.generateHTMLByText(path, sb.toString());
+		return sb;
+	}
 
-		metodo.setCaminhoArquivoPilhaErro(pathFilePilhaErro);
-		metodo.setCaminhoPrintPilhaErro(capturaScreenDaTela.getPath());
+	private StringBuilder createTxt() {
+		StringBuilder sb = new StringBuilder();
+		// Erro
+		sb.append("Erro").append("\n");
+		String textoDoElemento = MetodosSiare.textoDoElemento(ObjetosReportDetalhesErro.mensagemErro);
+		sb.append(textoDoElemento).append("\n\n");
+
+		// Dados do Erro
+		sb.append("Dados do Erro").append("\n");
+		sb.append(MetodosSiare.textoDoElemento(ObjetosReportDetalhesErro.lblAplicacaoErro)).append("			 ");
+		sb.append(MetodosSiare.textoDoElemento(ObjetosReportDetalhesErro.aplicacaoErro)).append("\n");
+
+		sb.append(MetodosSiare.textoDoElemento(ObjetosReportDetalhesErro.lblModuloErro)).append("				 ");
+		sb.append(MetodosSiare.textoDoElemento(ObjetosReportDetalhesErro.moduloErro)).append("\n");
+
+		sb.append(MetodosSiare.textoDoElemento(ObjetosReportDetalhesErro.lblTelaErro)).append("				 ");
+		sb.append(MetodosSiare.textoDoElemento(ObjetosReportDetalhesErro.telaErro)).append("\n");
+
+		sb.append(MetodosSiare.textoDoElemento(ObjetosReportDetalhesErro.lblAcaoErro)).append("				 ");
+		sb.append(MetodosSiare.textoDoElemento(ObjetosReportDetalhesErro.acaoErro)).append("\n\n");
+
+		// Pilha de Erros
+		sb.append(MetodosSiare.textoDoElemento(ObjetosReportDetalhesErro.lblUFWStackTrace)).append("\n");
+		sb.append(MetodosSiare.textoDoElemento(ObjetosReportDetalhesErro.UFWStackTrace)).append("\n\n");
+
+		// Java Stack Trace
+		sb.append(MetodosSiare.textoDoElemento(ObjetosReportDetalhesErro.lblJavaStackTrace)).append("\n");
+		String javaStackTrace = MetodosSiare.textoDoElemento(ObjetosReportDetalhesErro.javaStackTrace);
+		String javaStackTraceComQuebra = javaStackTrace.replace(" at ", " at \n");
+		sb.append(javaStackTraceComQuebra);
+		return sb;
 	}
 
 	private void fundoETextoCinza(String textoCabecalho, StringBuilder sb) {
-
-		String colorCinzaBackground = "#EFEFEF";
+		String colorCinzaEscuroBackground = "#C0C0C0";
 		String colorCinzaEscuroFonte = "#5F5F5F";
 
-		String corDeFundo = "background-color:";
 		String corDeFonte = "color:";
-
-		sb.append("<p style='").append(corDeFonte).append(colorCinzaEscuroFonte).append(" ; ").append(corDeFundo)
-				.append(colorCinzaBackground).append("'>").append(textoCabecalho).append("</p>");
+		String corDeFundo = "; background-color:";
+		String negrito = "; font-weight: bold";
+		String margin0 = "; margin:0px";
+		sb.append("<p style='").append(corDeFonte).append(colorCinzaEscuroFonte).append(corDeFundo)
+				.append(colorCinzaEscuroBackground).append(negrito).append(margin0).append("'>").append(textoCabecalho)
+				.append("</p>");
 	}
 
 	private void fundoCinzaTextoVermelho(String textoCabecalho, StringBuilder sb) {
 		String colorCinzaBackground = "#EFEFEF";
 		String colorRedFonte = "#CC0000";
 
-		String corDeFundo = "background-color:";
 		String corDeFonte = "color:";
+		String corDeFundo = "; background-color:";
 
-		sb.append("<p style='").append(corDeFonte).append(colorRedFonte).append(" ; ").append(corDeFundo)
-				.append(colorCinzaBackground).append("'>").append(textoCabecalho).append("</p>");
+		sb.append("<p style='").append(corDeFonte).append(colorRedFonte).append(corDeFundo).append(colorCinzaBackground)
+				.append("'>").append(textoCabecalho).append("</p>");
 	}
 
 	private void fundoCinzaTextoSemFormatacao(String textoCabecalho, StringBuilder sb) {
-		String colorCinzaBackground = "#EFEFEF";
 		String corDeFundo = "background-color:";
+		String colorCinzaBackground = "#EFEFEF";
 
 		sb.append("<p style='").append(corDeFundo).append(colorCinzaBackground).append("'>").append(textoCabecalho)
 				.append("</p>");
@@ -291,11 +377,14 @@ public class RuleReport extends TestWatcher {
 		String colorCinzaEscuroBackground = "#C0C0C0";
 		String colorRedFonte = "#CC0000";
 
-		String corDeFundo = "background-color:";
+		String corDeFundo = "; background-color:";
 		String corDeFonte = "color:";
+		String negrito = "; font-weight: bold";
+		String margin0 = "; margin:0px";
 
-		sb.append("<p style='").append(corDeFonte).append(colorRedFonte).append(" ; ").append(corDeFundo)
-				.append(colorCinzaEscuroBackground).append("'>").append(textoCabecalho).append("</p>");
+		sb.append("<p style='").append(corDeFonte).append(colorRedFonte).append(corDeFundo)
+				.append(colorCinzaEscuroBackground).append(negrito).append(margin0).append("'>").append(textoCabecalho)
+				.append("</p>");
 	}
 
 	private void setDataFimExecucaoMetodo() {

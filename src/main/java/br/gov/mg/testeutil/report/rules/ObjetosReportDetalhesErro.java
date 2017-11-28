@@ -18,6 +18,18 @@ public class ObjetosReportDetalhesErro {
 	public static By comandoDetalharPilhaDeErro = By.name("btnDetalhes");
 
 	/**
+	 * Form Erro
+	 */
+
+	public static By nameFormErro = By.name("frmErro");
+
+	public static By xPathTituloErro = By
+			.xpath("//*[@id='containerConteudoPrincipal']/div/table/tbody/tr/td/table/tbody/tr/td");
+
+	public static By cssSelectorTituloErro = By
+			.xpath("#containerConteudoPrincipal > div > table > tbody > tr > td > table > tbody > tr > td");
+
+	/**
 	 * Conteudo Erro
 	 */
 	public static By mensagemErro = By.id("MENSAGEM_ERRO");

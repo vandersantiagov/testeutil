@@ -1,4 +1,4 @@
-package br.gov.mg.testeutil.vo;
+package br.gov.mg.testeutil.report.vo;
 
 import java.util.ArrayList;
 import java.util.List;

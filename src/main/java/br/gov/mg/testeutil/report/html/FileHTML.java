@@ -10,9 +10,12 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Date;
 
+import org.apache.commons.lang3.StringUtils;
+
 import br.gov.mg.testeutil.enums.TipoArquivoEnum;
 import br.gov.mg.testeutil.metodos.MetodosSiare;
 import br.gov.mg.testeutil.util.DateUtil;
+import br.gov.mg.testeutil.util.FileUtil;
 
 /**
  * @author sandra.rodrigues
@@ -40,6 +43,7 @@ public class FileHTML {
 
 	public static final String PATH_DIRETORIO_REPORT = MetodosSiare.diretorioPrincipal + "Report";
 	private static final String FORMATO_DATA_CRIACAO_ARQUIVO = DateUtil.FORMATO_DATA1;
+	private static final String PROJETO = "PROJETO_";
 	private static final String GERAL = "_Geral";
 	private static final String SUCESSO = "_Sucesso";
 	private static final String FALHA = "_Falha";
@@ -52,20 +56,12 @@ public class FileHTML {
 	private static File fileReportFalhaProjeto;
 	private static File fileReportSucessoProjeto;
 
-	private static File fileReportGeralSuite;
-	private static File fileReportFalhaSuite;
-	private static File fileReportSucessoSuite;
-
 	public static BufferedWriter bwReportPastaGeral;
 	public static BufferedWriter bwReportFalha;
 
 	public static BufferedWriter bwReportGeralProjeto;
 	public static BufferedWriter bwReportFalhaProjeto;
 	public static BufferedWriter bwReportSucessoProjeto;
-
-	public static BufferedWriter bwReportGeralSuite;
-	public static BufferedWriter bwReportFalhaSuite;
-	public static BufferedWriter bwReportSucessoSuite;
 
 	/**
 	 * Cria arquivos dentro da pasta Report e retorna o caminho do relatorio
@@ -77,9 +73,13 @@ public class FileHTML {
 	 *         16 de nov de 2017 09:18:51
 	 *
 	 */
-	public static String[] createFilesGeral() throws IOException {
+	protected static String[] createFilesGeral(String nomePastaProjetoPrincipal, String path) throws IOException {
+
 		String dataFormatada = getDataFormatada(FORMATO_DATA_CRIACAO_ARQUIVO);
 		String caminhoArquivo = PATH_DIRETORIO_REPORT + DUAS_CONTRA_BARRAS + dataFormatada;
+		if (StringUtils.isNotBlank(nomePastaProjetoPrincipal)) {
+			caminhoArquivo = path + DUAS_CONTRA_BARRAS + dataFormatada;
+		}
 		createDiretorios(caminhoArquivo);
 		fileReportGeral = createArquivo(caminhoArquivo + DUAS_CONTRA_BARRAS + dataFormatada + GERAL,
 				TipoArquivoEnum.HTML);
@@ -89,8 +89,24 @@ public class FileHTML {
 				TipoArquivoEnum.HTML);
 		bwReportFalha = new BufferedWriter(new FileWriter(fileReportFalha, true));
 
-		String path[] = { fileReportGeral.getPath(), fileReportFalha.getPath() };
+		String pathReturn[] = { fileReportGeral.getPath(), fileReportFalha.getPath() };
+		return pathReturn;
+	}
+
+	protected static String getPathReportGeral(String nomePastaProjetoPrincipal) {
+		String path = PATH_DIRETORIO_REPORT + DUAS_CONTRA_BARRAS;
+		if (StringUtils.isNotBlank(nomePastaProjetoPrincipal)) {
+			path = PATH_DIRETORIO_REPORT + DUAS_CONTRA_BARRAS + nomePastaProjetoPrincipal;
+		}
 		return path;
+	}
+
+	protected static void deleteArquivosDatasAntigas(String caminhoArquivo, boolean deletePastaProjeto) {
+		FileUtil.deleteArquivoByPath(new File(caminhoArquivo), deletePastaProjeto);
+		System.out.println("Número de arquivos deletados: " + FileUtil.getLogDelete().size());
+		for (String fileDeletado : FileUtil.getLogDelete()) {
+			System.out.println(fileDeletado);
+		}
 	}
 
 	/**
@@ -104,10 +120,13 @@ public class FileHTML {
 	 *         16 de nov de 2017 09:19:09
 	 *
 	 */
-	public static String[] createFilesProjeto(String nomeProjeto) throws IOException {
+	public static String[] createFilesProjeto(String nomeProjeto, String nomeProjetoPrincipal, String path)
+			throws IOException {
 		String dataFormatada = getDataFormatada(FORMATO_DATA_CRIACAO_ARQUIVO);
-		String caminhoArquivo = PATH_DIRETORIO_REPORT + DUAS_CONTRA_BARRAS + nomeProjeto + DUAS_CONTRA_BARRAS
-				+ dataFormatada;
+		String caminhoArquivo = path + DUAS_CONTRA_BARRAS + dataFormatada;
+		if (StringUtils.isNotBlank(nomeProjetoPrincipal)) {
+			caminhoArquivo = path + DUAS_CONTRA_BARRAS + dataFormatada;
+		}
 		createDiretorios(caminhoArquivo);
 		fileReportGeralProjeto = createArquivo(caminhoArquivo + DUAS_CONTRA_BARRAS + dataFormatada + GERAL,
 				TipoArquivoEnum.HTML);
@@ -121,165 +140,18 @@ public class FileHTML {
 				TipoArquivoEnum.HTML);
 		bwReportSucessoProjeto = new BufferedWriter(new FileWriter(fileReportSucessoProjeto, true));
 
-		String path[] = { fileReportGeralProjeto.getPath(), fileReportFalhaProjeto.getPath() };
+		String pathReturn[] = { fileReportGeralProjeto.getPath(), fileReportFalhaProjeto.getPath() };
 
+		return pathReturn;
+	}
+
+	protected static String getPathReportGeralProjeto(String nomeProjeto, String nomeProjetoPrincipal) {
+		String path = PATH_DIRETORIO_REPORT + DUAS_CONTRA_BARRAS + PROJETO + nomeProjeto;
+		if (StringUtils.isNotBlank(nomeProjetoPrincipal)) {
+			path = PATH_DIRETORIO_REPORT + DUAS_CONTRA_BARRAS + PROJETO + nomeProjetoPrincipal + DUAS_CONTRA_BARRAS
+					+ PROJETO + nomeProjeto;
+		}
 		return path;
-	}
-
-	/**
-	 * Cria arquivos dentro da pasta Report.
-	 * 
-	 * @throws IOException
-	 *
-	 * @author sandra.rodrigues
-	 *         16 de nov de 2017 09:18:51
-	 *
-	 */
-	public static void createFilesPastaGeral() throws IOException {
-		String dataFormatada = getDataFormatada(FORMATO_DATA_CRIACAO_ARQUIVO);
-		String caminhoArquivo = PATH_DIRETORIO_REPORT + DUAS_CONTRA_BARRAS + dataFormatada;
-		createDiretorios(caminhoArquivo);
-		fileReportGeral = createArquivo(caminhoArquivo + DUAS_CONTRA_BARRAS + dataFormatada + GERAL,
-				TipoArquivoEnum.HTML);
-		bwReportPastaGeral = new BufferedWriter(new FileWriter(fileReportGeral, true));
-	}
-
-	/**
-	 * Cria arquivos dentro da pasta Report.
-	 * 
-	 * @throws IOException
-	 *
-	 * @author sandra.rodrigues
-	 *         16 de nov de 2017 09:18:51
-	 *
-	 */
-	public static void createFilesFalhaPastaGeral() throws IOException {
-		String dataFormatada = getDataFormatada(FORMATO_DATA_CRIACAO_ARQUIVO);
-		String caminhoArquivo = PATH_DIRETORIO_REPORT + DUAS_CONTRA_BARRAS + dataFormatada;
-		createDiretorios(caminhoArquivo);
-		fileReportFalha = createArquivo(caminhoArquivo + DUAS_CONTRA_BARRAS + dataFormatada + FALHA,
-				TipoArquivoEnum.HTML);
-		bwReportFalha = new BufferedWriter(new FileWriter(fileReportFalha, true));
-	}
-
-	/**
-	 * Cria arquivos dentro da pasta projeto.
-	 * 
-	 * @param nomeProjeto
-	 * @throws IOException
-	 *
-	 * @author sandra.rodrigues
-	 *         16 de nov de 2017 09:19:09
-	 *
-	 */
-	public static void createFilesPastaProjeto(String nomeProjeto) throws IOException {
-		String dataFormatada = getDataFormatada(FORMATO_DATA_CRIACAO_ARQUIVO);
-		String caminhoArquivo = PATH_DIRETORIO_REPORT + DUAS_CONTRA_BARRAS + nomeProjeto + DUAS_CONTRA_BARRAS
-				+ dataFormatada;
-		createDiretorios(caminhoArquivo);
-		fileReportGeralProjeto = createArquivo(caminhoArquivo + DUAS_CONTRA_BARRAS + dataFormatada + GERAL,
-				TipoArquivoEnum.HTML);
-		bwReportGeralProjeto = new BufferedWriter(new FileWriter(fileReportGeralProjeto, true));
-	}
-
-	/**
-	 * Cria arquivos dentro da pasta projeto.
-	 * 
-	 * @param nomeProjeto
-	 * @throws IOException
-	 *
-	 * @author sandra.rodrigues
-	 *         16 de nov de 2017 09:19:09
-	 *
-	 */
-	public static void createFilesFalhaProjeto(String nomeProjeto) throws IOException {
-		String dataFormatada = getDataFormatada(FORMATO_DATA_CRIACAO_ARQUIVO);
-		String caminhoArquivo = PATH_DIRETORIO_REPORT + DUAS_CONTRA_BARRAS + nomeProjeto + DUAS_CONTRA_BARRAS
-				+ dataFormatada;
-		createDiretorios(caminhoArquivo);
-		fileReportFalhaProjeto = createArquivo(caminhoArquivo + DUAS_CONTRA_BARRAS + dataFormatada + FALHA,
-				TipoArquivoEnum.HTML);
-		bwReportFalhaProjeto = new BufferedWriter(new FileWriter(fileReportFalhaProjeto, true));
-	}
-
-	/**
-	 * Cria arquivos dentro da pasta projeto.
-	 * 
-	 * @param nomeProjeto
-	 * @throws IOException
-	 *
-	 * @author sandra.rodrigues
-	 *         16 de nov de 2017 09:19:09
-	 *
-	 */
-	public static void createFilesSucessoProjeto(String nomeProjeto) throws IOException {
-		String dataFormatada = getDataFormatada(FORMATO_DATA_CRIACAO_ARQUIVO);
-		String caminhoArquivo = PATH_DIRETORIO_REPORT + DUAS_CONTRA_BARRAS + nomeProjeto + DUAS_CONTRA_BARRAS
-				+ dataFormatada;
-		createDiretorios(caminhoArquivo);
-		fileReportSucessoProjeto = createArquivo(caminhoArquivo + DUAS_CONTRA_BARRAS + dataFormatada + SUCESSO,
-				TipoArquivoEnum.HTML);
-		bwReportSucessoProjeto = new BufferedWriter(new FileWriter(fileReportSucessoProjeto, true));
-	}
-
-	/**
-	 * Cria arquivos dentro da pasta suite.
-	 * 
-	 * @param nomeSuite
-	 * @throws IOException
-	 *
-	 * @author sandra.rodrigues
-	 *         16 de nov de 2017 09:19:20
-	 *
-	 */
-	public static void createFilesSuite(String nomeProjeto, String nomeSuite) throws IOException {
-		String dataFormatada = getDataFormatada(FORMATO_DATA_CRIACAO_ARQUIVO);
-		String caminhoArquivo = PATH_DIRETORIO_REPORT + DUAS_CONTRA_BARRAS + nomeProjeto + DUAS_CONTRA_BARRAS
-				+ nomeSuite + DUAS_CONTRA_BARRAS + dataFormatada;
-		createDiretorios(caminhoArquivo);
-		fileReportGeralSuite = createArquivo(caminhoArquivo + DUAS_CONTRA_BARRAS + dataFormatada + GERAL,
-				TipoArquivoEnum.HTML);
-		bwReportGeralSuite = new BufferedWriter(new FileWriter(fileReportGeralSuite, true));
-	}
-
-	/**
-	 * Cria arquivos dentro da pasta suite.
-	 * 
-	 * @param nomeSuite
-	 * @throws IOException
-	 *
-	 * @author sandra.rodrigues
-	 *         16 de nov de 2017 09:19:20
-	 *
-	 */
-	public static void createFilesFalhaSuite(String nomeProjeto, String nomeSuite) throws IOException {
-		String dataFormatada = getDataFormatada(FORMATO_DATA_CRIACAO_ARQUIVO);
-		String caminhoArquivo = PATH_DIRETORIO_REPORT + DUAS_CONTRA_BARRAS + nomeProjeto + DUAS_CONTRA_BARRAS
-				+ nomeSuite + DUAS_CONTRA_BARRAS + dataFormatada;
-		createDiretorios(caminhoArquivo);
-		fileReportFalhaSuite = createArquivo(caminhoArquivo + DUAS_CONTRA_BARRAS + dataFormatada + FALHA,
-				TipoArquivoEnum.HTML);
-		bwReportFalhaSuite = new BufferedWriter(new FileWriter(fileReportFalhaSuite, true));
-	}
-
-	/**
-	 * Cria arquivos dentro da pasta suite.
-	 * 
-	 * @param nomeSuite
-	 * @throws IOException
-	 *
-	 * @author sandra.rodrigues
-	 *         16 de nov de 2017 09:19:20
-	 *
-	 */
-	public static void createFilesSucessoSuite(String nomeProjeto, String nomeSuite) throws IOException {
-		String dataFormatada = getDataFormatada(FORMATO_DATA_CRIACAO_ARQUIVO);
-		String caminhoArquivo = PATH_DIRETORIO_REPORT + DUAS_CONTRA_BARRAS + nomeProjeto + DUAS_CONTRA_BARRAS
-				+ nomeSuite + DUAS_CONTRA_BARRAS + dataFormatada;
-		createDiretorios(caminhoArquivo);
-		fileReportSucessoSuite = createArquivo(caminhoArquivo + DUAS_CONTRA_BARRAS + dataFormatada + SUCESSO,
-				TipoArquivoEnum.HTML);
-		bwReportSucessoSuite = new BufferedWriter(new FileWriter(fileReportSucessoSuite, true));
 	}
 
 	/**
@@ -401,70 +273,6 @@ public class FileHTML {
 	}
 
 	/**
-	 * Escreve no arquivo de report geral suite o texto passado no parâmetro.
-	 * 
-	 * @param texto
-	 *
-	 * @author sandra.rodrigues
-	 *         16 de nov de 2017 09:50:45
-	 *
-	 */
-	public static void escreverArquivoGeralSuite(String... textos) {
-		try {
-			if (bwReportGeralSuite != null) {
-				for (String texto : textos) {
-					bwReportGeralSuite.write(texto);
-				}
-			}
-		} catch (Throwable e) {
-			e.printStackTrace();
-		}
-	}
-
-	/**
-	 * Escreve no arquivo de report falha suite o texto passado no parâmetro.
-	 * 
-	 * @param texto
-	 *
-	 * @author sandra.rodrigues
-	 *         16 de nov de 2017 09:51:14
-	 *
-	 */
-	public static void escreverArquivoFalhaSuite(String... textos) {
-		try {
-			if (bwReportFalhaSuite != null) {
-				for (String texto : textos) {
-					bwReportFalhaSuite.write(texto);
-				}
-			}
-		} catch (Throwable e) {
-			e.printStackTrace();
-		}
-	}
-
-	/**
-	 * Escreve no arquivo de report sucesso suite o texto passado no
-	 * parâmetro.
-	 * 
-	 * @param texto
-	 *
-	 * @author sandra.rodrigues
-	 *         16 de nov de 2017 09:51:24
-	 *
-	 */
-	public static void escreverArquivoSucessoSuite(String... textos) {
-		try {
-			if (bwReportSucessoSuite != null) {
-				for (String texto : textos) {
-					bwReportSucessoSuite.write(texto);
-				}
-			}
-		} catch (Throwable e) {
-			e.printStackTrace();
-		}
-	}
-
-	/**
 	 * Fechar escrita reportGeral (BufferedWriter);
 	 * 
 	 * @throws IOException
@@ -527,45 +335,6 @@ public class FileHTML {
 	 */
 	public static void closeSucessoProjeto() throws IOException {
 		bwReportSucessoProjeto.close();
-	}
-
-	/**
-	 * Fechar escrita reportGeralSuite (BufferedWriter);
-	 * 
-	 * @throws IOException
-	 *
-	 * @author sandra.rodrigues
-	 *         16 de nov de 2017 09:57:19
-	 *
-	 */
-	public static void closeGeralSuite() throws IOException {
-		bwReportGeralSuite.close();
-	}
-
-	/**
-	 * Fechar escrita reportFalhaSuite (BufferedWriter);
-	 * 
-	 * @throws IOException
-	 *
-	 * @author sandra.rodrigues
-	 *         16 de nov de 2017 09:57:27
-	 *
-	 */
-	public static void closeFalhaSuite() throws IOException {
-		bwReportFalhaSuite.close();
-	}
-
-	/**
-	 * Fechar escrita reportSucessoSuite (BufferedWriter);
-	 * 
-	 * @throws IOException
-	 *
-	 * @author sandra.rodrigues
-	 *         16 de nov de 2017 09:57:35
-	 *
-	 */
-	public static void closeSucessoSuite() throws IOException {
-		bwReportSucessoSuite.close();
 	}
 
 	public static void openReportGeralInBrowser() throws IOException {

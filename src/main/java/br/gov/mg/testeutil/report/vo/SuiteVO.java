@@ -1,4 +1,4 @@
-package br.gov.mg.testeutil.vo;
+package br.gov.mg.testeutil.report.vo;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -8,14 +8,20 @@ import java.util.Map;
 
 import br.gov.mg.testeutil.util.DateUtil;
 
-public class SuitePrincipalVO {
+/**
+ * @author sandra.rodrigues
+ */
+public class SuiteVO {
+
 	private boolean isSuitePrincipal;
 	private String nomeSuite;
-	private Map<KeyMapVO<String, String>, SuiteVO> suitesFilhasByNome = new LinkedHashMap<KeyMapVO<String, String>, SuiteVO>();
+	private String nomeSuiteMae;
+	private String nomeProjeto;
 	private Date dataInicioExecucao;
 	private Date dataFimExecucao;
+	private Map<String, ClasseDeTesteVO> classesDeTesteByName = new LinkedHashMap<String, ClasseDeTesteVO>();
 	private List<ExceptionVO> exceptions;
-	private QuantitativoRunVO quantitativoRun;
+	private QuantitativoRunVO quantitativoRunVO = new QuantitativoRunVO();
 
 	public boolean isSuitePrincipal() {
 		return isSuitePrincipal;
@@ -32,13 +38,21 @@ public class SuitePrincipalVO {
 	public void setNomeSuite(String nomeSuite) {
 		this.nomeSuite = nomeSuite;
 	}
-
-	public Map<KeyMapVO<String, String>, SuiteVO> getSuitesFilhasByNome() {
-		return suitesFilhasByNome;
+	
+	public String getNomeSuiteMae() {
+		return nomeSuiteMae;
 	}
 
-	public void setSuitesFilhasByNome(Map<KeyMapVO<String, String>, SuiteVO> suitesFilhasByNome) {
-		this.suitesFilhasByNome = suitesFilhasByNome;
+	public void setNomeSuiteMae(String nomeSuiteMae) {
+		this.nomeSuiteMae = nomeSuiteMae;
+	}
+
+	public String getNomeProjeto() {
+		return nomeProjeto;
+	}
+
+	public void setNomeProjeto(String nomeProjeto) {
+		this.nomeProjeto = nomeProjeto;
 	}
 
 	public Date getDataInicioExecucao() {
@@ -57,6 +71,14 @@ public class SuitePrincipalVO {
 		this.dataFimExecucao = dataFimExecucao;
 	}
 
+	public Map<String, ClasseDeTesteVO> getClassesDeTesteByName() {
+		return classesDeTesteByName;
+	}
+
+	public void setClassesDeTesteByName(Map<String, ClasseDeTesteVO> classesDeTesteByName) {
+		this.classesDeTesteByName = classesDeTesteByName;
+	}
+
 	public List<ExceptionVO> getExceptions() {
 		if (exceptions == null) {
 			exceptions = new ArrayList<ExceptionVO>();
@@ -68,22 +90,19 @@ public class SuitePrincipalVO {
 		this.exceptions = exceptions;
 	}
 
-	public QuantitativoRunVO getQuantitativoRun() {
-		return quantitativoRun;
+	public QuantitativoRunVO getQuantitativoRunVO() {
+		return quantitativoRunVO;
 	}
 
-	public void setQuantitativoRun(QuantitativoRunVO quantitativoRun) {
-		this.quantitativoRun = quantitativoRun;
+	public void setQuantitativoRunVO(QuantitativoRunVO quantitativoRunVO) {
+		this.quantitativoRunVO = quantitativoRunVO;
 	}
 
 	/**
 	 * Tempo total execução no formato x horas, x minutos, x segundos.
 	 * 
-	 * @return
-	 *
 	 * @author sandra.rodrigues
-	 *         16 de nov de 2017 12:01:30
-	 *
+	 * @return
 	 */
 	public String tempoTotalExecucao() {
 		long diferenca = DateUtil.getDiferencaEmMilliSegundosEntreDatas(dataFimExecucao, dataInicioExecucao);

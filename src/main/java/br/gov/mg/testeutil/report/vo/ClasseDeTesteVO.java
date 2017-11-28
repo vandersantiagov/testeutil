@@ -1,4 +1,4 @@
-package br.gov.mg.testeutil.vo;
+package br.gov.mg.testeutil.report.vo;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;

@@ -8,13 +8,14 @@ import org.junit.runner.Description;
 
 import br.gov.mg.testeutil.metodos.MetodosSiare;
 import br.gov.mg.testeutil.report.html.ReportHTML;
+import br.gov.mg.testeutil.report.vo.ExceptionVO;
+import br.gov.mg.testeutil.report.vo.QuantitativoRunVO;
+import br.gov.mg.testeutil.report.vo.SuitePrincipalVO;
+import br.gov.mg.testeutil.report.vo.SuiteVO;
 import br.gov.mg.testeutil.util.naoSiare.PropertyNaoSiare;
 import br.gov.mg.testeutil.util.sicaf.PropertySicaf;
 import br.gov.mg.testeutil.util.sol.PropertySol;
-import br.gov.mg.testeutil.vo.ExceptionVO;
-import br.gov.mg.testeutil.vo.QuantitativoRunVO;
-import br.gov.mg.testeutil.vo.SuitePrincipalVO;
-import br.gov.mg.testeutil.vo.SuiteVO;
+
 
 /**
  * @author sandra.rodrigues
@@ -26,6 +27,7 @@ public class SuiteSiare {
 	public static String nomePrimeiraSuite;
 	public static Integer idSuite = 0;
 	public static boolean quitAmbiente;
+	public static String nomeProjetoSuitePrincipal;
 
 	public static void startReport() {
 		try {
@@ -35,6 +37,7 @@ public class SuiteSiare {
 				suitePrincipalVO.setDataInicioExecucao(new Date());
 				suitePrincipalVO.setSuitePrincipal(true);
 				suitePrincipalVO.setNomeSuite(nomePrimeiraSuite);
+				suitePrincipalVO.setNomeProjeto(nomeProjetoSuitePrincipal);
 			}
 		} catch (Throwable e) {
 			addExceptionVO(e, suitePrincipalVO.getExceptions());
@@ -55,6 +58,7 @@ public class SuiteSiare {
 				if (suiteQueIniciouOsTestes) {
 					Date dataFimExecucao = new Date();
 					suitePrincipalVO.setDataFimExecucao(dataFimExecucao);
+					// Cria os arquivos de report
 					ReportHTML.createHTML(suitePrincipalVO);
 				}
 			} catch (Throwable e) {
@@ -69,20 +73,33 @@ public class SuiteSiare {
 
 	private static void quitAmbiente() throws Exception {
 		if (PropertySicaf.ambienteSICAF) {
-			// Focar e fechar janela do Ambiente SICAF
-			MetodosSiare.setAmbienteSicaf();
-			MetodosSiare.quitAmbiente();
+			try {
+				// Focar e fechar janela do Ambiente SICAF
+				MetodosSiare.setAmbienteSicaf();
+				MetodosSiare.quitAmbiente();
+			} catch (Exception e) {
+				// Se a classe não foi inicializada ignora.
+			}
 		}
 		if (PropertySol.ambienteSOL) {
-			// Focar e fechar janela do Ambiente SOL
-			MetodosSiare.setAmbienteSol();
-			MetodosSiare.quitAmbiente();
+			try {
+				// Focar e fechar janela do Ambiente SOL
+				MetodosSiare.setAmbienteSol();
+				MetodosSiare.quitAmbiente();
+			} catch (Exception e) {
+				// Se a classe não foi inicializada ignora.
+			}
 		}
 		if (PropertyNaoSiare.ambienteNAOSIARE) {
-			// Focar e fechar janela do Ambiente Não Siare
-			MetodosSiare.setAmbienteNaoSiare();
-			MetodosSiare.quitAmbiente();
+			try {
+				// Focar e fechar janela do Ambiente Não Siare
+				MetodosSiare.setAmbienteNaoSiare();
+				MetodosSiare.quitAmbiente();
+			} catch (Exception e) {
+				// Se a classe não foi inicializada ignora.
+			}
 		}
+
 	}
 
 	public static void addExceptionVO(Throwable e, List<ExceptionVO> exceptions) {

@@ -1,4 +1,4 @@
-package br.gov.mg.testeutil.vo;
+package br.gov.mg.testeutil.report.vo;
 
 public class KeyMapVO<T1, T2> {
 

@@ -26,6 +26,7 @@ public class ST0000_ReportSuiteProjeto {
 			RuleReportSuiteProjeto.isSuiteTotal = true;
 			SuiteSiare.nomePrimeiraSuite = nomeSuite_;
 			SuiteSiare.suitePrincipalVO.setNomeSuite(nomeSuite_);
+			SuiteSiare.nomeProjetoSuitePrincipal = nomeProjeto_;
 			nomeSuite = nomeSuite_;
 		} else {
 			RuleReportSuiteProjeto.isSuiteTotal = false;

@@ -1,4 +1,4 @@
-package br.gov.mg.testeutil.vo;
+package br.gov.mg.testeutil.report.vo;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -25,7 +25,8 @@ public class MetodoClasseTesteVO {
 	private boolean isFalha;
 	private boolean isSkiped;
 	private String caminhoPrintErro;
-	private String caminhoArquivoPilhaErro;
+	private String caminhoArquivoHTMLPilhaErro;
+	private String caminhoArquivoTXTPilhaErro;
 	private String caminhoPrintPilhaErro;
 	private Description description;
 	private String nomeSuite;
@@ -113,12 +114,20 @@ public class MetodoClasseTesteVO {
 		this.caminhoPrintErro = caminhoPrintErro;
 	}
 
-	public String getCaminhoArquivoPilhaErro() {
-		return caminhoArquivoPilhaErro;
+	public String getCaminhoArquivoHTMLPilhaErro() {
+		return caminhoArquivoHTMLPilhaErro;
 	}
 
-	public void setCaminhoArquivoPilhaErro(String caminhoArquivoPilhaErro) {
-		this.caminhoArquivoPilhaErro = caminhoArquivoPilhaErro;
+	public void setCaminhoArquivoHTMLPilhaErro(String caminhoArquivoHTMLPilhaErro) {
+		this.caminhoArquivoHTMLPilhaErro = caminhoArquivoHTMLPilhaErro;
+	}
+
+	public String getCaminhoArquivoTXTPilhaErro() {
+		return caminhoArquivoTXTPilhaErro;
+	}
+
+	public void setCaminhoArquivoTXTPilhaErro(String caminhoArquivoTXTPilhaErro) {
+		this.caminhoArquivoTXTPilhaErro = caminhoArquivoTXTPilhaErro;
 	}
 
 	public String getCaminhoPrintPilhaErro() {

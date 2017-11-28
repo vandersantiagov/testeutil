@@ -5,9 +5,9 @@ import java.util.LinkedHashMap;
 
 import org.junit.runner.Description;
 
-import br.gov.mg.testeutil.vo.KeyMapVO;
-import br.gov.mg.testeutil.vo.QuantitativoRunVO;
-import br.gov.mg.testeutil.vo.SuiteVO;
+import br.gov.mg.testeutil.report.vo.KeyMapVO;
+import br.gov.mg.testeutil.report.vo.QuantitativoRunVO;
+import br.gov.mg.testeutil.report.vo.SuiteVO;
 
 /**
  * @author sandra.rodrigues

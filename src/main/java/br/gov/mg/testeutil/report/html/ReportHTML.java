@@ -1,5 +1,34 @@
 package br.gov.mg.testeutil.report.html;
 
+import static br.gov.mg.testeutil.report.html.FileHTML.HTML_CLOSE_FONT;
+import static br.gov.mg.testeutil.report.html.FileHTML.HTML_CLOSE_HTML;
+import static br.gov.mg.testeutil.report.html.FileHTML.HTML_CLOSE_NEGRITO;
+import static br.gov.mg.testeutil.report.html.FileHTML.HTML_CLOSE_P;
+import static br.gov.mg.testeutil.report.html.FileHTML.HTML_CLOSE_PRE;
+import static br.gov.mg.testeutil.report.html.FileHTML.HTML_CLOSE_SPAN;
+import static br.gov.mg.testeutil.report.html.FileHTML.HTML_OPEN_HTML;
+import static br.gov.mg.testeutil.report.html.FileHTML.HTML_OPEN_NEGRITO;
+import static br.gov.mg.testeutil.report.html.FileHTML.HTML_OPEN_P;
+import static br.gov.mg.testeutil.report.html.FileHTML.HTML_OPEN_PRE;
+import static br.gov.mg.testeutil.report.html.FileHTML.HTML_OPEN_SPAN;
+import static br.gov.mg.testeutil.report.html.FileHTML.HTML_QUEBRA_LINHA;
+import static br.gov.mg.testeutil.report.html.FileHTML.closeFalha;
+import static br.gov.mg.testeutil.report.html.FileHTML.closeFalhaProjeto;
+import static br.gov.mg.testeutil.report.html.FileHTML.closeGeralProjeto;
+import static br.gov.mg.testeutil.report.html.FileHTML.closePastaGeral;
+import static br.gov.mg.testeutil.report.html.FileHTML.closeSucessoProjeto;
+import static br.gov.mg.testeutil.report.html.FileHTML.createFilesGeral;
+import static br.gov.mg.testeutil.report.html.FileHTML.createFilesProjeto;
+import static br.gov.mg.testeutil.report.html.FileHTML.deleteArquivosDatasAntigas;
+import static br.gov.mg.testeutil.report.html.FileHTML.escreverArquivoFalha;
+import static br.gov.mg.testeutil.report.html.FileHTML.escreverArquivoFalhaProjeto;
+import static br.gov.mg.testeutil.report.html.FileHTML.escreverArquivoGeral;
+import static br.gov.mg.testeutil.report.html.FileHTML.escreverArquivoGeralProjeto;
+import static br.gov.mg.testeutil.report.html.FileHTML.escreverArquivoSucessoProjeto;
+import static br.gov.mg.testeutil.report.html.FileHTML.getPathReportGeral;
+import static br.gov.mg.testeutil.report.html.FileHTML.getPathReportGeralProjeto;
+import static br.gov.mg.testeutil.report.html.FileHTML.openReportGeralInBrowser;
+
 import java.io.File;
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -17,16 +46,15 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import br.gov.mg.testeutil.report.rules.SuiteSiare;
+import br.gov.mg.testeutil.report.vo.ClasseDeTesteVO;
+import br.gov.mg.testeutil.report.vo.ExceptionVO;
+import br.gov.mg.testeutil.report.vo.KeyMapVO;
+import br.gov.mg.testeutil.report.vo.MetodoClasseTesteVO;
+import br.gov.mg.testeutil.report.vo.QuantitativoRunVO;
+import br.gov.mg.testeutil.report.vo.StackTraceElementVO;
+import br.gov.mg.testeutil.report.vo.SuitePrincipalVO;
+import br.gov.mg.testeutil.report.vo.SuiteVO;
 import br.gov.mg.testeutil.util.DateUtil;
-import br.gov.mg.testeutil.vo.ClasseDeTesteVO;
-import br.gov.mg.testeutil.vo.ExceptionVO;
-import br.gov.mg.testeutil.vo.KeyMapVO;
-import br.gov.mg.testeutil.vo.MetodoClasseTesteVO;
-import br.gov.mg.testeutil.vo.QuantitativoRunVO;
-import br.gov.mg.testeutil.vo.StackTraceElementVO;
-import br.gov.mg.testeutil.vo.SuitePrincipalVO;
-import br.gov.mg.testeutil.vo.SuiteVO;
-import static br.gov.mg.testeutil.report.html.FileHTML.*;
 
 /**
  * @author sandra.rodrigues
@@ -43,6 +71,7 @@ public class ReportHTML {
 	private static final String TEXTO_FIM_DOS_TESTES = "Fim dos Testes: ";
 	private static final String TEXTO_PROJETO = "Projeto: ";
 	private static final String TEXTO_SUITE_PRINCIPAL = "Suite Principal: ";
+	private static final String TEXTO_PROJETO_PRINCIPAL = "Projeto Principal: ";
 	private static final String TEXTO_SUITE = "Suite: ";
 	private static final String TEXTO_CLASSE = "Classe: ";
 	private static final String TEXTO_METODO = " Método: ";
@@ -74,8 +103,13 @@ public class ReportHTML {
 		SuiteVO suiteVO = null;
 		String[] caminhoFileGeralProjeto = null;
 
+		String nomePastaProjetoPrincipal = suitePrincipalVO.getNomeProjeto();
+
+		String path = getPathReportGeral(nomePastaProjetoPrincipal);
+		// Deleta as últimas 10 pastas referente ao projeto.
+		deleteArquivosDatasAntigas(path, false);
 		// Cria o arquivo html geral na pasta report.
-		String[] caminhoFileGeral = createFilesGeral();
+		String[] caminhoFileGeral = createFilesGeral(nomePastaProjetoPrincipal, path);
 
 		// Abre a tagHTML para os arquivos.
 		appendArquivosHTMLPastaReport();
@@ -85,6 +119,10 @@ public class ReportHTML {
 				HTML_CLOSE_NEGRITO, HTML_QUEBRA_LINHA);
 		appendReportGeral(HTML_OPEN_NEGRITO, TEXTO_SUITE_PRINCIPAL, HTML_CLOSE_NEGRITO, suitePrincipalVO.getNomeSuite(),
 				HTML_QUEBRA_LINHA);
+		if (StringUtils.isNotBlank(nomePastaProjetoPrincipal)) {
+			appendReportGeral(HTML_OPEN_NEGRITO, TEXTO_PROJETO_PRINCIPAL, HTML_CLOSE_NEGRITO, nomePastaProjetoPrincipal,
+					HTML_QUEBRA_LINHA);
+		}
 
 		Map<KeyMapVO<String, String>, SuiteVO> mapSuites = suitePrincipalVO.getSuitesFilhasByNome();
 
@@ -100,11 +138,21 @@ public class ReportHTML {
 						sbReportGeralProjeto = new StringBuilder();
 						sbReportFalhaProjeto = new StringBuilder();
 						sbReportSucessoProjeto = new StringBuilder();
-						caminhoFileGeralProjeto = createFilesProjeto(key.getKey1());
+						String pathProjeto = getPathReportGeralProjeto(key.getKey1(), nomePastaProjetoPrincipal);
+						// Deleta os arquivos antigos e mantém os últimos
+						// gerados.
+						deleteArquivosDatasAntigas(pathProjeto, true);
+						// Cria a estrutura de report do projeto
+						caminhoFileGeralProjeto = createFilesProjeto(key.getKey1(), nomePastaProjetoPrincipal,
+								pathProjeto);
 						appendArquivosHTMLPastaProjeto(key.getKey1());
 					}
 				} else {
-					caminhoFileGeralProjeto = createFilesProjeto(key.getKey1());
+					String pathProjeto = getPathReportGeralProjeto(key.getKey1(), nomePastaProjetoPrincipal);
+					// Deleta os arquivos antigos e mantém os últimos gerados.
+					deleteArquivosDatasAntigas(pathProjeto, true);
+					// Cria a estrutura de report do projeto
+					caminhoFileGeralProjeto = createFilesProjeto(key.getKey1(), nomePastaProjetoPrincipal, pathProjeto);
 					appendArquivosHTMLPastaProjeto(key.getKey1());
 				}
 
@@ -253,6 +301,7 @@ public class ReportHTML {
 		} else if (metodo.isSkiped()) {
 			appendInformacoesMetodo(metodo, openFontSkiped, metodo.getNome(), SKIPED);
 		}
+		appendPilhaDeErro(metodo, caminhoFileGeral, caminhoFileGeralProjeto);
 	}
 
 	private static void treathFalhaAndErro(ClasseDeTesteVO classeDeTeste, MetodoClasseTesteVO metodo, String openFont,
@@ -263,8 +312,106 @@ public class ReportHTML {
 				appendException(exception, openFont);
 			}
 		}
-		appendLinkProvaException(metodo.getCaminhoPrintErro(), metodo.getCaminhoArquivoPilhaErro(),
-				metodo.getCaminhoPrintPilhaErro(), caminhoFileGeral, caminhoFileGeralProjeto);
+		appendLinkProvaException(metodo, caminhoFileGeral, caminhoFileGeralProjeto);
+	}
+
+	private static void appendPilhaDeErro(MetodoClasseTesteVO metodo, String[] caminhoFileGeral,
+			String[] caminhoFileGeralProjeto) throws IOException {
+
+		String href = "<a href='file:///";
+
+		String destinoPrintPilhaErro = "";
+		String caminhoPrintPilhaErro = metodo.getCaminhoPrintPilhaErro();
+		String tituloPrintPilhaErro = "'>Print Pilha de Erro</a>";
+
+		String destinoArquivoHTMLPilhaErro = "";
+		String caminhoOrigemArquivoHTMLPilhaErro = metodo.getCaminhoArquivoHTMLPilhaErro();
+		String tituloPilhaHTMLErro = "'>Pilha de Erro HTML</a>";
+
+		String destinoArquivoTxtPilhaErro = "";
+		String caminhoOrigemArquivoTXTPilhaErro = metodo.getCaminhoArquivoTXTPilhaErro();
+		String tituloPilhaTxtErro = "'>Pilha de Erro TXT</a>";
+
+		// link dados pilha erro aplicação
+		String caminhoReportGeral = caminhoFileGeral[0];
+		if (StringUtils.isNotBlank(caminhoOrigemArquivoHTMLPilhaErro)) {
+			// html
+			destinoArquivoHTMLPilhaErro = copyArquivoParaPastaDoReport(caminhoOrigemArquivoHTMLPilhaErro,
+					caminhoReportGeral);
+			sbReportGeral.append(href).append(destinoArquivoHTMLPilhaErro).append(tituloPilhaHTMLErro)
+					.append(HTML_QUEBRA_LINHA);
+			// txt
+			destinoArquivoTxtPilhaErro = copyArquivoParaPastaDoReport(caminhoOrigemArquivoTXTPilhaErro,
+					caminhoReportGeral);
+			sbReportGeral.append(href).append(destinoArquivoTxtPilhaErro).append(tituloPilhaTxtErro)
+					.append(HTML_QUEBRA_LINHA);
+
+			// print
+			destinoPrintPilhaErro = copyArquivoParaPastaDoReport(caminhoPrintPilhaErro, caminhoReportGeral);
+			sbReportGeral.append(href).append(destinoPrintPilhaErro).append(tituloPrintPilhaErro)
+					.append(HTML_QUEBRA_LINHA);
+		}
+
+		// link dados pilha erro aplicação
+		String caminhoReportFalha = caminhoFileGeral[1];
+		if (StringUtils.isNotBlank(caminhoOrigemArquivoHTMLPilhaErro)) {
+			// html
+			destinoArquivoHTMLPilhaErro = copyArquivoParaPastaDoReport(caminhoOrigemArquivoHTMLPilhaErro,
+					caminhoReportFalha);
+			sbReportFalha.append(href).append(destinoArquivoHTMLPilhaErro).append(tituloPilhaHTMLErro)
+					.append(HTML_QUEBRA_LINHA);
+			// txt
+			destinoArquivoTxtPilhaErro = copyArquivoParaPastaDoReport(caminhoOrigemArquivoTXTPilhaErro,
+					caminhoReportGeral);
+			sbReportFalha.append(href).append(destinoArquivoTxtPilhaErro).append(tituloPilhaTxtErro)
+					.append(HTML_QUEBRA_LINHA);
+
+			// print
+			destinoPrintPilhaErro = copyArquivoParaPastaDoReport(caminhoPrintPilhaErro, caminhoReportFalha);
+			sbReportFalha.append(href).append(destinoPrintPilhaErro).append(tituloPrintPilhaErro)
+					.append(HTML_QUEBRA_LINHA);
+		}
+
+		// link dados pilha erro aplicação
+		String caminhoReportGeralProjeto = caminhoFileGeralProjeto[0];
+		if (StringUtils.isNotBlank(caminhoOrigemArquivoHTMLPilhaErro)) {
+			// html
+			destinoArquivoHTMLPilhaErro = copyArquivoParaPastaDoReport(caminhoOrigemArquivoHTMLPilhaErro,
+					caminhoReportGeralProjeto);
+			sbReportGeralProjeto.append(href).append(destinoArquivoHTMLPilhaErro).append(tituloPilhaHTMLErro)
+					.append(HTML_QUEBRA_LINHA);
+			// txt
+			destinoArquivoTxtPilhaErro = copyArquivoParaPastaDoReport(caminhoOrigemArquivoTXTPilhaErro,
+					caminhoReportGeral);
+			sbReportGeralProjeto.append(href).append(destinoArquivoTxtPilhaErro).append(tituloPilhaTxtErro)
+					.append(HTML_QUEBRA_LINHA);
+
+			// print
+			destinoPrintPilhaErro = copyArquivoParaPastaDoReport(caminhoPrintPilhaErro, caminhoReportGeralProjeto);
+			sbReportGeralProjeto.append(href).append(destinoPrintPilhaErro).append(tituloPrintPilhaErro)
+					.append(HTML_QUEBRA_LINHA);
+		}
+
+		// link dados pilha erro aplicação
+		String caminhoReportFalhaProjeto = caminhoFileGeralProjeto[1];
+		if (StringUtils.isNotBlank(caminhoOrigemArquivoHTMLPilhaErro)) {
+			// html
+			destinoArquivoHTMLPilhaErro = copyArquivoParaPastaDoReport(caminhoOrigemArquivoHTMLPilhaErro,
+					caminhoReportFalhaProjeto);
+			sbReportFalhaProjeto.append(href).append(destinoArquivoHTMLPilhaErro).append(tituloPilhaHTMLErro)
+					.append(HTML_QUEBRA_LINHA);
+
+			// txt
+			destinoArquivoTxtPilhaErro = copyArquivoParaPastaDoReport(caminhoOrigemArquivoTXTPilhaErro,
+					caminhoReportGeral);
+			sbReportFalhaProjeto.append(href).append(destinoArquivoTxtPilhaErro).append(tituloPilhaTxtErro)
+					.append(HTML_QUEBRA_LINHA);
+
+			// print
+			destinoPrintPilhaErro = copyArquivoParaPastaDoReport(caminhoPrintPilhaErro, caminhoReportFalhaProjeto);
+			sbReportFalhaProjeto.append(href).append(destinoPrintPilhaErro).append(tituloPrintPilhaErro)
+					.append(HTML_QUEBRA_LINHA);
+		}
 	}
 
 	private static void appendInformacoesMetodo(MetodoClasseTesteVO metodo, String openFont, String nomeMetodo,
@@ -504,70 +651,34 @@ public class ReportHTML {
 
 	}
 
-	private static void appendLinkProvaException(String caminhoOrigemPrint, String caminhoOrigemArquivoPilhaErro,
-			String caminhoPrintPilhaErro, String[] caminhoFileGeral, String[] caminhoFileGeralProjeto)
-			throws IOException {
+	private static void appendLinkProvaException(MetodoClasseTesteVO metodo, String[] caminhoFileGeral,
+			String[] caminhoFileGeralProjeto) throws IOException {
+
+		String caminhoOrigemPrint = metodo.getCaminhoPrintErro();
 
 		String destinoArquivoPrintErro = "";
-		String destinoArquivoPilhaErro = "";
-		String destinoPrintPilhaErro = "";
 		String href = "<a href='file:///";
 		String tituloPrint = "'>Print do Erro</a>";
-		String tituloPilhaErro = "'>Pilha de Erro</a>";
-		String tituloPrintPilhaErro = "'>Print Pilha de Erro</a>";
 
 		String caminhoReportGeral = caminhoFileGeral[0];
-		destinoArquivoPrintErro = treathDestinoArquivo(caminhoOrigemPrint, caminhoReportGeral);
+
+		destinoArquivoPrintErro = copyArquivoParaPastaDoReport(caminhoOrigemPrint, caminhoReportGeral);
 		sbReportGeral.append(href).append(destinoArquivoPrintErro).append(tituloPrint).append(HTML_QUEBRA_LINHA);
-		if (StringUtils.isNotBlank(caminhoOrigemArquivoPilhaErro)) {
-			destinoArquivoPilhaErro = treathDestinoArquivo(caminhoOrigemArquivoPilhaErro, caminhoReportGeral);
-			sbReportGeral.append(href).append(destinoArquivoPilhaErro).append(tituloPilhaErro)
-					.append(HTML_QUEBRA_LINHA);
-			destinoPrintPilhaErro = treathDestinoArquivo(caminhoPrintPilhaErro, caminhoReportGeral);
-			sbReportGeral.append(href).append(destinoPrintPilhaErro).append(tituloPrintPilhaErro)
-					.append(HTML_QUEBRA_LINHA);
-		}
 
 		String caminhoReportFalha = caminhoFileGeral[1];
-		destinoArquivoPrintErro = treathDestinoArquivo(caminhoOrigemPrint, caminhoReportFalha);
+		destinoArquivoPrintErro = copyArquivoParaPastaDoReport(caminhoOrigemPrint, caminhoReportFalha);
 		sbReportFalha.append(href).append(destinoArquivoPrintErro).append(tituloPrint).append(HTML_QUEBRA_LINHA);
-		if (StringUtils.isNotBlank(caminhoOrigemArquivoPilhaErro)) {
-			destinoArquivoPilhaErro = treathDestinoArquivo(caminhoOrigemArquivoPilhaErro, caminhoReportFalha);
-			sbReportFalha.append(href).append(destinoArquivoPilhaErro).append(tituloPilhaErro)
-					.append(HTML_QUEBRA_LINHA);
-
-			destinoPrintPilhaErro = treathDestinoArquivo(caminhoPrintPilhaErro, caminhoReportFalha);
-			sbReportFalha.append(href).append(destinoPrintPilhaErro).append(tituloPrintPilhaErro)
-					.append(HTML_QUEBRA_LINHA);
-		}
 
 		String caminhoReportGeralProjeto = caminhoFileGeralProjeto[0];
-		destinoArquivoPrintErro = treathDestinoArquivo(caminhoOrigemPrint, caminhoReportGeralProjeto);
+		destinoArquivoPrintErro = copyArquivoParaPastaDoReport(caminhoOrigemPrint, caminhoReportGeralProjeto);
 		sbReportGeralProjeto.append(href).append(destinoArquivoPrintErro).append(tituloPrint).append(HTML_QUEBRA_LINHA);
-		if (StringUtils.isNotBlank(caminhoOrigemArquivoPilhaErro)) {
-			destinoArquivoPilhaErro = treathDestinoArquivo(caminhoOrigemArquivoPilhaErro, caminhoReportGeralProjeto);
-			sbReportGeralProjeto.append(href).append(destinoArquivoPilhaErro).append(tituloPilhaErro)
-					.append(HTML_QUEBRA_LINHA);
-			destinoPrintPilhaErro = treathDestinoArquivo(caminhoPrintPilhaErro, caminhoReportGeralProjeto);
-			sbReportGeralProjeto.append(href).append(destinoPrintPilhaErro).append(tituloPrintPilhaErro)
-					.append(HTML_QUEBRA_LINHA);
-		}
 
 		String caminhoReportFalhaProjeto = caminhoFileGeralProjeto[1];
-		destinoArquivoPrintErro = treathDestinoArquivo(caminhoOrigemPrint, caminhoReportFalhaProjeto);
+		destinoArquivoPrintErro = copyArquivoParaPastaDoReport(caminhoOrigemPrint, caminhoReportFalhaProjeto);
 		sbReportFalhaProjeto.append(href).append(destinoArquivoPrintErro).append(tituloPrint).append(HTML_QUEBRA_LINHA);
-		if (StringUtils.isNotBlank(caminhoOrigemArquivoPilhaErro)) {
-			destinoArquivoPilhaErro = treathDestinoArquivo(caminhoOrigemArquivoPilhaErro, caminhoReportFalhaProjeto);
-			sbReportFalhaProjeto.append(href).append(destinoArquivoPilhaErro).append(tituloPilhaErro)
-					.append(HTML_QUEBRA_LINHA);
-			destinoPrintPilhaErro = treathDestinoArquivo(caminhoPrintPilhaErro, caminhoReportFalhaProjeto);
-			sbReportFalhaProjeto.append(href).append(destinoPrintPilhaErro).append(tituloPrintPilhaErro)
-					.append(HTML_QUEBRA_LINHA);
-		}
-
 	}
 
-	private static String treathDestinoArquivo(String caminhoOrigem, String caminhoDestino) throws IOException {
+	private static String copyArquivoParaPastaDoReport(String caminhoOrigem, String caminhoDestino) throws IOException {
 		if (StringUtils.isBlank(caminhoOrigem)) {
 			return "";
 		}

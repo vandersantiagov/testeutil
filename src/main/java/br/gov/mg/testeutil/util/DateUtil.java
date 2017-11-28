@@ -24,7 +24,7 @@ public class DateUtil {
 	 * <br/>
 	 * Ex.: a hora 13/11/2017 16:38:00 será apresentada assim: 20171113 163800
 	 */
-	public static final String FORMATO_DATA1 = "yyyyMMdd_HHmmss";
+	public static final String FORMATO_DATA1 = "yyyy_MM_dd___HH_mm_ss";
 
 	/**
 	 * yyyyddMM
@@ -73,12 +73,20 @@ public class DateUtil {
 
 	public static long getDiferencaEmMilliSegundosEntreDatas(Date dateFimTestes, Date dateInicioTestes) {
 		Calendar cDateFim = Calendar.getInstance();
-		cDateFim.setTime(dateFimTestes);
+		long millisDataInicio = 0;
+		long millisDataFim = 0;
+		if (dateFimTestes != null) {
+			cDateFim.setTime(dateFimTestes);
+			millisDataFim = cDateFim.getTimeInMillis();
+		}
 
 		Calendar cDateInicio = Calendar.getInstance();
-		cDateInicio.setTime(dateInicioTestes);
+		if (dateInicioTestes != null) {
+			cDateInicio.setTime(dateInicioTestes);
+			millisDataInicio = cDateInicio.getTimeInMillis();
+		}
 
-		long diferenca = (cDateFim.getTimeInMillis() - cDateInicio.getTimeInMillis());
+		long diferenca = (millisDataFim - millisDataInicio);
 
 		return diferenca;
 	}
