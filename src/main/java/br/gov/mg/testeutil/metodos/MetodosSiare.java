@@ -1617,6 +1617,7 @@ public class MetodosSiare {
 		System.out.println("Arquivo OK");
 		// Pesquisa para achar o o CPF do responsável para logar através do Nome
 		MetodosSiare.metodoConsultaOResponsavelPeloProtocolo();
+		wait.until(ExpectedConditions.visibilityOfElementLocated(ObjetosMetodosComuns.campoNomeResponsavel));
 		MetodosSiare.lerArquivoTexto(subPastaProjeto, nomeDoArquivoResponsavel,
 				ObjetosMetodosComuns.campoNomeResponsavel);
 		MetodosSiare.metodoParaRecuperarOResponsavelPeloProcolo();
