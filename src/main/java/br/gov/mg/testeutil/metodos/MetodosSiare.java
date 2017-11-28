@@ -1228,6 +1228,7 @@ public class MetodosSiare {
 		String valorTotalDoDAE;
 		if (efetuarLoginELogoffComAdministrador)
 			MetodosSiare.logarComAdministrador();
+		wait.until(ExpectedConditions.visibilityOfElementLocated(ObjetosMetodosComuns.menuDocumentodeArrecadacaoDAE));
 		MetodosSiare.menuSubMenuNivel1(ObjetosMetodosComuns.menuDocumentodeArrecadacaoDAE, ObjetosMetodosComuns.subMenuManutencaoDAE);
 		MetodosSiare.inserirDadoNoCampo(lerArquivoTextoERetornaDadoDaPrimeiraLinha(subPastaDiretorio,
 				nomeDoArquivoProtocolo).replace(".", "").replace("-", ""), ObjetosMetodosComuns.campoProtocolo);
@@ -1585,9 +1586,9 @@ public class MetodosSiare {
 				// codificar a estrutura caso não seja encontrado o responsavel
 				// pelo protocolo
 				MetodosSiare.umClique(ObjetosMetodosComuns.comandoPesquisar);
-				System.out.println("Aguardando o protocolo cair para um Servidor Responsável...");
 				Thread.sleep(20000);
 				contador++;
+				System.out.println("Aguardando o protocolo cair para um Servidor Responsável... "+contador);
 			}
 			if (contador == limiteDoContador) {
 				if (!MetodosSiare.verificaSeOElementoPossuiInformacao(ObjetosMetodosComuns.campoAnalistaResponsavel)) {
