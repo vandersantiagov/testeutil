@@ -62,11 +62,16 @@ import br.gov.mg.testeutil.util.DateUtil;
 public class ReportHTML {
 
 	private static final String SEPARATOR_RESULT_FINAL = "======================================================================================";
-	private static final String FAILED = "FALHAS";
-	private static final String SUCCESS = "SUCESSOS";
-	private static final String ERRO = "ERROS";
-	private static final String SKIPPED = "IGNORADOS";
-
+	// Parametros para comparação em código
+	private static final String FAILED = "FAILED";
+	private static final String SUCCESS = "SUCCESS";
+	private static final String ERRO = "ERRO";
+	private static final String SKIPPED = "SKIPPED";
+	// Textos exibido em tela
+	private static final String SUCESSOS = "Sucessos";
+	private static final String IGNORADOS = "Ignorados";
+	private static final String FALHAS = "Falhas";
+	private static final String ERROS = "Erros";
 	private static final String TEXTO_INICIO_DOS_TESTES = "Inicio dos Testes: ";
 	private static final String TEXTO_FIM_DOS_TESTES = "Fim dos Testes: ";
 	private static final String TEXTO_PROJETO = "Projeto: ";
@@ -447,38 +452,63 @@ public class ReportHTML {
 		int quantidadeFalha = quantitativoVO.getQuantidadeFalha();
 		int quantidadeErro = quantitativoVO.getQuantidadeErro();
 		int quantidadeSucesso = quantitativoVO.getQuantidadeSucesso();
+		int quantidadeSkipped = quantitativoVO.getQuantidadeSkiped();
 
 		StringBuilder sbTitulo = new StringBuilder();
 		sbTitulo.append("<span style='color:").append(HTML_COLOR_BLACK).append("'>Total testes: ");
 
 		StringBuilder sbCountFailed = new StringBuilder();
-		sbCountFailed.append("Failures: ").append(quantidadeFalha);
+		sbCountFailed.append(FALHAS + ": ").append(quantidadeFalha);
 
 		StringBuilder sbCountErro = new StringBuilder();
-		sbCountErro.append("Erro: ").append(quantidadeErro).append(HTML_CLOSE_SPAN);
+		sbCountErro.append(ERROS + ": ").append(quantidadeErro).append(HTML_CLOSE_SPAN);
+
+		StringBuilder sbCountSkipped = new StringBuilder();
+		if (quantidadeSkipped > 0) {
+			sbCountSkipped.append(IGNORADOS + ": ").append(quantidadeSkipped);
+		}
 
 		StringBuilder sbPercentualSuccess = new StringBuilder();
-		sbPercentualSuccess.append("Success: ")
+		sbPercentualSuccess.append(SUCESSOS + ": ")
 				.append(arredondaValor((Double.valueOf(quantidadeSucesso) / Double.valueOf(quantidadeRun)) * 100, 2))
 				.append(simboloPercentual);
 
 		StringBuilder sbPercentualFailed = new StringBuilder();
-		sbPercentualFailed.append("Failures: ").append(getTotal(quantidadeRun, quantidadeFalha))
+		sbPercentualFailed.append(FALHAS + ": ").append(getTotal(quantidadeRun, quantidadeFalha))
 				.append(simboloPercentual);
 
 		StringBuilder sbPercentualErro = new StringBuilder();
-		sbPercentualErro.append("Erro: ").append(getTotal(quantidadeRun, quantidadeErro)).append(simboloPercentual);
+		sbPercentualErro.append(ERROS + ": ").append(getTotal(quantidadeRun, quantidadeErro)).append(simboloPercentual);
+		StringBuilder sbPercentualSkipped = new StringBuilder();
+		if (quantidadeSkipped > 0) {
+			sbPercentualErro.append(IGNORADOS + ": ").append(getTotal(quantidadeRun, quantidadeSkipped))
+					.append(simboloPercentual);
+		}
 
 		StringBuilder sbResultCount = new StringBuilder();
-		sbResultCount.append(sbTitulo.toString()).append(HTML_OPEN_P).append("  Quantidade: ").append(HTML_QUEBRA_LINHA)
-				.append(HTML_OPEN_SPAN).append("Runs: ").append(quantidadeRun).append(HTML_CLOSE_SPAN)
-				.append(HTML_QUEBRA_LINHA).append(HTML_OPEN_SPAN).append(sbCountFailed.toString())
-				.append(HTML_CLOSE_SPAN).append(HTML_QUEBRA_LINHA).append(HTML_OPEN_SPAN).append(sbCountErro.toString())
+		sbResultCount.append(sbTitulo.toString()).append(HTML_OPEN_P).append("  Quantidade ").append(HTML_QUEBRA_LINHA)
+				.append(HTML_OPEN_SPAN).append("Executados: ").append(quantidadeRun).append(HTML_CLOSE_SPAN)
+				.append(HTML_QUEBRA_LINHA);
+
+		// Quantidade ignorado só exibe se houve algum skipped
+		if (quantidadeSkipped > 0) {
+			sbResultCount.append(HTML_OPEN_SPAN).append(sbCountSkipped.toString()).append(HTML_CLOSE_SPAN);
+		}
+
+		sbResultCount.append(HTML_OPEN_SPAN).append(sbCountFailed.toString()).append(HTML_CLOSE_SPAN)
+				.append(HTML_QUEBRA_LINHA).append(HTML_OPEN_SPAN).append(sbCountErro.toString())
 				.append(HTML_CLOSE_SPAN);
 
 		StringBuilder sbResultPercentual = new StringBuilder();
-		sbResultPercentual.append(HTML_OPEN_P).append("  Percentual: ").append(HTML_QUEBRA_LINHA).append(HTML_OPEN_SPAN)
-				.append(sbPercentualSuccess.toString()).append(HTML_CLOSE_SPAN).append(HTML_QUEBRA_LINHA)
+		sbResultPercentual.append(HTML_OPEN_P).append("  Percentual: ").append(HTML_QUEBRA_LINHA)
+				.append(HTML_OPEN_SPAN);
+
+		// Quantidade ignorado só exibe se houve algum skipped
+		if (quantidadeSkipped > 0) {
+			sbResultPercentual.append(sbPercentualSkipped.toString()).append(HTML_CLOSE_SPAN).append(HTML_QUEBRA_LINHA);
+		}
+
+		sbResultPercentual.append(sbPercentualSuccess.toString()).append(HTML_CLOSE_SPAN).append(HTML_QUEBRA_LINHA)
 				.append(HTML_OPEN_SPAN).append(sbPercentualFailed.toString()).append(HTML_CLOSE_SPAN)
 				.append(HTML_QUEBRA_LINHA).append(HTML_OPEN_SPAN).append(sbPercentualErro.toString())
 				.append(HTML_CLOSE_SPAN);
@@ -749,10 +779,10 @@ public class ReportHTML {
 	}
 
 	public static String getLegenda() {
-		String marcadorSucess = " <span style='color: " + HTML_COLOR_SUCCESS + "'> &#9679; Sucessos</span>";
-		String marcadorFailed = " <span style='color: " + HTML_COLOR_FAILED + "'>&#9679; Falhas</span>";
-		String marcadorSkiped = " <span style='color: " + HTML_COLOR_SKIPED + "'>&#9679; Ignorados</span>";
-		String marcadorErro = " <span style='color: " + HTML_COLOR_ERRO + "'>&#9679; Erros</span>";
+		String marcadorSucess = " <span style='color: " + HTML_COLOR_SUCCESS + "'> &#9679; " + SUCESSOS + "</span>";
+		String marcadorFailed = " <span style='color: " + HTML_COLOR_FAILED + "'>&#9679; " + FALHAS + "</span>";
+		String marcadorSkiped = " <span style='color: " + HTML_COLOR_SKIPED + "'>&#9679; " + IGNORADOS + "</span>";
+		String marcadorErro = " <span style='color: " + HTML_COLOR_ERRO + "'>&#9679; " + ERROS + "</span>";
 		String legenda = "<br/> Lengenda: " + marcadorSucess + marcadorFailed + marcadorSkiped + marcadorErro;
 		return legenda;
 	}
