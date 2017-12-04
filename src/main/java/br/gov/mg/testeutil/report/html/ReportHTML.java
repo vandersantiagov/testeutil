@@ -62,10 +62,10 @@ import br.gov.mg.testeutil.util.DateUtil;
 public class ReportHTML {
 
 	private static final String SEPARATOR_RESULT_FINAL = "======================================================================================";
-	private static final String FAILED = "FAILED";
-	private static final String SUCCESS = "SUCCESS";
-	private static final String ERRO = "ERRO";
-	private static final String SKIPED = "SKIPED";
+	private static final String FAILED = "FALHAS";
+	private static final String SUCCESS = "SUCESSOS";
+	private static final String ERRO = "ERROS";
+	private static final String SKIPPED = "IGNORADOS";
 
 	private static final String TEXTO_INICIO_DOS_TESTES = "Inicio dos Testes: ";
 	private static final String TEXTO_FIM_DOS_TESTES = "Fim dos Testes: ";
@@ -163,9 +163,10 @@ public class ReportHTML {
 
 				SuiteSiare.setQuantitativoRunVO(suiteVO.getQuantitativoRunVO(), suitePrincipalVO.getQuantitativoRun());
 			}
-			appendResultRun(suiteVO.getQuantitativoRunVO(), suiteVO.getDataInicioExecucao(),
-					suiteVO.getDataFimExecucao(), sbReportGeralProjeto);
-
+			if (suiteVO.getQuantitativoRunVO().getQuantidadeRun() > 0) {
+				appendResultRun(suiteVO.getQuantitativoRunVO(), suiteVO.getDataInicioExecucao(),
+						suiteVO.getDataFimExecucao(), sbReportGeralProjeto);
+			}
 			appendReportGeralProjeto(HTML_QUEBRA_LINHA, HTML_OPEN_NEGRITO, TEXTO_FIM_DOS_TESTES,
 					DateUtil.getDataFormatadaByFormato(suiteVO.getDataFimExecucao(), DateUtil.FORMATO_DATA6),
 					HTML_CLOSE_NEGRITO, HTML_QUEBRA_LINHA);
@@ -173,9 +174,10 @@ public class ReportHTML {
 			escreverArquivosHTMLProjeto();
 		}
 
-		appendResultRun(suitePrincipalVO.getQuantitativoRun(), suitePrincipalVO.getDataInicioExecucao(),
-				suitePrincipalVO.getDataFimExecucao(), sbReportGeral);
-
+		if (suitePrincipalVO.getQuantitativoRun().getQuantidadeRun() > 0) {
+			appendResultRun(suitePrincipalVO.getQuantitativoRun(), suitePrincipalVO.getDataInicioExecucao(),
+					suitePrincipalVO.getDataFimExecucao(), sbReportGeral);
+		}
 		appendReportGeral(HTML_QUEBRA_LINHA, HTML_OPEN_NEGRITO, TEXTO_FIM_DOS_TESTES,
 				DateUtil.getDataFormatadaByFormato(suitePrincipalVO.getDataFimExecucao(), DateUtil.FORMATO_DATA6),
 				HTML_CLOSE_NEGRITO, HTML_QUEBRA_LINHA);
@@ -299,7 +301,7 @@ public class ReportHTML {
 		} else if (metodo.isSucess()) {
 			appendInformacoesMetodo(metodo, openFontSuccess, metodo.getNome(), SUCCESS);
 		} else if (metodo.isSkiped()) {
-			appendInformacoesMetodo(metodo, openFontSkiped, metodo.getNome(), SKIPED);
+			appendInformacoesMetodo(metodo, openFontSkiped, metodo.getNome(), SKIPPED);
 		}
 		appendPilhaDeErro(metodo, caminhoFileGeral, caminhoFileGeralProjeto);
 	}
@@ -747,10 +749,10 @@ public class ReportHTML {
 	}
 
 	public static String getLegenda() {
-		String marcadorSucess = " <span style='color: " + HTML_COLOR_SUCCESS + "'> &#9679; Sucess</span>";
-		String marcadorFailed = " <span style='color: " + HTML_COLOR_FAILED + "'>&#9679; Failed</span>";
-		String marcadorSkiped = " <span style='color: " + HTML_COLOR_SKIPED + "'>&#9679; Skiped</span>";
-		String marcadorErro = " <span style='color: " + HTML_COLOR_ERRO + "'>&#9679; Erro</span>";
+		String marcadorSucess = " <span style='color: " + HTML_COLOR_SUCCESS + "'> &#9679; Sucessos</span>";
+		String marcadorFailed = " <span style='color: " + HTML_COLOR_FAILED + "'>&#9679; Falhas</span>";
+		String marcadorSkiped = " <span style='color: " + HTML_COLOR_SKIPED + "'>&#9679; Ignorados</span>";
+		String marcadorErro = " <span style='color: " + HTML_COLOR_ERRO + "'>&#9679; Erros</span>";
 		String legenda = "<br/> Lengenda: " + marcadorSucess + marcadorFailed + marcadorSkiped + marcadorErro;
 		return legenda;
 	}

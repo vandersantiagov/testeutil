@@ -41,7 +41,7 @@ public class FileHTML {
 	public static final String HTML_CLOSE_P = "</p>";
 	public static final String HTML_CLOSE_FONT = "</font>";
 
-	public static final String PATH_DIRETORIO_REPORT = MetodosSiare.diretorioPrincipal + "Report";
+	public static final String PATH_DIRETORIO_REPORT = MetodosSiare.diretorioPrincipal + "Relatorios";
 	private static final String FORMATO_DATA_CRIACAO_ARQUIVO = DateUtil.FORMATO_DATA1;
 	private static final String PROJETO = "PROJETO_";
 	private static final String GERAL = "_Geral";
@@ -96,7 +96,7 @@ public class FileHTML {
 	protected static String getPathReportGeral(String nomePastaProjetoPrincipal) {
 		String path = PATH_DIRETORIO_REPORT + DUAS_CONTRA_BARRAS;
 		if (StringUtils.isNotBlank(nomePastaProjetoPrincipal)) {
-			path = PATH_DIRETORIO_REPORT + DUAS_CONTRA_BARRAS + nomePastaProjetoPrincipal;
+			path = PATH_DIRETORIO_REPORT + DUAS_CONTRA_BARRAS + PROJETO + nomePastaProjetoPrincipal;
 		}
 		return path;
 	}

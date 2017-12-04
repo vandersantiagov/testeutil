@@ -16,7 +16,6 @@ import br.gov.mg.testeutil.util.naoSiare.PropertyNaoSiare;
 import br.gov.mg.testeutil.util.sicaf.PropertySicaf;
 import br.gov.mg.testeutil.util.sol.PropertySol;
 
-
 /**
  * @author sandra.rodrigues
  */
@@ -44,7 +43,7 @@ public class SuiteSiare {
 		}
 	}
 
-	public static void finalizeReport() throws Exception {
+	public static void finalizeReport() {
 		boolean suiteQueIniciouOsTestes = isSuiteQueIniciouOsTestes();
 		try {
 			if (suiteQueIniciouOsTestes && quitAmbiente) {
@@ -60,6 +59,7 @@ public class SuiteSiare {
 					suitePrincipalVO.setDataFimExecucao(dataFimExecucao);
 					// Cria os arquivos de report
 					ReportHTML.createHTML(suitePrincipalVO);
+					System.out.println("Relatório Finalizado!");
 				}
 			} catch (Throwable e) {
 				e.printStackTrace();
@@ -71,33 +71,34 @@ public class SuiteSiare {
 		return RuleReportSuiteProjeto.isSuiteTotal && idSuite == 0;
 	}
 
-	private static void quitAmbiente() throws Exception {
-		if (PropertySicaf.ambienteSICAF) {
-			try {
-				// Focar e fechar janela do Ambiente SICAF
-				MetodosSiare.setAmbienteSicaf();
-				MetodosSiare.quitAmbiente();
-			} catch (Exception e) {
-				// Se a classe não foi inicializada ignora.
+	private static void quitAmbiente() {
+		try {
+			if (PropertySicaf.ambienteSICAF) {
+				try {
+					// Focar e fechar janela do Ambiente SICAF
+					MetodosSiare.setAmbienteSicaf();
+					MetodosSiare.quitAmbiente();
+				} catch (Throwable e) {
+				}
 			}
-		}
-		if (PropertySol.ambienteSOL) {
-			try {
-				// Focar e fechar janela do Ambiente SOL
-				MetodosSiare.setAmbienteSol();
-				MetodosSiare.quitAmbiente();
-			} catch (Exception e) {
-				// Se a classe não foi inicializada ignora.
+			if (PropertySol.ambienteSOL) {
+				try {
+					// Focar e fechar janela do Ambiente SOL
+					MetodosSiare.setAmbienteSol();
+					MetodosSiare.quitAmbiente();
+				} catch (Throwable e) {
+				}
 			}
-		}
-		if (PropertyNaoSiare.ambienteNAOSIARE) {
-			try {
-				// Focar e fechar janela do Ambiente Não Siare
-				MetodosSiare.setAmbienteNaoSiare();
-				MetodosSiare.quitAmbiente();
-			} catch (Exception e) {
-				// Se a classe não foi inicializada ignora.
+			if (PropertyNaoSiare.ambienteNAOSIARE) {
+				try {
+					// Focar e fechar janela do Ambiente Não Siare
+					MetodosSiare.setAmbienteNaoSiare();
+					MetodosSiare.quitAmbiente();
+				} catch (Throwable e) {
+				}
 			}
+		} catch (Throwable e) {
+			// Se a classe não foi inicializada ignora.
 		}
 
 	}
