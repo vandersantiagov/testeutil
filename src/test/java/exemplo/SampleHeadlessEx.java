@@ -32,7 +32,7 @@ public class SampleHeadlessEx {
 		FTPDownloadDriveBrowser.obterDriver(BrowserEnum.CHROME, "58");
 		FTPDownloadDriveBrowser.obterDriver(BrowserEnum.FIREFOX, "53");
 		//driver = new ChromeDriver(); 
-		driver = new InternetExplorerDriver(ieCapabilities);
+		driver = new InternetExplorerDriver();
 		
 		baseUrl = "http://assertselenium.com/";
 		driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
