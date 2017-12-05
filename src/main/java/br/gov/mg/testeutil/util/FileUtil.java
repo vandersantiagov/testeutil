@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -207,6 +208,26 @@ public class FileUtil {
 		String pasta = local + nomeDiretorio;
 		createDiretorios(pasta);
 		return pasta;
+	}
+
+	/**
+	 * Retorna o arquivo encontrado na pasta do caminho path com o nome
+	 * informado no parametro e extensão informada.
+	 * 
+	 * @author sandra.rodrigues
+	 */
+	public static File getFileByPath(String path, String nomeArquivo, TipoArquivoEnum extension) {
+		File fileReturn = null;
+		File file = new File(path);
+		if (ArrayUtils.isNotEmpty(file.listFiles())) {
+			for (File arquivo : file.listFiles()) {
+				if (Objects.equals(arquivo.getName(), nomeArquivo + extension.getTipoArquivo())) {
+					fileReturn = arquivo;
+					break;
+				}
+			}
+		}
+		return fileReturn;
 	}
 
 	/**

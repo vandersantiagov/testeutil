@@ -168,26 +168,29 @@ public class ReportHTML {
 
 				SuiteSiare.setQuantitativoRunVO(suiteVO.getQuantitativoRunVO(), suitePrincipalVO.getQuantitativoRun());
 			}
+
+			StringBuilder sbResultRun = new StringBuilder();
 			if (suiteVO.getQuantitativoRunVO().getQuantidadeRun() > 0) {
 				appendResultRun(suiteVO.getQuantitativoRunVO(), suiteVO.getDataInicioExecucao(),
-						suiteVO.getDataFimExecucao(), sbReportGeralProjeto);
+						suiteVO.getDataFimExecucao(), sbResultRun);
 			}
 			appendReportGeralProjeto(HTML_QUEBRA_LINHA, HTML_OPEN_NEGRITO, TEXTO_FIM_DOS_TESTES,
 					DateUtil.getDataFormatadaByFormato(suiteVO.getDataFimExecucao(), DateUtil.FORMATO_DATA6),
 					HTML_CLOSE_NEGRITO, HTML_QUEBRA_LINHA);
 
-			escreverArquivosHTMLProjeto();
+			escreverArquivosHTMLProjeto(sbResultRun);
 		}
 
+		StringBuilder sbResultRun = new StringBuilder();
 		if (suitePrincipalVO.getQuantitativoRun().getQuantidadeRun() > 0) {
 			appendResultRun(suitePrincipalVO.getQuantitativoRun(), suitePrincipalVO.getDataInicioExecucao(),
-					suitePrincipalVO.getDataFimExecucao(), sbReportGeral);
+					suitePrincipalVO.getDataFimExecucao(), sbResultRun);
 		}
 		appendReportGeral(HTML_QUEBRA_LINHA, HTML_OPEN_NEGRITO, TEXTO_FIM_DOS_TESTES,
 				DateUtil.getDataFormatadaByFormato(suitePrincipalVO.getDataFimExecucao(), DateUtil.FORMATO_DATA6),
 				HTML_CLOSE_NEGRITO, HTML_QUEBRA_LINHA);
 
-		escreverArquivosHTMLGeral();
+		escreverArquivosHTMLGeral(sbResultRun);
 	}
 
 	private static void appendCabecalho(SuitePrincipalVO suitePrincipalVO, SuiteVO suiteVO) {
@@ -236,12 +239,13 @@ public class ReportHTML {
 	}
 
 	private static void encerrarHTMLAnteriorProjeto(SuiteVO suiteVO) throws IOException {
+		StringBuilder sbResultRun = new StringBuilder();
 		appendResultRun(suiteVO.getQuantitativoRunVO(), suiteVO.getDataInicioExecucao(), suiteVO.getDataFimExecucao(),
-				sbReportGeralProjeto);
+				sbResultRun);
 		appendReportGeralProjeto(HTML_QUEBRA_LINHA, HTML_OPEN_NEGRITO, TEXTO_FIM_DOS_TESTES,
 				DateUtil.getDataFormatadaByFormato(suiteVO.getDataFimExecucao(), DateUtil.FORMATO_DATA6),
 				HTML_CLOSE_NEGRITO, HTML_QUEBRA_LINHA);
-		escreverArquivosHTMLProjeto();
+		escreverArquivosHTMLProjeto(sbResultRun);
 	}
 
 	public static void appendClassesDeTeste(SuiteVO suiteVO, String[] caminhoFileGeral,
@@ -519,8 +523,8 @@ public class ReportHTML {
 		sb.append(SEPARATOR_RESULT_FINAL);
 		sb.append(HTML_OPEN_PRE).append(sbResultCount.toString()).append(HTML_CLOSE_PRE).append(HTML_CLOSE_P);
 		sb.append(HTML_OPEN_PRE).append(sbResultPercentual.toString()).append(HTML_CLOSE_PRE).append(HTML_CLOSE_P);
-		sb.append("<pre>Tempo total execução dos testes: ").append(duracaoTestes).append(HTML_CLOSE_PRE)
-				.append(HTML_CLOSE_P);
+		sb.append(HTML_OPEN_PRE).append("  Tempo total execução dos testes: ").append(duracaoTestes)
+				.append(HTML_CLOSE_PRE).append(HTML_CLOSE_P);
 		sb.append(SEPARATOR_RESULT_FINAL);
 	}
 
@@ -608,8 +612,11 @@ public class ReportHTML {
 		long diferencaHoras = (diferenca / (60 * 60 * 1000)) % 60;
 		long diferencaDias = (diferenca / (60 * 60 * 1000) / 24);
 		StringBuilder sbResult = new StringBuilder();
-		sbResult.append(diferencaDias).append(" dias ").append(diferencaHoras).append(" horas ")
-				.append(diferencaMinutos).append(" minutos ").append(diferencaSegundos).append(" segundos");
+		sbResult.append(HTML_QUEBRA_LINHA).append(HTML_OPEN_SPAN).append(" Dias: ").append(diferencaDias)
+				.append(HTML_CLOSE_SPAN).append(HTML_QUEBRA_LINHA).append(HTML_OPEN_SPAN).append(" Horas: ")
+				.append(diferencaHoras).append(HTML_CLOSE_SPAN).append(HTML_QUEBRA_LINHA).append(HTML_OPEN_SPAN)
+				.append(" Minutos: ").append(diferencaMinutos).append(HTML_CLOSE_SPAN).append(HTML_QUEBRA_LINHA)
+				.append(HTML_OPEN_SPAN).append(" Segundos:").append(diferencaSegundos).append(HTML_CLOSE_SPAN);
 		return sbResult.toString();
 	}
 
@@ -675,12 +682,19 @@ public class ReportHTML {
 			}
 		}
 
-		appendReportGeral(openFont, HTML_QUEBRA_LINHA, exception.getMessage(), closeFont, HTML_QUEBRA_LINHA);
-		appendReportFalha(openFont, HTML_QUEBRA_LINHA, exception.getMessage(), closeFont, HTML_QUEBRA_LINHA);
+		if (StringUtils.isNotBlank(exception.getMessage())) {
+			appendReportGeral(openFont, HTML_QUEBRA_LINHA, exception.getMessage(), closeFont);
+			appendReportFalha(openFont, HTML_QUEBRA_LINHA, exception.getMessage(), closeFont);
 
-		appendReportGeralProjeto(openFont, HTML_QUEBRA_LINHA, exception.getMessage(), closeFont, HTML_QUEBRA_LINHA);
-		appendReportFalhaProjeto(openFont, HTML_QUEBRA_LINHA, exception.getMessage(), closeFont, HTML_QUEBRA_LINHA);
+			appendReportGeralProjeto(openFont, HTML_QUEBRA_LINHA, exception.getMessage(), closeFont);
+			appendReportFalhaProjeto(openFont, HTML_QUEBRA_LINHA, exception.getMessage(), closeFont);
+		}
 
+		appendReportGeral(HTML_QUEBRA_LINHA, HTML_QUEBRA_LINHA);
+		appendReportFalha(HTML_QUEBRA_LINHA, HTML_QUEBRA_LINHA);
+
+		appendReportGeralProjeto(HTML_QUEBRA_LINHA, HTML_QUEBRA_LINHA);
+		appendReportFalhaProjeto(HTML_QUEBRA_LINHA, HTML_QUEBRA_LINHA);
 	}
 
 	private static void appendLinkProvaException(MetodoClasseTesteVO metodo, String[] caminhoFileGeral,
@@ -695,19 +709,28 @@ public class ReportHTML {
 		String caminhoReportGeral = caminhoFileGeral[0];
 
 		destinoArquivoPrintErro = copyArquivoParaPastaDoReport(caminhoOrigemPrint, caminhoReportGeral);
-		sbReportGeral.append(href).append(destinoArquivoPrintErro).append(tituloPrint).append(HTML_QUEBRA_LINHA);
-
+		if (StringUtils.isNotBlank(destinoArquivoPrintErro)) {
+			sbReportGeral.append(href).append(destinoArquivoPrintErro).append(tituloPrint).append(HTML_QUEBRA_LINHA);
+		}
 		String caminhoReportFalha = caminhoFileGeral[1];
 		destinoArquivoPrintErro = copyArquivoParaPastaDoReport(caminhoOrigemPrint, caminhoReportFalha);
-		sbReportFalha.append(href).append(destinoArquivoPrintErro).append(tituloPrint).append(HTML_QUEBRA_LINHA);
+		if (StringUtils.isNotBlank(destinoArquivoPrintErro)) {
+			sbReportFalha.append(href).append(destinoArquivoPrintErro).append(tituloPrint).append(HTML_QUEBRA_LINHA);
+		}
 
 		String caminhoReportGeralProjeto = caminhoFileGeralProjeto[0];
 		destinoArquivoPrintErro = copyArquivoParaPastaDoReport(caminhoOrigemPrint, caminhoReportGeralProjeto);
-		sbReportGeralProjeto.append(href).append(destinoArquivoPrintErro).append(tituloPrint).append(HTML_QUEBRA_LINHA);
+		if (StringUtils.isNotBlank(destinoArquivoPrintErro)) {
+			sbReportGeralProjeto.append(href).append(destinoArquivoPrintErro).append(tituloPrint)
+					.append(HTML_QUEBRA_LINHA);
+		}
 
 		String caminhoReportFalhaProjeto = caminhoFileGeralProjeto[1];
 		destinoArquivoPrintErro = copyArquivoParaPastaDoReport(caminhoOrigemPrint, caminhoReportFalhaProjeto);
-		sbReportFalhaProjeto.append(href).append(destinoArquivoPrintErro).append(tituloPrint).append(HTML_QUEBRA_LINHA);
+		if (StringUtils.isNotBlank(destinoArquivoPrintErro)) {
+			sbReportFalhaProjeto.append(href).append(destinoArquivoPrintErro).append(tituloPrint)
+					.append(HTML_QUEBRA_LINHA);
+		}
 	}
 
 	private static String copyArquivoParaPastaDoReport(String caminhoOrigem, String caminhoDestino) throws IOException {
@@ -730,23 +753,24 @@ public class ReportHTML {
 		return destinoDir.getPath() + "\\" + srcFile.getName();
 	}
 
-	public static void escreverArquivosHTMLGeral() throws IOException {
+	public static void escreverArquivosHTMLGeral(StringBuilder sbResultRun) throws IOException {
 		if (StringUtils.isNotBlank(sbReportFalha.toString())) {
 			appendReportFalha(HTML_CLOSE_HTML);
 			escreverArquivoFalha(sbReportFalha.toString());
 			closeFalha();
 		}
 		if (StringUtils.isNotBlank(sbReportGeral.toString())) {
+			sbResultRun.append(HTML_QUEBRA_LINHA);
 			appendReportGeral(getLegenda());
 			appendReportGeral(HTML_CLOSE_HTML);
-			escreverArquivoGeral(sbReportGeral.toString());
+			escreverArquivoGeral(sbResultRun.toString(), sbReportGeral.toString());
 			closePastaGeral();
 			openReportGeralInBrowser();
 		}
 
 	}
 
-	public static void escreverArquivosHTMLProjeto() throws IOException {
+	public static void escreverArquivosHTMLProjeto(StringBuilder sbResultRun) throws IOException {
 		if (StringUtils.isNotBlank(sbReportSucessoProjeto.toString())) {
 
 			appendReportSucessoProjeto(HTML_QUEBRA_LINHA, SEPARADOR);
@@ -771,9 +795,10 @@ public class ReportHTML {
 			closeFalhaProjeto();
 		}
 		if (StringUtils.isNotBlank(sbReportGeralProjeto.toString())) {
+			sbResultRun.append(HTML_QUEBRA_LINHA);
 			appendReportGeralProjeto(getLegenda());
 			appendReportGeralProjeto(HTML_CLOSE_HTML);
-			escreverArquivoGeralProjeto(sbReportGeralProjeto.toString());
+			escreverArquivoGeralProjeto(sbResultRun.toString(), sbReportGeralProjeto.toString());
 			closeGeralProjeto();
 		}
 	}

@@ -9,13 +9,14 @@ import java.util.List;
 import java.util.Objects;
 
 import org.apache.commons.lang3.StringUtils;
-import org.junit.internal.AssumptionViolatedException;
+import org.junit.AssumptionViolatedException;
 import org.junit.rules.TestWatcher;
 import org.junit.runner.Description;
 import org.junit.runners.model.Statement;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
+import br.gov.mg.testeutil.enums.TipoArquivoEnum;
 import br.gov.mg.testeutil.metodos.MetodosSiare;
 import br.gov.mg.testeutil.report.html.FileHTML;
 import br.gov.mg.testeutil.report.vo.ClasseDeTesteVO;
@@ -169,13 +170,21 @@ public class RuleReport extends TestWatcher {
 			metodo.setFalha(isFailed);
 			metodo.setErro(!isFailed);
 
-			File fileCriado = MetodosSiare.capturaScreenDaTela(RuleReportSuiteProjeto.nomeProjeto, fileName);
 			setNomeMetodo(description);
 			setDescripcion(description);
 			setNomeProjeto();
 			setDataFimExecucaoMetodo();
+
 			addException(e, metodo.getExceptions());
-			metodo.setCaminhoPrintErro(fileCriado.getPath());
+			
+			MetodosSiare.capturaScreenDaTela(RuleReportSuiteProjeto.nomeProjeto, fileName);
+			String path = MetodosSiare.diretorioPrincipal + RuleReportSuiteProjeto.nomeProjeto;
+			File fileCriado = FileUtil.getFileByPath(path, fileName, TipoArquivoEnum.PNG);
+
+			if (fileCriado != null) {
+				String caminhoPrint = fileCriado.getPath();
+				metodo.setCaminhoPrintErro(caminhoPrint);
+			}
 
 			if (isFailed) {
 				countFailed();
@@ -200,15 +209,17 @@ public class RuleReport extends TestWatcher {
 		if (isTelaErro(comandoDetalharPilhaDeErro)) {
 			MetodosSiare.umClique(comandoDetalharPilhaDeErro);
 			String nameArquivo = fileName + "_Pilha_Erro";
-			File capturaScreenDaTela = MetodosSiare.capturaScreenDaTela(RuleReportSuiteProjeto.nomeProjeto,
-					nameArquivo);
+			MetodosSiare.capturaScreenDaTela(RuleReportSuiteProjeto.nomeProjeto, fileName);
+			String path = MetodosSiare.diretorioPrincipal + RuleReportSuiteProjeto.nomeProjeto;
+			File capturaScreenDaTela = FileUtil.getFileByPath(path, fileName, TipoArquivoEnum.PNG);
 
 			StringBuilder textoToHTML = createHTML();
 			StringBuilder textoToTxt = createTxt();
 
-			String path = MetodosSiare.diretorioPrincipal + RuleReportSuiteProjeto.nomeProjeto + "\\" + nameArquivo;
-			String pathFileHTMLPilhaErro = FileHTML.generateHTMLByText(path, textoToHTML.toString());
-			String pathFileTxtPilhaErro = FileUtil.generateTxtByText(path, textoToTxt.toString());
+			String pathComNomeArquivo = MetodosSiare.diretorioPrincipal + RuleReportSuiteProjeto.nomeProjeto + "\\"
+					+ nameArquivo + TipoArquivoEnum.PNG.getTipoArquivo();
+			String pathFileHTMLPilhaErro = FileHTML.generateHTMLByText(pathComNomeArquivo, textoToHTML.toString());
+			String pathFileTxtPilhaErro = FileUtil.generateTxtByText(pathComNomeArquivo, textoToTxt.toString());
 
 			metodo.setCaminhoArquivoHTMLPilhaErro(pathFileHTMLPilhaErro);
 			metodo.setCaminhoArquivoTXTPilhaErro(pathFileTxtPilhaErro);
@@ -232,9 +243,9 @@ public class RuleReport extends TestWatcher {
 				String textErro = findElement.getText();
 				formErroContainsTextoErro = StringUtils.containsIgnoreCase(textErro, "Erro");
 
-			boolean isBtnDetalheVisible = MetodosSiare.verificaSeOElementoEstaVisivel(comandoDetalharPilhaDeErro);
+				boolean isBtnDetalheVisible = MetodosSiare.verificaSeOElementoEstaVisivel(comandoDetalharPilhaDeErro);
 
-			isTelaErro = isVisibleFormErro && isBtnDetalheVisible && formErroContainsTextoErro;
+				isTelaErro = isVisibleFormErro && isBtnDetalheVisible && formErroContainsTextoErro;
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
