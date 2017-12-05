@@ -34,7 +34,7 @@ private static WebDriver driver = null;
 				DesiredCapabilities capabilities = new DesiredCapabilities();
 				capabilities.setCapability(CapabilityType.ACCEPT_SSL_CERTS, true);
 				FTPDownloadDriveBrowser.obterDriver(BrowserEnum.CHROME, version);
-				driver = new ChromeDriver(capabilities);
+				driver = new ChromeDriver();
 				
 					
 				
@@ -44,14 +44,11 @@ private static WebDriver driver = null;
 				capabilities.setCapability(CapabilityType.UNEXPECTED_ALERT_BEHAVIOUR,UnexpectedAlertBehaviour.ACCEPT);
 				capabilities.setCapability(InternetExplorerDriver.INTRODUCE_FLAKINESS_BY_IGNORING_SECURITY_DOMAINS, true);
 				FTPDownloadDriveBrowser.obterDriver(BrowserEnum.IE, version);
-				driver = new InternetExplorerDriver(capabilities);
+				driver = new InternetExplorerDriver();
 			}
 			else if (BrowserEnum.PHANTOMJS.toString().equals(browser)) {
-				DesiredCapabilities desiredCapabilities = DesiredCapabilities.phantomjs();
-				desiredCapabilities.setJavascriptEnabled(true);
-				desiredCapabilities.setCapability("takeScreenshot", true);
 				FTPDownloadDriveBrowser.obterDriver(BrowserEnum.PHANTOMJS, version);
-				driver = new PhantomJSDriver(desiredCapabilities);
+				driver = new PhantomJSDriver();
 							
 			}else  if (BrowserEnum.FIREFOX.toString().equals(browser)){
 				new DesiredCapabilities();
@@ -60,7 +57,7 @@ private static WebDriver driver = null;
 				// true);
 				capabilities.setCapability("marionette", true);
 				FTPDownloadDriveBrowser.obterDriver(BrowserEnum.FIREFOX, version);
-				driver = new FirefoxDriver(capabilities);
+				driver = new FirefoxDriver();
 				
 				/*FTPDownloadDriveBrowser.obterDriver(BrowserEnum.FIREFOX, version);
 				driver = new FirefoxDriver();*/ 
