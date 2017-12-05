@@ -40,14 +40,21 @@ public class FileHTML {
 	public static final String HTML_OPEN_P = "<p>";
 	public static final String HTML_CLOSE_P = "</p>";
 	public static final String HTML_CLOSE_FONT = "</font>";
+	public static final String HTML_OPEN_DETAILS = "<details>";
+	public static final String HTML_CLOSE_DETAILS = "</details>";
+	public static final String HTML_OPEN_SUMMARY = "<summary>";
+	public static final String HTML_CLOSE_SUMMARY = "</summary>";
 
 	public static final String PATH_DIRETORIO_REPORT = MetodosSiare.diretorioPrincipal + "Relatorios";
 	private static final String FORMATO_DATA_CRIACAO_ARQUIVO = DateUtil.FORMATO_DATA1;
 	private static final String PROJETO = "PROJETO_";
 	private static final String GERAL = "_Geral";
+	private static final String GERALM = "_GeralM";
 	private static final String SUCESSO = "_Sucesso";
 	private static final String FALHA = "_Falha";
 	private static final String DUAS_CONTRA_BARRAS = "\\";
+
+	private static File fileReportGeralMinimized;
 
 	private static File fileReportGeral;
 	private static File fileReportFalha;
@@ -57,6 +64,7 @@ public class FileHTML {
 	private static File fileReportSucessoProjeto;
 
 	public static BufferedWriter bwReportPastaGeral;
+	public static BufferedWriter bwReportPastaGeralMinimized;
 	public static BufferedWriter bwReportFalha;
 
 	public static BufferedWriter bwReportGeralProjeto;
@@ -93,7 +101,43 @@ public class FileHTML {
 		return pathReturn;
 	}
 
+	/**
+	 * Cria arquivos dentro da pasta Report e retorna o caminho do relatorio
+	 * geral.
+	 * 
+	 * @throws IOException
+	 *
+	 * @author sandra.rodrigues
+	 *         16 de nov de 2017 09:18:51
+	 *
+	 */
+	protected static String[] createFilesGeralMinimized(String nomePastaProjetoPrincipal, String path)
+			throws IOException {
+
+		String dataFormatada = getDataFormatada(FORMATO_DATA_CRIACAO_ARQUIVO);
+		String caminhoArquivo = PATH_DIRETORIO_REPORT + DUAS_CONTRA_BARRAS + dataFormatada;
+		if (StringUtils.isNotBlank(nomePastaProjetoPrincipal)) {
+			caminhoArquivo = path + DUAS_CONTRA_BARRAS + dataFormatada;
+		}
+		createDiretorios(caminhoArquivo);
+
+		fileReportGeralMinimized = createArquivo(caminhoArquivo + DUAS_CONTRA_BARRAS + dataFormatada + GERALM,
+				TipoArquivoEnum.HTML);
+		bwReportPastaGeralMinimized = new BufferedWriter(new FileWriter(fileReportGeralMinimized, true));
+
+		String pathReturn[] = { fileReportGeralMinimized.getPath() };
+		return pathReturn;
+	}
+
 	protected static String getPathReportGeral(String nomePastaProjetoPrincipal) {
+		String path = PATH_DIRETORIO_REPORT + DUAS_CONTRA_BARRAS;
+		if (StringUtils.isNotBlank(nomePastaProjetoPrincipal)) {
+			path = PATH_DIRETORIO_REPORT + DUAS_CONTRA_BARRAS + PROJETO + nomePastaProjetoPrincipal;
+		}
+		return path;
+	}
+
+	protected static String getPathReportGeralMinimized(String nomePastaProjetoPrincipal) {
 		String path = PATH_DIRETORIO_REPORT + DUAS_CONTRA_BARRAS;
 		if (StringUtils.isNotBlank(nomePastaProjetoPrincipal)) {
 			path = PATH_DIRETORIO_REPORT + DUAS_CONTRA_BARRAS + PROJETO + nomePastaProjetoPrincipal;
@@ -180,6 +224,27 @@ public class FileHTML {
 			if (bwReportPastaGeral != null) {
 				for (String texto : textos) {
 					bwReportPastaGeral.write(texto);
+				}
+			}
+		} catch (Throwable e) {
+			e.printStackTrace();
+		}
+	}
+
+	/**
+	 * Escreve no arquivo de report geral o texto passado no parâmetro.
+	 * 
+	 * @param texto
+	 *
+	 * @author sandra.rodrigues
+	 *         16 de nov de 2017 09:47:16
+	 *
+	 */
+	public static void escreverArquivoGeralMinimized(String... textos) {
+		try {
+			if (bwReportPastaGeralMinimized != null) {
+				for (String texto : textos) {
+					bwReportPastaGeralMinimized.write(texto);
 				}
 			}
 		} catch (Throwable e) {
@@ -338,7 +403,7 @@ public class FileHTML {
 	}
 
 	public static void openReportGeralInBrowser() throws IOException {
-		Desktop.getDesktop().browse(fileReportGeral.toURI());
+		Desktop.getDesktop().browse(fileReportGeralMinimized.toURI());
 	}
 
 	public static String generateHTMLByText(String path, String... conteudo) {
