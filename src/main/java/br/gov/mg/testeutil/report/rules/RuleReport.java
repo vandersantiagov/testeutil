@@ -176,10 +176,10 @@ public class RuleReport extends TestWatcher {
 			setDataFimExecucaoMetodo();
 
 			addException(e, metodo.getExceptions());
-			
+
 			MetodosSiare.capturaScreenDaTela(RuleReportSuiteProjeto.nomeProjeto, fileName);
 			String path = MetodosSiare.diretorioPrincipal + RuleReportSuiteProjeto.nomeProjeto;
-			File fileCriado = FileUtil.getFileByPath(path, fileName, TipoArquivoEnum.PNG);
+			File fileCriado = FileUtil.getFileByPath(path, fileName, TipoArquivoEnum.JPEG);
 
 			if (fileCriado != null) {
 				String caminhoPrint = fileCriado.getPath();

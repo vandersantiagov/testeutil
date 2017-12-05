@@ -75,9 +75,9 @@ public class ReportHTML {
 
 	private static int countFalhasSuites;
 	private static int countSucessoSuites;
-	// private static String diretorioPrints;
 
 	public static void createHTML(SuitePrincipalVO suitePrincipalVO) throws IOException {
+		Date date = new Date();
 		String nomeProjetoAnterior = "";
 		SuiteVO suiteVO = null;
 		String[] caminhoFileGeralProjeto = null;
@@ -88,25 +88,36 @@ public class ReportHTML {
 		// Deleta as últimas 10 pastas referente ao projeto.
 		deleteArquivosDatasAntigas(path, false);
 		// Cria o arquivo html geral na pasta report.
-		String[] caminhoFileGeral = createFilesGeral(nomePastaProjetoPrincipal, path);
+		String[] caminhoFileGeral = createFilesGeral(nomePastaProjetoPrincipal, path, date);
 
 		String pathMinimized = getPathReportGeralMinimized(nomePastaProjetoPrincipal);
 		// Deleta as últimas 10 pastas referente ao projeto.
 		deleteArquivosDatasAntigas(pathMinimized, false);
 		// Cria o arquivo html geral na pasta report.
-		String[] caminhoFileGeralMinimized = createFilesGeralMinimized(nomePastaProjetoPrincipal, pathMinimized);
+		String[] caminhoFileGeralMinimized = createFilesGeralMinimized(nomePastaProjetoPrincipal, pathMinimized, date);
 
 		// Abre a tagHTML para os arquivos.
 		openHTMLGeral();
-		openHTMLGeralMinimized();
-		appendReportGeral(HTML_OPEN_NEGRITO, TEXTO_INICIO_DOS_TESTES,
+		appendReportGeral(HTML_QUEBRA_LINHA, HTML_OPEN_NEGRITO, TEXTO_INICIO_DOS_TESTES,
 				DateUtil.getDataFormatadaByFormato(suitePrincipalVO.getDataInicioExecucao(), DateUtil.FORMATO_DATA6),
-				HTML_CLOSE_NEGRITO, HTML_QUEBRA_LINHA);
+				HTML_CLOSE_NEGRITO, HTML_QUEBRA_LINHA, HTML_QUEBRA_LINHA);
 		appendReportGeral(HTML_OPEN_NEGRITO, TEXTO_SUITE_PRINCIPAL, HTML_CLOSE_NEGRITO, suitePrincipalVO.getNomeSuite(),
 				HTML_QUEBRA_LINHA);
 		if (StringUtils.isNotBlank(nomePastaProjetoPrincipal)) {
 			appendReportGeral(HTML_OPEN_NEGRITO, TEXTO_PROJETO_PRINCIPAL, HTML_CLOSE_NEGRITO, nomePastaProjetoPrincipal,
 					HTML_QUEBRA_LINHA);
+		}
+
+		openHTMLGeralMinimized();
+		appendReportGeralMinimized(HTML_QUEBRA_LINHA, HTML_OPEN_NEGRITO, TEXTO_INICIO_DOS_TESTES,
+				DateUtil.getDataFormatadaByFormato(suitePrincipalVO.getDataInicioExecucao(), DateUtil.FORMATO_DATA6),
+				HTML_CLOSE_NEGRITO, HTML_QUEBRA_LINHA, HTML_QUEBRA_LINHA);
+
+		appendReportGeralMinimized(HTML_OPEN_NEGRITO, TEXTO_SUITE_PRINCIPAL, HTML_CLOSE_NEGRITO,
+				suitePrincipalVO.getNomeSuite(), HTML_QUEBRA_LINHA);
+		if (StringUtils.isNotBlank(nomePastaProjetoPrincipal)) {
+			appendReportGeralMinimized(HTML_OPEN_NEGRITO, TEXTO_PROJETO_PRINCIPAL, HTML_CLOSE_NEGRITO,
+					nomePastaProjetoPrincipal, HTML_QUEBRA_LINHA);
 		}
 
 		Map<KeyMapVO<String, String>, SuiteVO> mapSuites = suitePrincipalVO.getSuitesFilhasByNome();
@@ -129,7 +140,7 @@ public class ReportHTML {
 						deleteArquivosDatasAntigas(pathProjeto, true);
 						// Cria a estrutura de report do projeto
 						caminhoFileGeralProjeto = createFilesProjeto(key.getKey1(), nomePastaProjetoPrincipal,
-								pathProjeto);
+								pathProjeto, date);
 						openHTMLProjeto(key.getKey1());
 					}
 				} else {
@@ -137,7 +148,8 @@ public class ReportHTML {
 					// Deleta os arquivos antigos e mantém os últimos gerados.
 					deleteArquivosDatasAntigas(pathProjeto, true);
 					// Cria a estrutura de report do projeto
-					caminhoFileGeralProjeto = createFilesProjeto(key.getKey1(), nomePastaProjetoPrincipal, pathProjeto);
+					caminhoFileGeralProjeto = createFilesProjeto(key.getKey1(), nomePastaProjetoPrincipal, pathProjeto,
+							date);
 					openHTMLProjeto(key.getKey1());
 				}
 
@@ -167,6 +179,10 @@ public class ReportHTML {
 					suitePrincipalVO.getDataFimExecucao(), sbResultRun);
 		}
 		appendReportGeral(HTML_QUEBRA_LINHA, HTML_OPEN_NEGRITO, TEXTO_FIM_DOS_TESTES,
+				DateUtil.getDataFormatadaByFormato(suitePrincipalVO.getDataFimExecucao(), DateUtil.FORMATO_DATA6),
+				HTML_CLOSE_NEGRITO, HTML_QUEBRA_LINHA);
+
+		appendReportGeralMinimized(HTML_QUEBRA_LINHA, HTML_OPEN_NEGRITO, TEXTO_FIM_DOS_TESTES,
 				DateUtil.getDataFormatadaByFormato(suitePrincipalVO.getDataFimExecucao(), DateUtil.FORMATO_DATA6),
 				HTML_CLOSE_NEGRITO, HTML_QUEBRA_LINHA);
 
@@ -465,7 +481,8 @@ public class ReportHTML {
 		int quantidadeSkipped = quantitativoVO.getQuantidadeSkiped();
 
 		StringBuilder sbTitulo = new StringBuilder();
-		sbTitulo.append("<span style='color:").append(HTML_COLOR_BLACK).append("'>Total testes: ");
+		sbTitulo.append("<span style='font: 1em Arial, Helvetica, sans-serif; color:").append(HTML_COLOR_BLACK)
+				.append("'>Total testes: ");
 
 		StringBuilder sbCountFailed = new StringBuilder();
 		sbCountFailed.append(FALHAS).append(": ").append(quantidadeFalha);
@@ -561,15 +578,143 @@ public class ReportHTML {
 	 *
 	 */
 	private static void openHTMLGeralMinimized() throws IOException {
-		appendReportGeralMinimized("<html><head><meta charset='UTF-8'>");
-		appendReportGeralMinimized("<style>");
-		appendReportGeralMinimized("details summary {cursor: pointer; font: bold 1em, Helvetica, sans-serif; padding: 8px 0; position: relative; width: 100%; }");
+		appendReportGeralMinimized("<!DOCTYPE html>");
+		appendReportGeralMinimized("<html><head><meta charset=\"utf-8\">");
+		appendReportGeralMinimized(
+				"<!--[if lt IE 9]><script src=\"http://html5shiv.googlecode.com/svn/trunk/html5.js\"></script><![endif]-->");
+		appendReportGeralMinimized("<style type=\"text/css\">");
+		appendReportGeralMinimized(
+				"details summary {cursor: pointer; font: bold 1em Arial, Helvetica, sans-serif; padding: 8px 0; position: relative; width: 100%; }");
 		appendReportGeralMinimized("details summary::-webkit-details-marker {display: none}");
-		appendReportGeralMinimized("details summary:before{border-radius: 5px; content: ; color: #000; float: left; font-size: 1.3em; font-weight: bold; margin: -4px 10px 0 0; padding: 0; text-align: center; width: 10px;}");
+		appendReportGeralMinimized(
+				"details summary:before{border-radius: 5px; content: ; color: #000; float: left; font-size: 1.3em; font-weight: bold; margin: -4px 10px 0 0; padding: 0; text-align: center; width: 10px;}");
 		appendReportGeralMinimized("details summary::before { content:'+'}");
 		appendReportGeralMinimized("details[open] summary::before { content:'-' }");
 		appendReportGeralMinimized("</style>");
 		appendReportGeralMinimized("</head><body>");
+		appendReportGeralMinimized(
+				"<script src='https://ajax.googleapis.com/ajax/libs/jquery/1.7.0/jquery.min.js'></script>");
+		appendReportGeralMinimized(getJQueryDetailsIE());
+	}
+
+	public static String getJQueryDetailsIE() {
+		StringBuilder sb = new StringBuilder();
+
+		sb.append("<script >");
+		sb.append("		");
+		sb.append("/*! http://mths.be/details v0.0.6 by @mathias | includes http://mths.be/noselect v1.0.3 */");
+		sb.append(";(function(document, $) {");
+		sb.append("	var proto = $.fn,");
+		sb.append("	    details,");
+		sb.append("	    isOpera = Object.prototype.toString.call(window.opera) == '[object Opera]',");
+		sb.append("	    isDetailsSupported = (function(doc) {");
+		sb.append("	    	var el = doc.createElement('details'),");
+		sb.append("	    	    fake,");
+		sb.append("	    	    root,");
+		sb.append("	    	    diff;");
+		sb.append("	    	if (!('open' in el)) {");
+		sb.append("	    		return false;");
+		sb.append("	    	}");
+		sb.append("	    	root = doc.body || (function() {");
+		sb.append("	    		var de = doc.documentElement;");
+		sb.append("	    		fake = true;");
+		sb.append(
+				"	    		return de.insertBefore(doc.createElement('body'), de.firstElementChild || de.firstChild);");
+		sb.append("	    	}());");
+		sb.append("	    	el.innerHTML = '<summary>a</summary>b';");
+		sb.append("	    	el.style.display = 'block';");
+		sb.append("	    	root.appendChild(el);");
+		sb.append("	    	diff = el.offsetHeight;");
+		sb.append("	    	el.open = true;");
+		sb.append("	    	diff = diff != el.offsetHeight;");
+		sb.append("	    	root.removeChild(el);");
+		sb.append("	    	if (fake) {");
+		sb.append("	    		root.parentNode.removeChild(root);");
+		sb.append("	    	}");
+		sb.append("	    	return diff;");
+		sb.append("	    }(document)),");
+		sb.append("	    toggleOpen = function($details, $detailsSummary, $detailsNotSummary, toggle) {");
+		sb.append("	    	var isOpen = typeof $details.attr('open') == 'string',");
+		sb.append("	    	    close = isOpen && toggle || !isOpen && !toggle;");
+		sb.append("	    	if (close) {");
+		sb.append("	    		$details.removeClass('open').prop('open', false).triggerHandler('close.details');");
+		sb.append("	    		$detailsSummary.attr('aria-expanded', false);");
+		sb.append("	    		$detailsNotSummary.hide();");
+		sb.append("	    	} else {");
+		sb.append("	    		$details.addClass('open').prop('open', true).triggerHandler('open.details');");
+		sb.append("	    		$detailsSummary.attr('aria-expanded', true);");
+		sb.append("	    		$detailsNotSummary.show();");
+		sb.append("	    	}");
+		sb.append("	    };");
+		sb.append("	proto.noSelect = function() {");
+		sb.append("		var none = 'none';");
+		sb.append("		return this.bind('selectstart dragstart mousedown', function() {");
+		sb.append("			return false;");
+		sb.append("		}).css({");
+		sb.append("			'MozUserSelect': none,");
+		sb.append("			'msUserSelect': none,");
+		sb.append("			'webkitUserSelect': none,");
+		sb.append("			'userSelect': none");
+		sb.append("		});");
+		sb.append("	};");
+		sb.append("	if (isDetailsSupported) {");
+		sb.append("		details = proto.details = function() {");
+		sb.append("			return this.each(function() {");
+		sb.append("				var $details = $(this),");
+		sb.append("				    $summary = $('summary', $details).first();");
+		sb.append("				$summary.attr({");
+		sb.append("					'role': 'button',");
+		sb.append("					'aria-expanded': $details.prop('open')");
+		sb.append("				}).on('click', function() {");
+		sb.append("					var close = $details.prop('open');");
+		sb.append("					$summary.attr('aria-expanded', !close);");
+		sb.append("					$details.triggerHandler((close ? 'close' : 'open') + '.details');");
+		sb.append("				});");
+		sb.append("			});");
+		sb.append("		};");
+		sb.append("		details.support = isDetailsSupported;");
+		sb.append("	} else {");
+		sb.append("		details = proto.details = function() {");
+		sb.append("			return this.each(function() {");
+		sb.append("				var $details = $(this),");
+		sb.append("				    $detailsSummary = $('summary', $details).first(),");
+		sb.append("				    $detailsNotSummary = $details.children(':not(summary)'),");
+		sb.append("				    $detailsNotSummaryContents = $details.contents(':not(summary)');");
+		sb.append("				if (!$detailsSummary.length) {");
+		sb.append("					$detailsSummary = $('<summary>').text('Details').prependTo($details);");
+		sb.append("				}");
+		sb.append("				if ($detailsNotSummary.length != $detailsNotSummaryContents.length) {");
+		sb.append("					$detailsNotSummaryContents.filter(function() {");
+		sb.append("						return this.nodeType == 3 && /[^ \\t\\n\\f\\r]/.test(this.data);");
+		sb.append("					}).wrap('<span>');");
+		sb.append("");
+		sb.append("					$detailsNotSummary = $details.children(':not(summary)');");
+		sb.append("				}");
+		sb.append("				toggleOpen($details, $detailsSummary, $detailsNotSummary);");
+		sb.append(
+				"				$detailsSummary.attr('role', 'button').noSelect().prop('tabIndex', 0).on('click', function() {");
+		sb.append("					$detailsSummary.focus();");
+		sb.append("					toggleOpen($details, $detailsSummary, $detailsNotSummary, true);");
+		sb.append("				}).keyup(function(event) {");
+		sb.append("					if (32 == event.keyCode || (13 == event.keyCode && !isOpera)) {");
+		sb.append("");
+		sb.append("						event.preventDefault();");
+		sb.append("						$detailsSummary.click();");
+		sb.append("					}");
+		sb.append("				});");
+		sb.append("			});");
+		sb.append("		};");
+		sb.append("		details.support = isDetailsSupported;");
+		sb.append("	}");
+		sb.append("}(document, jQuery));");
+		sb.append("		</script>");
+		sb.append("		<script>");
+		sb.append("			$(function() {");
+		sb.append("				$('html').addClass($.fn.details.support ? 'details' : 'no-details');");
+		sb.append("				$('details').details();");
+		sb.append("			});");
+		sb.append("		</script>");
+		return sb.toString();
 	}
 
 	/**
@@ -602,14 +747,16 @@ public class ReportHTML {
 	 * @return
 	 */
 	private static String openFont(String colorFonte, String sizeFonte, String typeFonte) {
-		StringBuilder sbFont = new StringBuilder("<font");
+		StringBuilder sbFont = new StringBuilder("<font face='Arial'");
 
 		if (StringUtils.isNotBlank(colorFonte)) {
 			sbFont.append(" color = '").append(colorFonte).append("'");
 		}
+
 		if (StringUtils.isNotBlank(sizeFonte)) {
 			sbFont.append(" size = '").append(sizeFonte).append("'");
 		}
+
 		if (StringUtils.isNotBlank(typeFonte)) {
 			sbFont.append(" face = '").append(typeFonte).append("'");
 		}
@@ -853,14 +1000,27 @@ public class ReportHTML {
 			escreverArquivoFalha(sbReportFalha.toString());
 			closeFalha();
 		}
+
+		StringBuilder sbResultRunHTML = new StringBuilder();
+		sbResultRunHTML.append(HTML_OPEN_HTML);
+		sbResultRunHTML.append(sbResultRun.toString());
+		sbResultRunHTML.append(HTML_CLOSE_HTML);
+
+		escreverArquivoGeral(sbResultRunHTML.toString());
 		if (StringUtils.isNotBlank(sbReportGeral.toString())) {
-			sbResultRun.append(HTML_QUEBRA_LINHA);
 			appendReportGeral(getLegenda());
 			appendReportGeral(HTML_CLOSE_HTML);
-			escreverArquivoGeral(sbResultRun.toString(), sbReportGeral.toString());
-			escreverArquivoGeralMinimized(sbResultRun.toString(), sbReportGeralMinimized.toString());
+			escreverArquivoGeral(sbReportGeral.toString());
 			closePastaGeral();
-			openReportGeralInBrowser();
+			// openReportGeralInBrowser();
+		}
+
+		escreverArquivoGeralMinimized(sbResultRunHTML.toString());
+		if (StringUtils.isNotBlank(sbReportGeralMinimized.toString())) {
+			appendReportGeralMinimized(HTML_CLOSE_HTML);
+			escreverArquivoGeralMinimized(sbReportGeralMinimized.toString());
+			closePastaGeralMinimized();
+			openReportGeralMinimizedInBrowser();
 		}
 
 	}
@@ -890,10 +1050,16 @@ public class ReportHTML {
 			closeFalhaProjeto();
 		}
 		if (StringUtils.isNotBlank(sbReportGeralProjeto.toString())) {
-			sbResultRun.append(HTML_QUEBRA_LINHA);
+
+			StringBuilder sbResultRunHTML = new StringBuilder();
+			sbResultRunHTML.append(HTML_OPEN_HTML);
+			sbResultRunHTML.append(sbResultRun.toString());
+			sbResultRunHTML.append(HTML_CLOSE_HTML);
+
+			sbResultRunHTML.append(HTML_QUEBRA_LINHA);
 			appendReportGeralProjeto(getLegenda());
 			appendReportGeralProjeto(HTML_CLOSE_HTML);
-			escreverArquivoGeralProjeto(sbResultRun.toString(), sbReportGeralProjeto.toString());
+			escreverArquivoGeralProjeto(sbResultRunHTML.toString(), sbReportGeralProjeto.toString());
 			closeGeralProjeto();
 		}
 	}

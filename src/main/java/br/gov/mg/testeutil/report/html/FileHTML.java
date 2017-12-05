@@ -22,7 +22,7 @@ import br.gov.mg.testeutil.util.FileUtil;
  */
 public class FileHTML {
 
-	public static final String HTML_OPEN_HTML = "<html><head><meta charset='UTF-8'></head><body>";
+	public static final String HTML_OPEN_HTML = "<html><head><meta charset='UTF-8'></head><body style='font: 1em Arial, Helvetica, sans-serif;'>";
 	public static final String HTML_CLOSE_HTML = "</body></html>";
 	public static final String HTML_OPEN_TABLE_HTML = "<table border='0' bgcolor = 'EFEFEF' width='100.0%' height='20'>";
 	public static final String HTML_CLOSE_TABLE_HTML = "</table>";
@@ -33,11 +33,11 @@ public class FileHTML {
 	public static final String HTML_QUEBRA_LINHA = "<br/>";
 	public static final String HTML_OPEN_NEGRITO = "<b>";
 	public static final String HTML_CLOSE_NEGRITO = "</b>";
-	public static final String HTML_OPEN_SPAN = "<span style='padding-left: 1cm;'>";
+	public static final String HTML_OPEN_SPAN = "<span style='padding-left: 1cm; font: 1em Arial, Helvetica, sans-serif;'>";
 	public static final String HTML_CLOSE_SPAN = "</span>";
-	public static final String HTML_OPEN_PRE = "<pre>";
+	public static final String HTML_OPEN_PRE = "<pre style='font: 1em Arial, Helvetica, sans-serif;'>";
 	public static final String HTML_CLOSE_PRE = "</pre>";
-	public static final String HTML_OPEN_P = "<p>";
+	public static final String HTML_OPEN_P = "<p style='font: 1em Arial, Helvetica, sans-serif;'>";
 	public static final String HTML_CLOSE_P = "</p>";
 	public static final String HTML_CLOSE_FONT = "</font>";
 	public static final String HTML_OPEN_DETAILS = "<details>";
@@ -81,9 +81,10 @@ public class FileHTML {
 	 *         16 de nov de 2017 09:18:51
 	 *
 	 */
-	protected static String[] createFilesGeral(String nomePastaProjetoPrincipal, String path) throws IOException {
+	protected static String[] createFilesGeral(String nomePastaProjetoPrincipal, String path, Date date)
+			throws IOException {
 
-		String dataFormatada = getDataFormatada(FORMATO_DATA_CRIACAO_ARQUIVO);
+		String dataFormatada = getDataFormatada(date, FORMATO_DATA_CRIACAO_ARQUIVO);
 		String caminhoArquivo = PATH_DIRETORIO_REPORT + DUAS_CONTRA_BARRAS + dataFormatada;
 		if (StringUtils.isNotBlank(nomePastaProjetoPrincipal)) {
 			caminhoArquivo = path + DUAS_CONTRA_BARRAS + dataFormatada;
@@ -111,10 +112,10 @@ public class FileHTML {
 	 *         16 de nov de 2017 09:18:51
 	 *
 	 */
-	protected static String[] createFilesGeralMinimized(String nomePastaProjetoPrincipal, String path)
+	protected static String[] createFilesGeralMinimized(String nomePastaProjetoPrincipal, String path, Date date)
 			throws IOException {
 
-		String dataFormatada = getDataFormatada(FORMATO_DATA_CRIACAO_ARQUIVO);
+		String dataFormatada = getDataFormatada(date, FORMATO_DATA_CRIACAO_ARQUIVO);
 		String caminhoArquivo = PATH_DIRETORIO_REPORT + DUAS_CONTRA_BARRAS + dataFormatada;
 		if (StringUtils.isNotBlank(nomePastaProjetoPrincipal)) {
 			caminhoArquivo = path + DUAS_CONTRA_BARRAS + dataFormatada;
@@ -164,9 +165,9 @@ public class FileHTML {
 	 *         16 de nov de 2017 09:19:09
 	 *
 	 */
-	public static String[] createFilesProjeto(String nomeProjeto, String nomeProjetoPrincipal, String path)
+	public static String[] createFilesProjeto(String nomeProjeto, String nomeProjetoPrincipal, String path, Date date)
 			throws IOException {
-		String dataFormatada = getDataFormatada(FORMATO_DATA_CRIACAO_ARQUIVO);
+		String dataFormatada = getDataFormatada(date, FORMATO_DATA_CRIACAO_ARQUIVO);
 		String caminhoArquivo = path + DUAS_CONTRA_BARRAS + dataFormatada;
 		if (StringUtils.isNotBlank(nomeProjetoPrincipal)) {
 			caminhoArquivo = path + DUAS_CONTRA_BARRAS + dataFormatada;
@@ -206,8 +207,8 @@ public class FileHTML {
 	 * @author sandra.rodrigues
 	 *         16 de nov de 2017 09:44:19
 	 */
-	private static String getDataFormatada(String formato) {
-		return DateUtil.getDataFormatadaByFormato(new Date(), formato);
+	private static String getDataFormatada(Date date, String formato) {
+		return DateUtil.getDataFormatadaByFormato(date, formato);
 	}
 
 	/**
@@ -351,6 +352,19 @@ public class FileHTML {
 	}
 
 	/**
+	 * Fechar escrita reportGeral (BufferedWriter);
+	 * 
+	 * @throws IOException
+	 *
+	 * @author sandra.rodrigues
+	 *         16 de nov de 2017 09:54:54
+	 *
+	 */
+	public static void closePastaGeralMinimized() throws IOException {
+		bwReportPastaGeralMinimized.close();
+	}
+
+	/**
 	 * Fechar escrita reportFalha (BufferedWriter);
 	 * 
 	 * @throws IOException
@@ -403,6 +417,10 @@ public class FileHTML {
 	}
 
 	public static void openReportGeralInBrowser() throws IOException {
+		Desktop.getDesktop().browse(fileReportGeral.toURI());
+	}
+
+	public static void openReportGeralMinimizedInBrowser() throws IOException {
 		Desktop.getDesktop().browse(fileReportGeralMinimized.toURI());
 	}
 
