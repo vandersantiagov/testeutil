@@ -332,14 +332,20 @@ public class ReportHTML {
 			String tipoMetodo, String[] caminhoFileGeral, String[] caminhoFileGeralProjeto,
 			String[] caminhoFileGeralMinimized, boolean[] isNewClass, Double totalExecucaoMetodos) throws IOException {
 		appendInformacoesMetodo(metodo, openFont, tipoMetodo);
-		if (CollectionUtils.isNotEmpty(metodo.getExceptions())) {
+		boolean existException = CollectionUtils.isNotEmpty(metodo.getExceptions());
+		if (existException) {
 			for (ExceptionVO exception : metodo.getExceptions()) {
 				appendException(exception, openFont);
 				appendExceptionProjeto(exception, openFont);
 				appendExceptionMinimized(classeDeTeste, metodo, exception, openFont, isNewClass, totalExecucaoMetodos);
 			}
 		}
+		
 		appendLinkProvaException(metodo, caminhoFileGeral, caminhoFileGeralProjeto, caminhoFileGeralMinimized);
+
+		if (existException) {
+			appendReportGeralMinimized(HTML_CLOSE_DETAILS, HTML_QUEBRA_LINHA);
+		}
 	}
 
 	private static void appendPilhaDeErro(MetodoClasseTesteVO metodo, String[] caminhoFileGeral,
@@ -861,10 +867,8 @@ public class ReportHTML {
 		}
 
 		if (StringUtils.isNotBlank(exception.getMessage())) {
-			appendReportGeralMinimized(openFont, HTML_QUEBRA_LINHA, exception.getMessage(), HTML_CLOSE_FONT);
+			appendReportGeralMinimized(openFont, HTML_QUEBRA_LINHA, exception.getMessage(), HTML_CLOSE_FONT, HTML_QUEBRA_LINHA);
 		}
-
-		appendReportGeralMinimized(HTML_CLOSE_DETAILS, HTML_QUEBRA_LINHA);
 	}
 
 	public static void appendExceptionProjeto(ExceptionVO exception, String openFont) {
@@ -1017,6 +1021,7 @@ public class ReportHTML {
 
 		escreverArquivoGeralMinimized(sbResultRunHTML.toString());
 		if (StringUtils.isNotBlank(sbReportGeralMinimized.toString())) {
+			appendReportGeralMinimized(getLegenda());
 			appendReportGeralMinimized(HTML_CLOSE_HTML);
 			escreverArquivoGeralMinimized(sbReportGeralMinimized.toString());
 			closePastaGeralMinimized();
