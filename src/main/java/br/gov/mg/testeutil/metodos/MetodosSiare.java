@@ -20,21 +20,24 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
-import com.lowagie.text.Document;
-import com.lowagie.text.PageSize;
-import com.lowagie.text.Paragraph;
-import com.lowagie.text.pdf.PdfWriter;
-import org.apache.commons.io.FileUtils;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.OutputType;
-import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
+
+import com.assertthat.selenium_shutterbug.core.PageSnapshot;
+import com.assertthat.selenium_shutterbug.core.Shutterbug;
+import com.assertthat.selenium_shutterbug.utils.web.ScrollStrategy;
+import com.lowagie.text.Document;
+import com.lowagie.text.PageSize;
+import com.lowagie.text.Paragraph;
+import com.lowagie.text.pdf.PdfWriter;
+
 import br.gov.mg.testeutil.objetos.ObjetosMetodosComuns;
 import br.gov.mg.testeutil.telas.login.ObjetosTelaLoginSicaf;
 import br.gov.mg.testeutil.util.FileUtil;
@@ -106,8 +109,11 @@ public class MetodosSiare {
 	 */
 	public static void umClique(By ElementoOpcaoClick1) {
 		By correctLocator = null;
+		Actions action = new Actions(driver);
 		wait.until(ExpectedConditions.visibilityOfElementLocated(ElementoOpcaoClick1));
 		correctLocator = ElementoOpcaoClick1;
+		WebElement element = driver.findElement(correctLocator);
+		action.moveToElement(element).build().perform();
 		driver.findElement(correctLocator).click();
 	}
 
@@ -118,11 +124,18 @@ public class MetodosSiare {
 	 */
 	public static void doisCliques(By ElementoOpcaoClick1, By ElementoOpcaoClik2) {
 		By correctLocator = null;
+		Actions action = new Actions(driver);
+		
 		wait.until(ExpectedConditions.visibilityOfElementLocated(ElementoOpcaoClick1));
-		correctLocator = ElementoOpcaoClick1;
+		correctLocator = ElementoOpcaoClick1;		
+		WebElement element = driver.findElement(correctLocator);
+		action.moveToElement(element).build().perform();		
 		driver.findElement(correctLocator).click();
+		
 		wait.until(ExpectedConditions.visibilityOfElementLocated(ElementoOpcaoClik2));
 		correctLocator = ElementoOpcaoClik2;
+		element = driver.findElement(correctLocator);
+		action.moveToElement(element).build().perform();
 		driver.findElement(correctLocator).click();
 	}
 
@@ -133,14 +146,24 @@ public class MetodosSiare {
 	 */
 	public static void tresCliques(By ElementoOpcaoClick1, By ElementoOpcaoClik2, By ElementoOpcaoClik3) {
 		By correctLocator = null;
+		Actions action = new Actions(driver);
+		
 		wait.until(ExpectedConditions.visibilityOfElementLocated(ElementoOpcaoClick1));
 		correctLocator = ElementoOpcaoClick1;
+		WebElement element = driver.findElement(correctLocator);
+		action.moveToElement(element).build().perform();		
 		driver.findElement(correctLocator).click();
+		
 		wait.until(ExpectedConditions.visibilityOfElementLocated(ElementoOpcaoClik2));
-		correctLocator = ElementoOpcaoClik2;
+		correctLocator = ElementoOpcaoClik2;				
+		element = driver.findElement(correctLocator);
+		action.moveToElement(element).build().perform();		
 		driver.findElement(correctLocator).click();
+		
 		wait.until(ExpectedConditions.visibilityOfElementLocated(ElementoOpcaoClik3));
 		correctLocator = ElementoOpcaoClik3;
+		element = driver.findElement(correctLocator);
+		action.moveToElement(element).build().perform();		
 		driver.findElement(correctLocator).click();
 	}
 
@@ -152,17 +175,30 @@ public class MetodosSiare {
 	public static void quatroCliques(By ElementoOpcaoClick1, By ElementoOpcaoClik2, By ElementoOpcaoClik3,
 			By ElementoOpcaoClik4) {
 		By correctLocator = null;
+		Actions action = new Actions(driver);
+		
 		wait.until(ExpectedConditions.visibilityOfElementLocated(ElementoOpcaoClick1));
 		correctLocator = ElementoOpcaoClick1;
+		WebElement element = driver.findElement(correctLocator);
+		action.moveToElement(element).build().perform();		
 		driver.findElement(correctLocator).click();
+		
 		wait.until(ExpectedConditions.visibilityOfElementLocated(ElementoOpcaoClik2));
-		correctLocator = ElementoOpcaoClik2;
+		correctLocator = ElementoOpcaoClik2;				
+		element = driver.findElement(correctLocator);
+		action.moveToElement(element).build().perform();		
 		driver.findElement(correctLocator).click();
+		
 		wait.until(ExpectedConditions.visibilityOfElementLocated(ElementoOpcaoClik3));
 		correctLocator = ElementoOpcaoClik3;
+		element = driver.findElement(correctLocator);
+		action.moveToElement(element).build().perform();		
 		driver.findElement(correctLocator).click();
+		
 		wait.until(ExpectedConditions.visibilityOfElementLocated(ElementoOpcaoClik4));
 		correctLocator = ElementoOpcaoClik4;
+		element = driver.findElement(correctLocator);
+		action.moveToElement(element).build().perform();		
 		driver.findElement(correctLocator).click();
 	}
 
@@ -287,19 +323,24 @@ public class MetodosSiare {
 	 *            - Nome do arquivo
 	 * @Athor Antonio Bernardo e Fábio Heller
 	 */
-	public static File capturaScreenDaTela(String subPastaProjeto, String fileName) {
-		File scrFile = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
+	public static void capturaScreenDaTela(String subPastaProjeto, String fileName) {
+//		File scrFile = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
 		try {
-			File destFile = new File(diretorioPrincipal + subPastaProjeto + "\\" + fileName + ".jpeg");
-			FileUtils.copyFile(scrFile, destFile, true);
+			PageSnapshot shootPage = Shutterbug.shootPage(driver, ScrollStrategy.BOTH_DIRECTIONS);
+			shootPage.withName(fileName);
+			shootPage.save(diretorioPrincipal + subPastaProjeto);
 			ObjetosMetodosComuns.contadorTelas++;
-			return destFile;
-		} catch (IOException e) {
-			e.printStackTrace();
+			
+//			File destFile = new File(diretorioPrincipal + subPastaProjeto + "\\" + fileName + ".jpeg");
+//			FileUtils.copyFile(scrFile, destFile, true);
+			ObjetosMetodosComuns.contadorTelas++;
+//			return destFile;
+//		} catch (IOException e) {
+//			e.printStackTrace();
 		} catch (Throwable e) {
 			e.printStackTrace();
 		}
-		return null;
+//		return null;
 	}
 
 	/**
@@ -1329,7 +1370,9 @@ public class MetodosSiare {
 	 */
 	public static void pageDown() throws AWTException {
 		Robot robot = new Robot();
-		robot.keyPress(KeyEvent.VK_PAGE_DOWN);
+		robot.keyRelease(KeyEvent.VK_PAGE_DOWN);
+		JavascriptExecutor jse = ((JavascriptExecutor) driver);
+		jse.executeScript("window.scrollTo(0, document.body.scrollHeight);");
 	}
 
 	public static void pageUp() throws AWTException {
