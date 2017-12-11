@@ -355,7 +355,7 @@ public class MetodosSiare {
 			for (File arquivo : arquivos) {
 				if (arquivo.getName().endsWith("jpeg") || arquivo.getName().endsWith("sql")
 						|| arquivo.getName().endsWith("html") || arquivo.getName().endsWith("out")
-						|| arquivo.getName().endsWith("txt") || arquivo.getName().endsWith("pdf")) {
+						|| arquivo.getName().endsWith("txt") || arquivo.getName().endsWith("pdf") || arquivo.getName().endsWith("png")) {
 					arquivo.delete();
 				}
 			}
