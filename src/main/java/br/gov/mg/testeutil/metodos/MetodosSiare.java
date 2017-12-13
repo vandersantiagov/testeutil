@@ -54,7 +54,7 @@ import br.gov.mg.testeutil.util.sol.SeleniumSol;
 public class MetodosSiare {
 
 	private static boolean killTasks = true;
-	private static final String BAT_KILL_CHROME_DRIVER = "cmd /c TASKKILL /F /IM chromedriver_2_33.exe";
+	
 
 	/*
 	 ***************************** METODOS GLOBAIS PARA CHAMADA NAS CLASSES*****************************
@@ -1701,7 +1701,7 @@ public class MetodosSiare {
 	public static void setAmbienteSol() {
 		try {
 			if (killTasks) {
-				Runtime.getRuntime().exec(BAT_KILL_CHROME_DRIVER);
+				Runtime.getRuntime().exec("cmd /c TASKKILL /F /IM chromedriver_2_33.exe");
 				killTasks = false;
 			}
 		} catch (Exception e) {
@@ -1717,7 +1717,7 @@ public class MetodosSiare {
 	public static void setAmbienteSicaf() {
 		try {
 			if (killTasks) {
-				Runtime.getRuntime().exec(BAT_KILL_CHROME_DRIVER);
+				Runtime.getRuntime().exec("cmd /c TASKKILL /F /IM chromedriver_2_33.exe");
 				killTasks = false;
 			}
 		} catch (Exception e) {
@@ -1733,7 +1733,7 @@ public class MetodosSiare {
 	public static void setAmbienteNaoSiare() {
 		try {
 			if (killTasks) {
-				Runtime.getRuntime().exec(BAT_KILL_CHROME_DRIVER);
+				Runtime.getRuntime().exec("cmd /c TASKKILL /F /IM chromedriver_2_33.exe");
 				killTasks = false;
 			}
 		} catch (Exception e) {
