@@ -39,7 +39,6 @@ import com.lowagie.text.Paragraph;
 import com.lowagie.text.pdf.PdfWriter;
 
 import br.gov.mg.testeutil.objetos.ObjetosMetodosComuns;
-import br.gov.mg.testeutil.telas.login.ObjetosTelaLoginSicaf;
 import br.gov.mg.testeutil.util.FileUtil;
 import br.gov.mg.testeutil.util.naoSiare.PropertyNaoSiare;
 import br.gov.mg.testeutil.util.naoSiare.SeleniumNaoSiare;
@@ -729,12 +728,12 @@ public class MetodosSiare {
 	 */
 	public static void logarComAdministrador() throws IOException {
 		// Logar com o administrador para consulatar o Protocolo
-		ObjetosTelaLoginSicaf.tituloPaginaLoginCorreto(
+		MetodosSiare.validarTexto(
 				"SEF/MG - Rodovia Papa João Paulo II, nº 4001. Edifício Gerais.  7º andar.  Bairro Serra Verde - "
-						+ "Belo Horizonte-MG. CEP 31.630-901");
-		ObjetosTelaLoginSicaf.performSearchCpf("88888888888");
-		ObjetosTelaLoginSicaf.performSearchSenha("12345678");
-		ObjetosTelaLoginSicaf.clickSearchButtonLogin();
+						+ "Belo Horizonte-MG. CEP 31.630-901", ObjetosMetodosComuns.validacaoTituloCorretoLogin);
+		MetodosSiare.inserirDadoNoCampo("88888888888", ObjetosMetodosComuns.cpfField);
+		MetodosSiare.inserirDadoNoCampo("12345678", ObjetosMetodosComuns.senhaField);
+		MetodosSiare.umClique(ObjetosMetodosComuns.confirmarFieldLogin);
 
 	}
 
@@ -1671,9 +1670,9 @@ public class MetodosSiare {
 				"CPFResponsavel");
 		// Logar com o Responsável no qual o Protocolo caiu em sua caixa
 		MetodosSiare.umClique(ObjetosMetodosComuns.linkSairSiareSICAF);
-		MetodosSiare.lerArquivoTexto(subPastaProjeto, "CPFResponsavel", ObjetosTelaLoginSicaf.cpfField);
-		ObjetosTelaLoginSicaf.performSearchSenha("12345678");
-		ObjetosTelaLoginSicaf.clickSearchButtonLogin();
+		MetodosSiare.lerArquivoTexto(subPastaProjeto, "CPFResponsavel", ObjetosMetodosComuns.cpfField);
+		MetodosSiare.inserirDadoNoCampo("12345678", ObjetosMetodosComuns.senhaField);
+		MetodosSiare.umClique(ObjetosMetodosComuns.confirmarFieldLogin);
 
 	}
 

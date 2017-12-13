@@ -156,4 +156,14 @@ public class ObjetosMetodosComuns {
      */
     public static int contadorTelas;
 
+	/**
+	 * Tela de Login Intranet do SIARE
+	 */	
+	public static By validacaoTituloCorretoLogin = By.id("boxFooter");
+	public static By cpfField = By.name("login");
+	public static By senhaField = By.name("senhaAtual");
+	public static By confirmarFieldLogin = By.name("Confirmar");
+	
+	public static By escreverArquivo = By.id("buscaRapida");
+	
 }
