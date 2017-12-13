@@ -1,6 +1,41 @@
 package br.gov.mg.testeutil.report.html;
 
-import static br.gov.mg.testeutil.report.html.FileHTML.*;
+import static br.gov.mg.testeutil.report.html.FileHTML.HTML_CLOSE_DETAILS;
+import static br.gov.mg.testeutil.report.html.FileHTML.HTML_CLOSE_FONT;
+import static br.gov.mg.testeutil.report.html.FileHTML.HTML_CLOSE_HTML;
+import static br.gov.mg.testeutil.report.html.FileHTML.HTML_CLOSE_NEGRITO;
+import static br.gov.mg.testeutil.report.html.FileHTML.HTML_CLOSE_P;
+import static br.gov.mg.testeutil.report.html.FileHTML.HTML_CLOSE_PRE;
+import static br.gov.mg.testeutil.report.html.FileHTML.HTML_CLOSE_SPAN;
+import static br.gov.mg.testeutil.report.html.FileHTML.HTML_CLOSE_SUMMARY;
+import static br.gov.mg.testeutil.report.html.FileHTML.HTML_OPEN_DETAILS;
+import static br.gov.mg.testeutil.report.html.FileHTML.HTML_OPEN_HTML;
+import static br.gov.mg.testeutil.report.html.FileHTML.HTML_OPEN_NEGRITO;
+import static br.gov.mg.testeutil.report.html.FileHTML.HTML_OPEN_P;
+import static br.gov.mg.testeutil.report.html.FileHTML.HTML_OPEN_PRE;
+import static br.gov.mg.testeutil.report.html.FileHTML.HTML_OPEN_SPAN;
+import static br.gov.mg.testeutil.report.html.FileHTML.HTML_OPEN_SUMMARY;
+import static br.gov.mg.testeutil.report.html.FileHTML.HTML_QUEBRA_LINHA;
+import static br.gov.mg.testeutil.report.html.FileHTML.closeFalha;
+import static br.gov.mg.testeutil.report.html.FileHTML.closeFalhaProjeto;
+import static br.gov.mg.testeutil.report.html.FileHTML.closeGeralProjeto;
+import static br.gov.mg.testeutil.report.html.FileHTML.closePastaGeral;
+import static br.gov.mg.testeutil.report.html.FileHTML.closePastaGeralMinimized;
+import static br.gov.mg.testeutil.report.html.FileHTML.closeSucessoProjeto;
+import static br.gov.mg.testeutil.report.html.FileHTML.createFilesGeral;
+import static br.gov.mg.testeutil.report.html.FileHTML.createFilesGeralMinimized;
+import static br.gov.mg.testeutil.report.html.FileHTML.createFilesProjeto;
+import static br.gov.mg.testeutil.report.html.FileHTML.deleteArquivosDatasAntigas;
+import static br.gov.mg.testeutil.report.html.FileHTML.escreverArquivoFalha;
+import static br.gov.mg.testeutil.report.html.FileHTML.escreverArquivoFalhaProjeto;
+import static br.gov.mg.testeutil.report.html.FileHTML.escreverArquivoGeral;
+import static br.gov.mg.testeutil.report.html.FileHTML.escreverArquivoGeralMinimized;
+import static br.gov.mg.testeutil.report.html.FileHTML.escreverArquivoGeralProjeto;
+import static br.gov.mg.testeutil.report.html.FileHTML.escreverArquivoSucessoProjeto;
+import static br.gov.mg.testeutil.report.html.FileHTML.getPathReportGeral;
+import static br.gov.mg.testeutil.report.html.FileHTML.getPathReportGeralMinimized;
+import static br.gov.mg.testeutil.report.html.FileHTML.getPathReportGeralProjeto;
+import static br.gov.mg.testeutil.report.html.FileHTML.openReportGeralMinimizedInBrowser;
 
 import java.io.File;
 import java.io.IOException;
@@ -8,10 +43,13 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Objects;
+import java.util.Set;
 
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.collections4.MapUtils;
@@ -128,9 +166,12 @@ public class ReportHTML {
 				KeyMapVO<String, String> key = suiteByKey.getKey();
 				// Cria outro arquivo se o projeto for diferente do anterior e
 				// inicia um novo arquivo.
-				if (StringUtils.isNotBlank(nomeProjetoAnterior)) {
-					if (!Objects.equals(key.getKey1(), nomeProjetoAnterior)) {
-						encerrarHTMLAnteriorProjeto(suiteVO);
+				boolean existeProjetoAnterior = StringUtils.isNotBlank(nomeProjetoAnterior);
+				boolean diferenteDoProjetoAnterior = existeProjetoAnterior
+						&& !Objects.equals(key.getKey1(), nomeProjetoAnterior);
+				if (existeProjetoAnterior) {
+					if (diferenteDoProjetoAnterior) {
+						encerrarHTMLAnteriorProjeto(suiteVO, suitePrincipalVO);
 						sbReportGeralProjeto = new StringBuilder();
 						sbReportFalhaProjeto = new StringBuilder();
 						sbReportSucessoProjeto = new StringBuilder();
@@ -155,7 +196,7 @@ public class ReportHTML {
 
 				suiteVO = suiteByKey.getValue();
 				nomeProjetoAnterior = key.getKey1();
-				appendCabecalho(suitePrincipalVO, suiteVO);
+				appendCabecalho(suitePrincipalVO, suiteVO, diferenteDoProjetoAnterior, existeProjetoAnterior);
 				appendClassesDeTeste(suiteVO, caminhoFileGeral, caminhoFileGeralProjeto, caminhoFileGeralMinimized);
 
 				SuiteSiare.setQuantitativoRunVO(suiteVO.getQuantitativoRunVO(), suitePrincipalVO.getQuantitativoRun());
@@ -164,7 +205,7 @@ public class ReportHTML {
 			StringBuilder sbResultRun = new StringBuilder();
 			if (suiteVO.getQuantitativoRunVO().getQuantidadeRun() > 0) {
 				appendResultRun(suiteVO.getQuantitativoRunVO(), suiteVO.getDataInicioExecucao(),
-						suiteVO.getDataFimExecucao(), sbResultRun);
+						suiteVO.getDataFimExecucao(), sbResultRun, suitePrincipalVO);
 			}
 			appendReportGeralProjeto(HTML_QUEBRA_LINHA, HTML_OPEN_NEGRITO, TEXTO_FIM_DOS_TESTES,
 					DateUtil.getDataFormatadaByFormato(suiteVO.getDataFimExecucao(), DateUtil.FORMATO_DATA6),
@@ -176,7 +217,7 @@ public class ReportHTML {
 		StringBuilder sbResultRun = new StringBuilder();
 		if (suitePrincipalVO.getQuantitativoRun().getQuantidadeRun() > 0) {
 			appendResultRun(suitePrincipalVO.getQuantitativoRun(), suitePrincipalVO.getDataInicioExecucao(),
-					suitePrincipalVO.getDataFimExecucao(), sbResultRun);
+					suitePrincipalVO.getDataFimExecucao(), sbResultRun, suitePrincipalVO);
 		}
 		appendReportGeral(HTML_QUEBRA_LINHA, HTML_OPEN_NEGRITO, TEXTO_FIM_DOS_TESTES,
 				DateUtil.getDataFormatadaByFormato(suitePrincipalVO.getDataFimExecucao(), DateUtil.FORMATO_DATA6),
@@ -189,35 +230,47 @@ public class ReportHTML {
 		escreverArquivosHTMLGeral(sbResultRun);
 	}
 
-	private static void appendCabecalho(SuitePrincipalVO suitePrincipalVO, SuiteVO suiteVO) {
+	private static void appendCabecalho(SuitePrincipalVO suitePrincipalVO, SuiteVO suiteVO,
+			boolean diferenteDoProjetoAnterior, boolean existeProjetoAnterior) {
 
-		appendReportGeral(SEPARADOR, HTML_QUEBRA_LINHA);
-		appendReportGeral(HTML_OPEN_NEGRITO, TEXTO_PROJETO, HTML_CLOSE_NEGRITO, suiteVO.getNomeProjeto(),
-				HTML_QUEBRA_LINHA);
+		boolean escreverNomeProjeto = !existeProjetoAnterior || diferenteDoProjetoAnterior;
+		if (escreverNomeProjeto) {
+			appendReportGeral(SEPARADOR, HTML_QUEBRA_LINHA);
+			appendReportGeral(HTML_OPEN_NEGRITO, TEXTO_PROJETO, HTML_CLOSE_NEGRITO, suiteVO.getNomeProjeto(),
+					HTML_QUEBRA_LINHA);
+		}
 		appendReportGeral(HTML_OPEN_NEGRITO, TEXTO_SUITE, HTML_CLOSE_NEGRITO, suiteVO.getNomeSuite(),
 				HTML_QUEBRA_LINHA);
+
 		appendReportGeral(SEPARADOR, HTML_QUEBRA_LINHA);
 
 		appendReportFalha(SEPARADOR, HTML_QUEBRA_LINHA);
-		appendReportFalha(HTML_OPEN_NEGRITO, TEXTO_PROJETO, HTML_CLOSE_NEGRITO, suiteVO.getNomeProjeto(),
-				HTML_QUEBRA_LINHA);
+
+		if (escreverNomeProjeto) {
+			appendReportFalha(HTML_OPEN_NEGRITO, TEXTO_PROJETO, HTML_CLOSE_NEGRITO, suiteVO.getNomeProjeto(),
+					HTML_QUEBRA_LINHA);
+		}
 		appendReportFalha(HTML_OPEN_NEGRITO, TEXTO_SUITE, HTML_CLOSE_NEGRITO, suiteVO.getNomeSuite(),
 				HTML_QUEBRA_LINHA);
 		appendReportFalha(SEPARADOR, HTML_QUEBRA_LINHA);
 
-		appendReportGeralMinimized(SEPARADOR, HTML_QUEBRA_LINHA);
-		appendReportGeralMinimized(HTML_OPEN_NEGRITO, TEXTO_PROJETO, HTML_CLOSE_NEGRITO, suiteVO.getNomeProjeto(),
-				HTML_QUEBRA_LINHA);
+		if (escreverNomeProjeto) {
+			appendReportGeralMinimized(SEPARADOR, HTML_QUEBRA_LINHA);
+			appendReportGeralMinimized(HTML_OPEN_NEGRITO, TEXTO_PROJETO, HTML_CLOSE_NEGRITO, suiteVO.getNomeProjeto(),
+					HTML_QUEBRA_LINHA);
+			appendReportGeralMinimized(SEPARADOR, HTML_QUEBRA_LINHA);
+		}
 		appendReportGeralMinimized(HTML_OPEN_NEGRITO, TEXTO_SUITE, HTML_CLOSE_NEGRITO, suiteVO.getNomeSuite(),
 				HTML_QUEBRA_LINHA);
-		appendReportGeralMinimized(SEPARADOR, HTML_QUEBRA_LINHA);
 
 		appendDataInicioTestesProjeto(suiteVO.getDataInicioExecucao());
 		appendReportGeralProjeto(HTML_OPEN_NEGRITO, TEXTO_SUITE_PRINCIPAL, HTML_CLOSE_NEGRITO,
 				suitePrincipalVO.getNomeSuite(), HTML_QUEBRA_LINHA);
 		appendReportGeralProjeto(SEPARADOR, HTML_QUEBRA_LINHA);
-		appendReportGeralProjeto(HTML_OPEN_NEGRITO, TEXTO_PROJETO, HTML_CLOSE_NEGRITO, suiteVO.getNomeProjeto(),
-				HTML_QUEBRA_LINHA);
+		if (escreverNomeProjeto) {
+			appendReportGeralProjeto(HTML_OPEN_NEGRITO, TEXTO_PROJETO, HTML_CLOSE_NEGRITO, suiteVO.getNomeProjeto(),
+					HTML_QUEBRA_LINHA);
+		}
 		appendReportGeralProjeto(HTML_OPEN_NEGRITO, TEXTO_SUITE, HTML_CLOSE_NEGRITO, suiteVO.getNomeSuite(),
 				HTML_QUEBRA_LINHA);
 		appendReportGeralProjeto(SEPARADOR, HTML_QUEBRA_LINHA);
@@ -225,8 +278,10 @@ public class ReportHTML {
 		appendReportFalhaProjeto(HTML_OPEN_NEGRITO, TEXTO_SUITE_PRINCIPAL, HTML_CLOSE_NEGRITO,
 				suitePrincipalVO.getNomeSuite(), HTML_QUEBRA_LINHA);
 		appendReportFalhaProjeto(SEPARADOR, HTML_QUEBRA_LINHA);
-		appendReportFalhaProjeto(HTML_OPEN_NEGRITO, TEXTO_PROJETO, HTML_CLOSE_NEGRITO, suiteVO.getNomeProjeto(),
-				HTML_QUEBRA_LINHA);
+		if (escreverNomeProjeto) {
+			appendReportFalhaProjeto(HTML_OPEN_NEGRITO, TEXTO_PROJETO, HTML_CLOSE_NEGRITO, suiteVO.getNomeProjeto(),
+					HTML_QUEBRA_LINHA);
+		}
 		appendReportFalhaProjeto(HTML_OPEN_NEGRITO, TEXTO_SUITE, HTML_CLOSE_NEGRITO, suiteVO.getNomeSuite(),
 				HTML_QUEBRA_LINHA);
 		appendReportFalhaProjeto(SEPARADOR, HTML_QUEBRA_LINHA);
@@ -234,17 +289,20 @@ public class ReportHTML {
 		appendReportSucessoProjeto(HTML_OPEN_NEGRITO, TEXTO_SUITE_PRINCIPAL, HTML_CLOSE_NEGRITO,
 				suitePrincipalVO.getNomeSuite(), HTML_QUEBRA_LINHA);
 		appendReportSucessoProjeto(SEPARADOR, HTML_QUEBRA_LINHA);
-		appendReportSucessoProjeto(HTML_OPEN_NEGRITO, TEXTO_PROJETO, HTML_CLOSE_NEGRITO, suiteVO.getNomeProjeto(),
-				HTML_QUEBRA_LINHA);
+		if (escreverNomeProjeto) {
+			appendReportSucessoProjeto(HTML_OPEN_NEGRITO, TEXTO_PROJETO, HTML_CLOSE_NEGRITO, suiteVO.getNomeProjeto(),
+					HTML_QUEBRA_LINHA);
+		}
 		appendReportSucessoProjeto(HTML_OPEN_NEGRITO, TEXTO_SUITE, HTML_CLOSE_NEGRITO, suiteVO.getNomeSuite(),
 				HTML_QUEBRA_LINHA);
 		appendReportSucessoProjeto(SEPARADOR, HTML_QUEBRA_LINHA);
 	}
 
-	private static void encerrarHTMLAnteriorProjeto(SuiteVO suiteVO) throws IOException {
+	private static void encerrarHTMLAnteriorProjeto(SuiteVO suiteVO, SuitePrincipalVO suitePrincipalVO)
+			throws IOException {
 		StringBuilder sbResultRun = new StringBuilder();
 		appendResultRun(suiteVO.getQuantitativoRunVO(), suiteVO.getDataInicioExecucao(), suiteVO.getDataFimExecucao(),
-				sbResultRun);
+				sbResultRun, suitePrincipalVO);
 		appendReportGeralProjeto(HTML_QUEBRA_LINHA, HTML_OPEN_NEGRITO, TEXTO_FIM_DOS_TESTES,
 				DateUtil.getDataFormatadaByFormato(suiteVO.getDataFimExecucao(), DateUtil.FORMATO_DATA6),
 				HTML_CLOSE_NEGRITO, HTML_QUEBRA_LINHA);
@@ -478,7 +536,8 @@ public class ReportHTML {
 	}
 
 	public static void appendResultRun(QuantitativoRunVO quantitativoVO, Date dataInicio, Date dataFim,
-			StringBuilder sb) {
+			StringBuilder sb, SuitePrincipalVO suitePrincipalVO) {
+
 		String simboloPercentual = "% ";
 		int quantidadeRun = quantitativoVO.getQuantidadeRun();
 		int quantidadeFalha = quantitativoVO.getQuantidadeFalha();
@@ -494,7 +553,7 @@ public class ReportHTML {
 		sbCountFailed.append(FALHAS).append(": ").append(quantidadeFalha);
 
 		StringBuilder sbCountErro = new StringBuilder();
-		sbCountErro.append(ERROS).append(": ").append(quantidadeErro).append(HTML_CLOSE_SPAN);
+		sbCountErro.append(ERROS).append(": ").append(quantidadeErro);
 
 		StringBuilder sbCountSkipped = new StringBuilder();
 		if (quantidadeSkipped > 0) {
@@ -551,11 +610,49 @@ public class ReportHTML {
 
 		sb.append(HTML_QUEBRA_LINHA);
 		sb.append(SEPARATOR_RESULT_FINAL);
+
+		appendQuantitativoProjetoAndSuite(sb, suitePrincipalVO);
+
 		sb.append(HTML_OPEN_PRE).append(sbResultCount.toString()).append(HTML_CLOSE_PRE).append(HTML_CLOSE_P);
 		sb.append(HTML_OPEN_PRE).append(sbResultPercentual.toString()).append(HTML_CLOSE_PRE).append(HTML_CLOSE_P);
 		sb.append(HTML_OPEN_PRE).append("  Tempo total execução dos testes: ").append(duracaoTestes)
 				.append(HTML_CLOSE_PRE).append(HTML_CLOSE_P);
 		sb.append(SEPARATOR_RESULT_FINAL);
+	}
+
+	private static void appendQuantitativoProjetoAndSuite(StringBuilder sb, SuitePrincipalVO suitePrincipalVO) {
+		Map<String, Set<String>> suitesByProjeto = new LinkedHashMap<String, Set<String>>();
+
+		for (Entry<KeyMapVO<String, String>, SuiteVO> suiteByKey : suitePrincipalVO.getSuitesFilhasByNome()
+				.entrySet()) {
+
+			String projeto = suiteByKey.getKey().getKey1();
+			String suite = suiteByKey.getValue().getNomeSuite();
+			if (projeto.contains("\\")) {
+				String projetoComSuite = projeto;
+				int firtIndexOf = projetoComSuite.lastIndexOf("\\");
+				String nomeProjeto = projetoComSuite.substring(0, firtIndexOf);
+				projeto = nomeProjeto;
+			}
+
+			if (suitesByProjeto.get(projeto) == null) {
+				suitesByProjeto.put(projeto, new HashSet<String>());
+			}
+			suitesByProjeto.get(projeto).add(suite);
+		}
+
+		sb.append(HTML_QUEBRA_LINHA).append(HTML_OPEN_PRE).append("Quantidade de Projetos Executados: ")
+				.append(suitesByProjeto.size());
+		sb.append("<ol>");
+		for (Entry<String, Set<String>> suiteByProjeto : suitesByProjeto.entrySet()) {
+			sb.append("<li>").append(suiteByProjeto.getKey()).append("</li>");
+			sb.append("<ol>");
+			for (String suite : suiteByProjeto.getValue()) {
+				sb.append("<li>").append(suite).append("</li>");
+			}
+			sb.append("</ol>");
+		}
+		sb.append("</ol>").append(HTML_CLOSE_PRE);
 	}
 
 	/**
@@ -867,7 +964,8 @@ public class ReportHTML {
 		}
 
 		if (StringUtils.isNotBlank(exception.getMessage())) {
-			appendReportGeralMinimized(openFont, HTML_QUEBRA_LINHA, exception.getMessage(), HTML_CLOSE_FONT, HTML_QUEBRA_LINHA);
+			appendReportGeralMinimized(openFont, HTML_QUEBRA_LINHA, exception.getMessage(), HTML_CLOSE_FONT,
+					HTML_QUEBRA_LINHA);
 		}
 	}
 
@@ -1070,11 +1168,24 @@ public class ReportHTML {
 	}
 
 	public static String getLegenda() {
-		String marcadorSucess = " <span style='color: " + HTML_COLOR_SUCCESS + "'> &#9679; " + SUCESSOS + "</span>";
-		String marcadorFailed = " <span style='color: " + HTML_COLOR_FAILED + "'>&#9679; " + FALHAS + "</span>";
-		String marcadorSkiped = " <span style='color: " + HTML_COLOR_SKIPED + "'>&#9679; " + IGNORADOS + "</span>";
-		String marcadorErro = " <span style='color: " + HTML_COLOR_ERRO + "'>&#9679; " + ERROS + "</span>";
+		String span = HTML_QUEBRA_LINHA + " <span style='color: ";
+
+		String marcadorSucess = span + HTML_COLOR_SUCCESS + "'> &#9679; " + SUCESSOS
+				+ ": Testes que concluiram sem nenhum erro ou falha." + "</span>";
+
+		String marcadorFailed = span + HTML_COLOR_FAILED + "'>&#9679; " + FALHAS
+				+ ": Algo que retorna um valor diferente do que é esperado, não impede a funcionalidade de prosseguir."
+				+ "</span>";
+
+		String marcadorSkiped = span + HTML_COLOR_SKIPED + "'>&#9679; " + IGNORADOS
+				+ ": Testes que foram marcados para serem ignorados durante a execução." + "</span>";
+
+		String marcadorErro = span + HTML_COLOR_ERRO + "'>&#9679; " + ERROS
+				+ ": Quando não encontra o que está sendo buscado, impedindo a funcionalidade de prosseguir."
+				+ "</span>";
+
 		String legenda = "<br/> Lengenda: " + marcadorSucess + marcadorFailed + marcadorSkiped + marcadorErro;
+
 		return legenda;
 	}
 }

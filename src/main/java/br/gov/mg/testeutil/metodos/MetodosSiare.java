@@ -53,6 +53,9 @@ import br.gov.mg.testeutil.util.sol.SeleniumSol;
 
 public class MetodosSiare {
 
+	private static boolean killTasks = true;
+	private static final String BAT_KILL_CHROME_DRIVER = "cmd /c TASKKILL /F /IM chromedriver_2_33.exe";
+
 	/*
 	 ***************************** METODOS GLOBAIS PARA CHAMADA NAS CLASSES*****************************
 	 **/
@@ -1675,7 +1678,7 @@ public class MetodosSiare {
 	}
 
 	/**
-	 ***************************** METODOS DEFINIDOS E JÁ UTLIZADOS NO ARCHETYPE*****************************
+	 ***************************** METODOS DEFINIDOS E JA UTLIZADOS NO ARCHETYPE*****************************
 	 */
 
 	public static String diretorioPrincipal = new String("Z:\\ArtefatosWebdriver\\");
@@ -1696,6 +1699,14 @@ public class MetodosSiare {
 	 * @Author Fábio Heller
 	 */
 	public static void setAmbienteSol() {
+		try {
+			if (killTasks) {
+				Runtime.getRuntime().exec(BAT_KILL_CHROME_DRIVER);
+				killTasks = false;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		driver = SeleniumSol.getDriver();
 		wait = new WebDriverWait(driver, 30);
 		driver.navigate().to(PropertySol.SITE_ADDRESS);
@@ -1704,6 +1715,14 @@ public class MetodosSiare {
 	}
 
 	public static void setAmbienteSicaf() {
+		try {
+			if (killTasks) {
+				Runtime.getRuntime().exec(BAT_KILL_CHROME_DRIVER);
+				killTasks = false;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		driver = SeleniumSicaf.getDriver();
 		wait = new WebDriverWait(driver, 30);
 		driver.navigate().to(PropertySicaf.SITE_ADDRESS);
@@ -1712,6 +1731,14 @@ public class MetodosSiare {
 	}
 
 	public static void setAmbienteNaoSiare() {
+		try {
+			if (killTasks) {
+				Runtime.getRuntime().exec(BAT_KILL_CHROME_DRIVER);
+				killTasks = false;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		driver = SeleniumNaoSiare.getDriver();
 		wait = new WebDriverWait(driver, 30);
 		driver.navigate().to(PropertyNaoSiare.SITE_ADDRESS);
