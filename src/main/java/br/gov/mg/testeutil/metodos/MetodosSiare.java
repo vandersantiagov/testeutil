@@ -21,8 +21,11 @@ import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
+import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
@@ -314,7 +317,72 @@ public class MetodosSiare {
 		WebElement element = driver.findElement(opcaoCombobox);
 		action.moveToElement(element).build().perform();
 		action.click(element).build().perform();
-		element.click();
+		// element.click();
+	}
+
+	/**
+	 * 
+	 * Método para criar uma subpasta no diretório ScreencShot e capturar Print.
+	 * 
+	 * @param fileName
+	 *            - Nome do arquivo
+	 * @Athor Antonio Bernardo e Fábio Heller e Sandra Leodoro
+	 */
+	public static File capturaScreenDaTela(String subPastaProjeto, String fileName) {
+		boolean existeScrollHorizontalNaPagina = existeScrollHorizontalNaPagina();
+		boolean existeScrollVerticalNaPagina = existeScrollVerticalNaPagina();
+		if (!existeScrollHorizontalNaPagina && !existeScrollVerticalNaPagina) {
+			return capturaScreenDaTelaSemScroll(subPastaProjeto, fileName);
+		} else {
+			try {
+				capturaScreenDaTelaComScroll(subPastaProjeto, fileName, existeScrollHorizontalNaPagina,
+						existeScrollVerticalNaPagina);
+			} catch (Throwable e) {
+				e.printStackTrace();
+			}
+		}
+		ObjetosMetodosComuns.contadorTelas++;
+		return null;
+	}
+	
+	private static void capturaScreenDaTelaComScroll(String subPastaProjeto, String fileName,
+			boolean existeScrollHorizontalNaPagina, boolean existeScrollVerticalNaPagina) throws AWTException {
+		ScrollStrategy direcaoRolarPagina = ScrollStrategy.BOTH_DIRECTIONS;
+		boolean navegarNaVertical = existeScrollHorizontalNaPagina && !existeScrollVerticalNaPagina;
+		boolean navegarNaHorizontal = !existeScrollHorizontalNaPagina && existeScrollVerticalNaPagina;
+		if (navegarNaVertical) {
+			direcaoRolarPagina = ScrollStrategy.VERTICALLY;
+		}
+
+		if (navegarNaHorizontal) {
+			direcaoRolarPagina = ScrollStrategy.HORIZONTALLY;
+		}
+
+		PageSnapshot shootPage = Shutterbug.shootPage(driver, direcaoRolarPagina);
+		shootPage.withName(fileName);
+		shootPage.save(diretorioPrincipal + subPastaProjeto);
+		
+		if (navegarNaVertical) {
+			pageUp();
+		}
+	}
+
+	public static boolean existeScrollHorizontalNaPagina() {
+		JavascriptExecutor javascript = (JavascriptExecutor) driver;
+
+		Boolean existe = (Boolean) javascript
+				.executeScript("return document.documentElement.scrollWidth>document.documentElement.clientWidth;");
+
+		return existe;
+	}
+
+	public static boolean existeScrollVerticalNaPagina() {
+		JavascriptExecutor javascript = (JavascriptExecutor) driver;
+
+		Boolean existe = (Boolean) javascript
+				.executeScript("return document.documentElement.scrollHeight>document.documentElement.clientHeight;");
+
+		return existe;
 	}
 
 	/**
@@ -325,24 +393,19 @@ public class MetodosSiare {
 	 *            - Nome do arquivo
 	 * @Athor Antonio Bernardo e Fábio Heller
 	 */
-	public static void capturaScreenDaTela(String subPastaProjeto, String fileName) {
-//		File scrFile = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
+	public static File capturaScreenDaTelaSemScroll(String subPastaProjeto, String fileName) {
+		File scrFile = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
 		try {
-			PageSnapshot shootPage = Shutterbug.shootPage(driver, ScrollStrategy.BOTH_DIRECTIONS);
-			shootPage.withName(fileName);
-			shootPage.save(diretorioPrincipal + subPastaProjeto);
+			File destFile = new File(diretorioPrincipal + subPastaProjeto + "\\" + fileName + ".jpeg");
+			FileUtils.copyFile(scrFile, destFile, true);
 			ObjetosMetodosComuns.contadorTelas++;
-			
-//			File destFile = new File(diretorioPrincipal + subPastaProjeto + "\\" + fileName + ".jpeg");
-//			FileUtils.copyFile(scrFile, destFile, true);
-			ObjetosMetodosComuns.contadorTelas++;
-//			return destFile;
-//		} catch (IOException e) {
-//			e.printStackTrace();
+			return destFile;
+		} catch (IOException e) {
+			e.printStackTrace();
 		} catch (Throwable e) {
 			e.printStackTrace();
 		}
-//		return null;
+		return null;
 	}
 
 	/**
@@ -1751,8 +1814,6 @@ public class MetodosSiare {
 	 * 
 	 * @Author Antonio Bernardo
 	 */
-	public static Boolean isAllTestsExecution = true;
-
 	public static void quitAmbiente() throws Exception {
 		driver.quit();
 	}
