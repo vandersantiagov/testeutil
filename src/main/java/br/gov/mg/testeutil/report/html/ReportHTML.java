@@ -643,17 +643,16 @@ public class ReportHTML {
 
 		sb.append(HTML_QUEBRA_LINHA).append(HTML_OPEN_PRE).append("Quantidade de Projetos Executados: ")
 				.append(suitesByProjeto.size());
-		// sb.append("<ol>");
-		// for (Entry<String, Set<String>> suiteByProjeto :
-		// suitesByProjeto.entrySet()) {
-		// sb.append("<li>").append(suiteByProjeto.getKey()).append("</li>");
-		// sb.append("<ol>");
-		// for (String suite : suiteByProjeto.getValue()) {
-		// sb.append("<li>").append(suite).append("</li>");
-		// }
-		// sb.append("</ol>");
-		// }
-		// sb.append("</ol>");
+		sb.append("<ol>");
+		for (Entry<String, Set<String>> suiteByProjeto : suitesByProjeto.entrySet()) {
+			sb.append("<li>").append(suiteByProjeto.getKey()).append("</li>");
+			// sb.append("<ol>");
+			// for (String suite : suiteByProjeto.getValue()) {
+			// sb.append("<li>").append(suite).append("</li>");
+			// }
+			// sb.append("</ol>");
+		}
+		sb.append("</ol>");
 		sb.append(HTML_CLOSE_PRE);
 	}
 
