@@ -234,8 +234,8 @@ public class ReportHTML {
 			boolean diferenteDoProjetoAnterior, boolean existeProjetoAnterior) {
 
 		boolean escreverNomeProjeto = !existeProjetoAnterior || diferenteDoProjetoAnterior;
+		appendReportGeral(SEPARADOR, HTML_QUEBRA_LINHA);
 		if (escreverNomeProjeto) {
-			appendReportGeral(SEPARADOR, HTML_QUEBRA_LINHA);
 			appendReportGeral(HTML_OPEN_NEGRITO, TEXTO_PROJETO, HTML_CLOSE_NEGRITO, suiteVO.getNomeProjeto(),
 					HTML_QUEBRA_LINHA);
 		}
@@ -398,7 +398,7 @@ public class ReportHTML {
 				appendExceptionMinimized(classeDeTeste, metodo, exception, openFont, isNewClass, totalExecucaoMetodos);
 			}
 		}
-		
+
 		appendLinkProvaException(metodo, caminhoFileGeral, caminhoFileGeralProjeto, caminhoFileGeralMinimized);
 
 		if (existException) {
@@ -643,16 +643,18 @@ public class ReportHTML {
 
 		sb.append(HTML_QUEBRA_LINHA).append(HTML_OPEN_PRE).append("Quantidade de Projetos Executados: ")
 				.append(suitesByProjeto.size());
-		sb.append("<ol>");
-		for (Entry<String, Set<String>> suiteByProjeto : suitesByProjeto.entrySet()) {
-			sb.append("<li>").append(suiteByProjeto.getKey()).append("</li>");
-			sb.append("<ol>");
-			for (String suite : suiteByProjeto.getValue()) {
-				sb.append("<li>").append(suite).append("</li>");
-			}
-			sb.append("</ol>");
-		}
-		sb.append("</ol>").append(HTML_CLOSE_PRE);
+		// sb.append("<ol>");
+		// for (Entry<String, Set<String>> suiteByProjeto :
+		// suitesByProjeto.entrySet()) {
+		// sb.append("<li>").append(suiteByProjeto.getKey()).append("</li>");
+		// sb.append("<ol>");
+		// for (String suite : suiteByProjeto.getValue()) {
+		// sb.append("<li>").append(suite).append("</li>");
+		// }
+		// sb.append("</ol>");
+		// }
+		// sb.append("</ol>");
+		sb.append(HTML_CLOSE_PRE);
 	}
 
 	/**
@@ -1171,18 +1173,19 @@ public class ReportHTML {
 		String span = HTML_QUEBRA_LINHA + " <span style='color: ";
 
 		String marcadorSucess = span + HTML_COLOR_SUCCESS + "'> &#9679; " + SUCESSOS
-				+ ": Testes que concluiram sem nenhum erro ou falha." + "</span>";
+				+ ": Ocorre quando todos os testes foram concluídos sem nenhum erro ou falha." + "</span>";
 
 		String marcadorFailed = span + HTML_COLOR_FAILED + "'>&#9679; " + FALHAS
-				+ ": Algo que retorna um valor diferente do que é esperado, não impede a funcionalidade de prosseguir."
+				+ ": Ocorre quando o valor retornado é diferente do esperado, não impede a funcionalidade de prosseguir."
 				+ "</span>";
 
 		String marcadorSkiped = span + HTML_COLOR_SKIPED + "'>&#9679; " + IGNORADOS
-				+ ": Testes que foram marcados para serem ignorados durante a execução." + "</span>";
+				+ ": Ocorre quando testes foram marcados para serem ignorados durante a execução." + "</span>";
 
 		String marcadorErro = span + HTML_COLOR_ERRO + "'>&#9679; " + ERROS
-				+ ": Quando não encontra o que está sendo buscado, impedindo a funcionalidade de prosseguir."
-				+ "</span>";
+				+ ": Ocorre quando não consegue executar o teste, impedindo a funcionalidade de prosseguir. "
+				+ "<br/>Exemplo: clica em login mas o login não funciona ou não existe o botão de confirmar login na tela, "
+				+ "sendo que o mesmo deveria existir." + "</span>";
 
 		String legenda = "<br/> Lengenda: " + marcadorSucess + marcadorFailed + marcadorSkiped + marcadorErro;
 
