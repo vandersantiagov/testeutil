@@ -177,9 +177,11 @@ public class RuleReport extends TestWatcher {
 
 			addException(e, metodo.getExceptions());
 
-			MetodosSiare.capturaScreenDaTela(RuleReportSuiteProjeto.nomeProjeto, fileName);
+			File fileCriado = MetodosSiare.capturaScreenDaTela(RuleReportSuiteProjeto.nomeProjeto, fileName);
 			String path = MetodosSiare.diretorioPrincipal + RuleReportSuiteProjeto.nomeProjeto;
-			File fileCriado = FileUtil.getFileByPath(path, fileName, TipoArquivoEnum.JPEG);
+			if (fileCriado == null) {
+				fileCriado = FileUtil.getFileByPath(path, fileName, TipoArquivoEnum.PNG);
+			}
 
 			if (fileCriado != null) {
 				String caminhoPrint = fileCriado.getPath();
@@ -209,10 +211,11 @@ public class RuleReport extends TestWatcher {
 		if (isTelaErro(comandoDetalharPilhaDeErro)) {
 			MetodosSiare.umClique(comandoDetalharPilhaDeErro);
 			String nameArquivo = fileName + "_Pilha_Erro";
-			MetodosSiare.capturaScreenDaTela(RuleReportSuiteProjeto.nomeProjeto, fileName);
+			File capturaScreenDaTela = MetodosSiare.capturaScreenDaTela(RuleReportSuiteProjeto.nomeProjeto, fileName);
 			String path = MetodosSiare.diretorioPrincipal + RuleReportSuiteProjeto.nomeProjeto;
-			File capturaScreenDaTela = FileUtil.getFileByPath(path, fileName, TipoArquivoEnum.PNG);
-
+			if (capturaScreenDaTela == null) {
+				capturaScreenDaTela = FileUtil.getFileByPath(path, fileName, TipoArquivoEnum.PNG);
+			}
 			StringBuilder textoToHTML = createHTML();
 			StringBuilder textoToTxt = createTxt();
 
