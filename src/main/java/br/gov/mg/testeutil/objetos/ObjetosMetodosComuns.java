@@ -157,7 +157,7 @@ public class ObjetosMetodosComuns {
     public static int contadorTelas;
 
 	/**
-	 * Tela de Login Intranet do SIARE
+	 * Tela de Login Intranet do SIARE (SICAF)
 	 */	
 	public static By validacaoTituloCorretoLogin = By.id("boxFooter");
 	public static By cpfField = By.name("login");
@@ -165,5 +165,33 @@ public class ObjetosMetodosComuns {
 	public static By confirmarFieldLogin = By.name("Confirmar");
 	
 	public static By escreverArquivo = By.id("buscaRapida");
+	
+	/**
+	 * Tela de Login Internet do SIARE (SOL)
+	 */	
+	//public static By validacaoTituloCorretoLogin = By.id("boxFooter");
+	
+	public static By selecionarTipoDeUsuario = By.name("cmbDominio");
+	
+	public static By selecionarIE = By.xpath(".//*[@id='containerPublicidade']/form/div[2]/p[2]/select/option[2]");
+	public static By selecionarProtocolo = By.xpath(".//*[@id='containerPublicidade']/form/div[2]/p[2]/select/option[3]");
+	public static By selecionarCPF = By.xpath(".//*[@id='containerPublicidade']/form/div[2]/p[2]/select/option[4]");
+	public static By selecionarCNPJ = By.xpath(".//*[@id='containerPublicidade']/form/div[2]/p[2]/select/option[5]");
+	public static By selecionarProdutorRural= By.xpath(".//*[@id='containerPublicidade']/form/div[2]/p[2]/select/option[6]");
+	public static By selecionarDespachanteCPF = By.xpath(".//*[@id='containerPublicidade']/form/div[2]/p[2]/select/option[7]");
+	public static By selecionarDespachanteCNPJ = By.xpath(".//*[@id='containerPublicidade']/form/div[2]/p[2]/select/option[8]");
+	public static By selecionarRecintoAlfandegadoPessoaJuridica = By.xpath(".//*[@id='containerPublicidade']/form/div[2]/p[2]/select/option[9]");
+	public static By selecionarCERM_TFRMPessoaFisica = By.xpath(".//*[@id='containerPublicidade']/form/div[2]/p[2]/select/option[10]");
+	public static By selecionarCERM_TFRMPessoaJuridica = By.xpath(".//*[@id='containerPublicidade']/form/div[2]/p[2]/select/option[11]");
+	public static By selecionarVAFEspecial = By.xpath(".//*[@id='containerPublicidade']/form/div[2]/p[2]/select/option[12]");
+	public static By selecionarContribuinteInterestadual = By.xpath(".//*[@id='containerPublicidade']/form/div[2]/p[2]/select/option[13]");
+	
+	public static By preencherCampoCPF = By.name("login");
+	
+	public static By preencherCampoIdentificacao = By.name("dominio");//Exibido somente após selecionar o tipo de usuário
+	
+	public static By preencherSenhaAtual = By.name("senhaAtual");
+	
+	public static By comandoConfirmarLoginInternet = By.name("Confirmar");
 	
 }
