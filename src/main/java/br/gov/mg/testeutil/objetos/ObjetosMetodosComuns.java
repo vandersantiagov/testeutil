@@ -169,8 +169,7 @@ public class ObjetosMetodosComuns {
 	/**
 	 * Tela de Login Internet do SIARE (SOL)
 	 */	
-	//public static By validacaoTituloCorretoLogin = By.id("boxFooter");
-	
+		
 	public static By selecionarTipoDeUsuario = By.name("cmbDominio");
 	
 	public static By selecionarIE = By.xpath(".//*[@id='containerPublicidade']/form/div[2]/p[2]/select/option[2]");
