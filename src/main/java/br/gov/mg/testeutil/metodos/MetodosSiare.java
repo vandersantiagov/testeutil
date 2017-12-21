@@ -332,10 +332,10 @@ public class MetodosSiare {
 		boolean existeScrollHorizontalNaPagina = existeScrollHorizontalNaPagina();
 		boolean existeScrollVerticalNaPagina = existeScrollVerticalNaPagina();
 		if (!existeScrollHorizontalNaPagina && !existeScrollVerticalNaPagina) {
-			return capturaScreenDaTelaSemScroll(subPastaProjeto, fileName);
+			return capturaScreenDaTelaIgnoreScrool(subPastaProjeto, fileName);
 		} else {
 			try {
-				capturaScreenDaTelaComScroll(subPastaProjeto, fileName, existeScrollHorizontalNaPagina,
+				capturaScreenDaTelaTrataScroll(subPastaProjeto, fileName, existeScrollHorizontalNaPagina,
 						existeScrollVerticalNaPagina);
 			} catch (Throwable e) {
 				e.printStackTrace();
@@ -345,7 +345,7 @@ public class MetodosSiare {
 		return null;
 	}
 	
-	private static void capturaScreenDaTelaComScroll(String subPastaProjeto, String fileName,
+	private static void capturaScreenDaTelaTrataScroll(String subPastaProjeto, String fileName,
 			boolean existeScrollHorizontalNaPagina, boolean existeScrollVerticalNaPagina) throws AWTException {
 		ScrollStrategy direcaoRolarPagina = ScrollStrategy.BOTH_DIRECTIONS;
 		boolean navegarNaVertical = existeScrollHorizontalNaPagina && !existeScrollVerticalNaPagina;
@@ -393,7 +393,7 @@ public class MetodosSiare {
 	 *            - Nome do arquivo
 	 * @Athor Antonio Bernardo e Fábio Heller
 	 */
-	public static File capturaScreenDaTelaSemScroll(String subPastaProjeto, String fileName) {
+	public static File capturaScreenDaTelaIgnoreScrool(String subPastaProjeto, String fileName) {
 		File scrFile = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
 		try {
 			File destFile = new File(diretorioPrincipal + subPastaProjeto + "\\" + fileName + ".jpeg");
