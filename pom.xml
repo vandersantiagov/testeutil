@@ -4,7 +4,7 @@
 	<groupId>gov.sefmg.teste</groupId>
 	<artifactId>testeutil</artifactId>
 	<version>0.0.1</version>
-	<name>SiarePre</name>
+	<name>TesteUtil</name>
 	<description>Projeto do Ambiente de Pré-Produção</description>
 
 	<properties>
