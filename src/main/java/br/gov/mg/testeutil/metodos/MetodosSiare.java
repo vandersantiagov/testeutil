@@ -132,11 +132,11 @@ public class MetodosSiare {
 		Actions action = new Actions(driver);
 		
 		wait.until(ExpectedConditions.visibilityOfElementLocated(ElementoOpcaoClick1));
-		correctLocator = ElementoOpcaoClick1;		
+		correctLocator = ElementoOpcaoClick1;
 		WebElement element = driver.findElement(correctLocator);
-		action.moveToElement(element).build().perform();		
+		action.moveToElement(element).build().perform();
 		driver.findElement(correctLocator).click();
-		
+
 		wait.until(ExpectedConditions.visibilityOfElementLocated(ElementoOpcaoClik2));
 		correctLocator = ElementoOpcaoClik2;
 		element = driver.findElement(correctLocator);
@@ -152,23 +152,23 @@ public class MetodosSiare {
 	public static void tresCliques(By ElementoOpcaoClick1, By ElementoOpcaoClik2, By ElementoOpcaoClik3) {
 		By correctLocator = null;
 		Actions action = new Actions(driver);
-		
+
 		wait.until(ExpectedConditions.visibilityOfElementLocated(ElementoOpcaoClick1));
 		correctLocator = ElementoOpcaoClick1;
 		WebElement element = driver.findElement(correctLocator);
-		action.moveToElement(element).build().perform();		
+		action.moveToElement(element).build().perform();
 		driver.findElement(correctLocator).click();
-		
+
 		wait.until(ExpectedConditions.visibilityOfElementLocated(ElementoOpcaoClik2));
-		correctLocator = ElementoOpcaoClik2;				
+		correctLocator = ElementoOpcaoClik2;
 		element = driver.findElement(correctLocator);
-		action.moveToElement(element).build().perform();		
+		action.moveToElement(element).build().perform();
 		driver.findElement(correctLocator).click();
-		
+
 		wait.until(ExpectedConditions.visibilityOfElementLocated(ElementoOpcaoClik3));
 		correctLocator = ElementoOpcaoClik3;
 		element = driver.findElement(correctLocator);
-		action.moveToElement(element).build().perform();		
+		action.moveToElement(element).build().perform();
 		driver.findElement(correctLocator).click();
 	}
 
@@ -181,29 +181,29 @@ public class MetodosSiare {
 			By ElementoOpcaoClik4) {
 		By correctLocator = null;
 		Actions action = new Actions(driver);
-		
+
 		wait.until(ExpectedConditions.visibilityOfElementLocated(ElementoOpcaoClick1));
 		correctLocator = ElementoOpcaoClick1;
 		WebElement element = driver.findElement(correctLocator);
-		action.moveToElement(element).build().perform();		
+		action.moveToElement(element).build().perform();
 		driver.findElement(correctLocator).click();
-		
+
 		wait.until(ExpectedConditions.visibilityOfElementLocated(ElementoOpcaoClik2));
-		correctLocator = ElementoOpcaoClik2;				
+		correctLocator = ElementoOpcaoClik2;
 		element = driver.findElement(correctLocator);
-		action.moveToElement(element).build().perform();		
+		action.moveToElement(element).build().perform();
 		driver.findElement(correctLocator).click();
-		
+
 		wait.until(ExpectedConditions.visibilityOfElementLocated(ElementoOpcaoClik3));
 		correctLocator = ElementoOpcaoClik3;
 		element = driver.findElement(correctLocator);
-		action.moveToElement(element).build().perform();		
+		action.moveToElement(element).build().perform();
 		driver.findElement(correctLocator).click();
-		
+
 		wait.until(ExpectedConditions.visibilityOfElementLocated(ElementoOpcaoClik4));
 		correctLocator = ElementoOpcaoClik4;
 		element = driver.findElement(correctLocator);
-		action.moveToElement(element).build().perform();		
+		action.moveToElement(element).build().perform();
 		driver.findElement(correctLocator).click();
 	}
 
@@ -344,7 +344,7 @@ public class MetodosSiare {
 		ObjetosMetodosComuns.contadorTelas++;
 		return null;
 	}
-	
+
 	private static void capturaScreenDaTelaTrataScroll(String subPastaProjeto, String fileName,
 			boolean existeScrollHorizontalNaPagina, boolean existeScrollVerticalNaPagina) throws AWTException {
 		ScrollStrategy direcaoRolarPagina = ScrollStrategy.BOTH_DIRECTIONS;
@@ -361,7 +361,7 @@ public class MetodosSiare {
 		PageSnapshot shootPage = Shutterbug.shootPage(driver, direcaoRolarPagina);
 		shootPage.withName(fileName);
 		shootPage.save(diretorioPrincipal + subPastaProjeto);
-		
+
 		if (navegarNaVertical) {
 			pageUp();
 		}
@@ -419,7 +419,8 @@ public class MetodosSiare {
 			for (File arquivo : arquivos) {
 				if (arquivo.getName().endsWith("jpeg") || arquivo.getName().endsWith("sql")
 						|| arquivo.getName().endsWith("html") || arquivo.getName().endsWith("out")
-						|| arquivo.getName().endsWith("txt") || arquivo.getName().endsWith("pdf") || arquivo.getName().endsWith("png")) {
+						|| arquivo.getName().endsWith("txt") || arquivo.getName().endsWith("pdf")
+						|| arquivo.getName().endsWith("png")) {
 					arquivo.delete();
 				}
 			}
@@ -430,6 +431,20 @@ public class MetodosSiare {
 		}
 	}
 
+	private static PrintWriter getPrintWriter(String subPastaProjeto, String nomeDoArquivo){
+		String string = "\\";
+		try (FileWriter canal = new FileWriter(
+				new File(diretorioPrincipal + subPastaProjeto + string + nomeDoArquivo + ".txt"));
+				PrintWriter escrever = new PrintWriter(canal)){
+			
+			return escrever;
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
 	/**
 	 * Método para Criar o arquivo colocar a informação dentro do arquivo
 	 * Arquivo.txt Por exemplo, copiar o número de um protocolo e colar em um
@@ -440,35 +455,37 @@ public class MetodosSiare {
 	 */
 
 	public static void escreverEmArquivoTexto(By objetoCopiar, String subPastaProjeto, String nomeDoArquivo) {
+		PrintWriter escrever =  null;
 		try {
-			boolean success = (new File(diretorioPrincipal + subPastaProjeto)).mkdirs();
-			if (!success) {
-				// Falha no momento de criar o diretório
-			}
-			FileWriter canal = new FileWriter(
-					new File(diretorioPrincipal + subPastaProjeto + "\\" + nomeDoArquivo + ".txt"));
-			PrintWriter escrever = new PrintWriter(canal);
+			escrever = getPrintWriter(subPastaProjeto, nomeDoArquivo);
 			String guardaValor = null;
 			guardaValor = driver.findElement(objetoCopiar).getText();
 			String str = guardaValor;
-			while (str.indexOf("-") != -1) {
-				if (str.indexOf("-") != 0) {
-					str = str.substring(0, str.indexOf("-")) + str.substring(str.indexOf("-") + 1);
+			String string = "-";
+			while (str.indexOf(string) != -1) {
+				if (str.indexOf(string) != 0) {
+					str = str.substring(0, str.indexOf(string)) + str.substring(str.indexOf(string) + 1);
 				} else {
-					str = str.substring(str.indexOf("-") + 1);
+					str = str.substring(str.indexOf(string) + 1);
 				}
 			}
-			while (str.indexOf(".") != -1) {
-				if (str.indexOf(".") != 0) {
-					str = str.substring(0, str.indexOf(".")) + str.substring(str.indexOf(".") + 1);
+			String string2 = ".";
+			while (str.indexOf(string2) != -1) {
+				if (str.indexOf(string2) != 0) {
+					str = str.substring(0, str.indexOf(string2)) + str.substring(str.indexOf(string2) + 1);
 				} else {
-					str = str.substring(str.indexOf(".") + 1);
+					str = str.substring(str.indexOf(string2) + 1);
 				}
 			}
-			escrever.println(str);
-			escrever.close();
+			if (escrever != null){
+				escrever.println(str);
+			}
 		} catch (Exception ex) {
 			ex.printStackTrace();
+		} finally {
+			if (escrever != null){
+				escrever.close();
+			}
 		}
 	}
 
@@ -484,8 +501,10 @@ public class MetodosSiare {
 		@SuppressWarnings("unused")
 		String conteudo = "";
 		try {
+			String string = "\\";
+			String string2 = ".txt";
 			BufferedReader ler = new BufferedReader(
-					new FileReader(diretorioPrincipal + subPastaProjeto + "\\" + nomeDoArquivo + ".txt"));
+					new FileReader(diretorioPrincipal + subPastaProjeto + string + nomeDoArquivo + string2));
 			String linha = ler.readLine();
 			wait.until(ExpectedConditions.visibilityOfElementLocated(elementoRecebedorValor));
 			driver.findElement(elementoRecebedorValor).clear();
@@ -504,6 +523,9 @@ public class MetodosSiare {
 			}
 		} catch (FileNotFoundException ex) {
 
+		}
+		finally {
+			
 		}
 	}
 
@@ -790,9 +812,11 @@ public class MetodosSiare {
 	 */
 	public static void logarComAdministrador() throws IOException {
 		// Logar com o administrador para consulatar o Protocolo
-		MetodosSiare.validarTexto(
-				"SEF/MG - Rodovia Papa João Paulo II, nº 4001. Edifício Gerais.  7º andar.  Bairro Serra Verde - "
-						+ "Belo Horizonte-MG. CEP 31.630-901", ObjetosMetodosComuns.validacaoTituloCorretoLogin);
+		MetodosSiare
+				.validarTexto(
+						"SEF/MG - Rodovia Papa João Paulo II, nº 4001. Edifício Gerais.  7º andar.  Bairro Serra Verde - "
+								+ "Belo Horizonte-MG. CEP 31.630-901",
+						ObjetosMetodosComuns.validacaoTituloCorretoLogin);
 		MetodosSiare.inserirDadoNoCampo("88888888888", ObjetosMetodosComuns.cpfField);
 		MetodosSiare.inserirDadoNoCampo("12345678", ObjetosMetodosComuns.senhaField);
 		MetodosSiare.umClique(ObjetosMetodosComuns.confirmarFieldLogin);
@@ -1241,8 +1265,10 @@ public class MetodosSiare {
 				ObjetosMetodosComuns.submenuEntregadeDocumentosResolucaodePendencias);
 		MetodosSiare.validarTexto("Entrega de Documentos / Resolução de Pendências",
 				ObjetosMetodosComuns.textoTituloTelaEntregadeDocumentosResolucaodePendencias);
-		MetodosSiare.inserirDadoNoCampo(lerArquivoTextoERetornaDadoDaPrimeiraLinha(subPastaDiretorio,
-				nomeDoArquivoProtocolo).replace(".", "").replace("-", ""), ObjetosMetodosComuns.campoProtocolo);
+		MetodosSiare.inserirDadoNoCampo(
+				lerArquivoTextoERetornaDadoDaPrimeiraLinha(subPastaDiretorio, nomeDoArquivoProtocolo).replace(".", "")
+						.replace("-", ""),
+				ObjetosMetodosComuns.campoProtocolo);
 		MetodosSiare.umClique(ObjetosMetodosComuns.comandoPesquisarPendencias);
 		MetodosSiare.umClique(ObjetosMetodosComuns.selecaoRegistro);
 		MetodosSiare.umClique(ObjetosMetodosComuns.linkResolvePendencia);
@@ -1286,8 +1312,10 @@ public class MetodosSiare {
 				ObjetosMetodosComuns.submenuEntregadeDocumentosResolucaodePendencias);
 		MetodosSiare.validarTexto("Entrega de Documentos / Resolução de Pendências",
 				ObjetosMetodosComuns.textoTituloTelaEntregadeDocumentosResolucaodePendencias);
-		MetodosSiare.inserirDadoNoCampo(lerArquivoTextoERetornaDadoDaPrimeiraLinha(subPastaDiretorio,
-				nomeDoArquivoProtocolo).replace(".", "").replace("-", ""), ObjetosMetodosComuns.campoProtocolo);
+		MetodosSiare.inserirDadoNoCampo(
+				lerArquivoTextoERetornaDadoDaPrimeiraLinha(subPastaDiretorio, nomeDoArquivoProtocolo).replace(".", "")
+						.replace("-", ""),
+				ObjetosMetodosComuns.campoProtocolo);
 		MetodosSiare.umClique(ObjetosMetodosComuns.comandoPesquisarPendencias);
 		MetodosSiare.umClique(ObjetosMetodosComuns.selecaoRegistro);
 		MetodosSiare.umClique(ObjetosMetodosComuns.linkResolvePendencia);
@@ -1303,9 +1331,11 @@ public class MetodosSiare {
 
 	/**
 	 * Método que auxilia a execução do método presumirDAEPeloNumeroDoProtocolo
+	 * 
 	 * @author Fábio Heller
 	 */
-	public static void presuncaoDeQuitacaoDeDocumentoDeArrecadacao(String valorDoDAE,boolean efetuarLoginELogoffComAdministrador) {
+	public static void presuncaoDeQuitacaoDeDocumentoDeArrecadacao(String valorDoDAE,
+			boolean efetuarLoginELogoffComAdministrador) {
 		MetodosSiare.inserirDadoNoCampo(valorDoDAE, ObjetosMetodosComuns.campoValorDoDAE);
 		MetodosSiare.umClique(ObjetosMetodosComuns.campoBanco);
 		MetodosSiare.umClique(ObjetosMetodosComuns.campoSelecaoBanco);
@@ -1321,24 +1351,31 @@ public class MetodosSiare {
 	}
 
 	/**
-	 * Método que executa o fluxo de presunção do DAE pelo número do protocolo sem formatação 
-	 * Observação para o parâmetro boolean efetuarLoginELogoffComAdministrador: 
-	 * (true) - será efetuado login com administrador no SICAF o fluxo será executado e ao fim será feito logoff
-	 * (false) - não será efetuado login e logoff, sendo pré-condição analista logado no SICAF com perfil apto para presumir DAE
+	 * Método que executa o fluxo de presunção do DAE pelo número do protocolo
+	 * sem formatação Observação para o parâmetro boolean
+	 * efetuarLoginELogoffComAdministrador: (true) - será efetuado login com
+	 * administrador no SICAF o fluxo será executado e ao fim será feito logoff
+	 * (false) - não será efetuado login e logoff, sendo pré-condição analista
+	 * logado no SICAF com perfil apto para presumir DAE
+	 * 
 	 * @author Fábio Heller
-	 * @throws ParseException 
+	 * @throws ParseException
 	 */
-	public static void presumirDAEPeloNumeroDoProtocolo(String subPastaDiretorio, String nomeDoArquivoProtocolo, String dataInicial,
-			boolean efetuarLoginELogoffComAdministrador) throws IOException, ParseException {
+	public static void presumirDAEPeloNumeroDoProtocolo(String subPastaDiretorio, String nomeDoArquivoProtocolo,
+			String dataInicial, boolean efetuarLoginELogoffComAdministrador) throws IOException, ParseException {
 		String valorTotalDoDAE;
 		if (efetuarLoginELogoffComAdministrador)
 			MetodosSiare.logarComAdministrador();
 		wait.until(ExpectedConditions.visibilityOfElementLocated(ObjetosMetodosComuns.menuDocumentodeArrecadacaoDAE));
-		MetodosSiare.menuSubMenuNivel1(ObjetosMetodosComuns.menuDocumentodeArrecadacaoDAE, ObjetosMetodosComuns.subMenuManutencaoDAE);
-		MetodosSiare.inserirDadoNoCampo(lerArquivoTextoERetornaDadoDaPrimeiraLinha(subPastaDiretorio,
-				nomeDoArquivoProtocolo).replace(".", "").replace("-", ""), ObjetosMetodosComuns.campoProtocolo);
+		MetodosSiare.menuSubMenuNivel1(ObjetosMetodosComuns.menuDocumentodeArrecadacaoDAE,
+				ObjetosMetodosComuns.subMenuManutencaoDAE);
+		MetodosSiare.inserirDadoNoCampo(
+				lerArquivoTextoERetornaDadoDaPrimeiraLinha(subPastaDiretorio, nomeDoArquivoProtocolo).replace(".", "")
+						.replace("-", ""),
+				ObjetosMetodosComuns.campoProtocolo);
 		MetodosSiare.inserirDadoNoCampo(dataInicial, ObjetosMetodosComuns.campoPeriodoDeEmissaoInicial);
-		MetodosSiare.inserirDadoNoCampo(MetodosSiare.acrescentarDiasEmUmaData(dataInicial, 180), ObjetosMetodosComuns.campoPeriodoDeEmissaoFinal);
+		MetodosSiare.inserirDadoNoCampo(MetodosSiare.acrescentarDiasEmUmaData(dataInicial, 180),
+				ObjetosMetodosComuns.campoPeriodoDeEmissaoFinal);
 		MetodosSiare.umClique(ObjetosMetodosComuns.comandoPesquisar);
 		valorTotalDoDAE = driver.findElement(ObjetosMetodosComuns.campoValorTotalDoDAE).getText();
 		MetodosSiare.umClique(ObjetosMetodosComuns.checkProtocoloCaixaDeServico);
@@ -1347,23 +1384,30 @@ public class MetodosSiare {
 	}
 
 	/**
-	 * Método que executa o fluxo de presunção do DAE pelo número do protocolo sem formatação 
-	 * Observação para o parâmetro boolean efetuarLoginELogoffComAdministrador: 
-	 * (true) - será efetuado login com administrador no SICAF o fluxo será executado e ao fim será feito logoff
-	 * (false) - não será efetuado login e logoff, sendo pré-condição analista logado no SICAF com perfil apto para presumir DAE 
+	 * Método que executa o fluxo de presunção do DAE pelo número do protocolo
+	 * sem formatação Observação para o parâmetro boolean
+	 * efetuarLoginELogoffComAdministrador: (true) - será efetuado login com
+	 * administrador no SICAF o fluxo será executado e ao fim será feito logoff
+	 * (false) - não será efetuado login e logoff, sendo pré-condição analista
+	 * logado no SICAF com perfil apto para presumir DAE
+	 * 
 	 * @author Fábio Heller
 	 */
-	public static void presumirDAEPeloNumeroDoDAE(String subPastaDiretorio, String nomeDoArquivoDae,
-			String dataInicial, boolean efetuarLoginELogoffComAdministrador) throws IOException, ParseException {
-		String valorTotalDoDAE, numeroDoDAE = lerArquivoTextoERetornaDadoDaPrimeiraLinha(subPastaDiretorio, nomeDoArquivoDae).replace("-", "");
+	public static void presumirDAEPeloNumeroDoDAE(String subPastaDiretorio, String nomeDoArquivoDae, String dataInicial,
+			boolean efetuarLoginELogoffComAdministrador) throws IOException, ParseException {
+		String valorTotalDoDAE,
+				numeroDoDAE = lerArquivoTextoERetornaDadoDaPrimeiraLinha(subPastaDiretorio, nomeDoArquivoDae)
+						.replace("-", "");
 		if (efetuarLoginELogoffComAdministrador)
 			MetodosSiare.logarComAdministrador();
-		MetodosSiare.doisCliques(ObjetosMetodosComuns.menuDocumentodeArrecadacaoDAE, ObjetosMetodosComuns.subMenuManutencaoDAE);
+		MetodosSiare.doisCliques(ObjetosMetodosComuns.menuDocumentodeArrecadacaoDAE,
+				ObjetosMetodosComuns.subMenuManutencaoDAE);
 		if (numeroDoDAE.length() > 12)
 			numeroDoDAE = numeroDoDAE.substring(numeroDoDAE.length() - 12, numeroDoDAE.length());
 		MetodosSiare.inserirDadoNoCampo(numeroDoDAE, ObjetosMetodosComuns.campoNumeroDAE);
 		MetodosSiare.inserirDadoNoCampo(dataInicial, ObjetosMetodosComuns.campoPeriodoDeEmissaoInicial);
-		MetodosSiare.inserirDadoNoCampo(MetodosSiare.acrescentarDiasEmUmaData(dataInicial, 180), ObjetosMetodosComuns.campoPeriodoDeEmissaoFinal);
+		MetodosSiare.inserirDadoNoCampo(MetodosSiare.acrescentarDiasEmUmaData(dataInicial, 180),
+				ObjetosMetodosComuns.campoPeriodoDeEmissaoFinal);
 		MetodosSiare.umClique(ObjetosMetodosComuns.comandoPesquisar);
 		valorTotalDoDAE = driver.findElement(ObjetosMetodosComuns.campoValorTotalDoDAE).getText();
 		MetodosSiare.umClique(ObjetosMetodosComuns.checkProtocoloCaixaDeServico);
@@ -1390,6 +1434,7 @@ public class MetodosSiare {
 
 	/**
 	 * Método que aponta o foco em uma janela especifica
+	 * 
 	 * @author Fábio Heller
 	 */
 	public static void focaEmPaginaEspecificaDoNavegador(String InstanciaDoDriverDaPagina) {
@@ -1398,6 +1443,7 @@ public class MetodosSiare {
 
 	/**
 	 * Método que retorna a instância do driver em foco
+	 * 
 	 * @author Fábio Heller
 	 */
 	public static String retornaInstanciaDoDriverDaPaginaAtual() {
@@ -1406,6 +1452,7 @@ public class MetodosSiare {
 
 	/**
 	 * PRIORIZAR PROTOCOLO MÉTODO priorizoarProtocolo
+	 * 
 	 * @author Antônio Bernardo
 	 */
 	public static void priorizoarProtocolo(String subPastaProjeto, String nomeDoArquivo)
@@ -1429,6 +1476,7 @@ public class MetodosSiare {
 
 	/**
 	 * Mover a janela como Page Down e Page Up
+	 * 
 	 * @author antonio.bernardo
 	 * @throws AWTException
 	 */
@@ -1446,6 +1494,7 @@ public class MetodosSiare {
 
 	/**
 	 * Mover a janela com o Page Down e Page Up com a janela Maximizada.
+	 * 
 	 * @author antonio.bernardo
 	 * @throws AWTException
 	 */
@@ -1463,6 +1512,7 @@ public class MetodosSiare {
 
 	/**
 	 * Método que insere um valor em um campo
+	 * 
 	 * @author antonio.bernardo
 	 */
 	public static void limparDadoNoCampo(By nomeElemento) {
@@ -1473,6 +1523,7 @@ public class MetodosSiare {
 
 	/**
 	 * Método para seleciona opção no campo Combobox Tipo String
+	 * 
 	 * @param ElementoOpcaoClick1
 	 * @param textoaSerSelecionado
 	 * @author antonio.bernardo
@@ -1482,13 +1533,16 @@ public class MetodosSiare {
 	}
 
 	/**
-	 * Método utlizado para introdução manualmente do texto exibido pela imagem do captcha 
+	 * Método utlizado para introdução manualmente do texto exibido pela imagem
+	 * do captcha
+	 * 
 	 * @param elementoCapcha
 	 * @param elementoPesquisar
 	 * @throws InterruptedException
 	 * @author Jacqueline.lucas e Fábio Heller
 	 */
-	public static void aguardarInsercaoDeTextoDaImagemCapcha(By elementoCapcha, By elementoPesquisar) throws InterruptedException {
+	public static void aguardarInsercaoDeTextoDaImagemCapcha(By elementoCapcha, By elementoPesquisar)
+			throws InterruptedException {
 		boolean processa = true, saida = false;
 		int cont = 0;
 		MetodosSiare.umClique(elementoCapcha);
@@ -1502,11 +1556,13 @@ public class MetodosSiare {
 				if (MetodosSiare.verificaSeOElementoEstaVisivel(elementoCapcha)) {
 					MetodosSiare.umClique(elementoCapcha);
 					if (MetodosSiare.verificaSeOElementoEstaVisivel(ObjetosMetodosComuns.menssagemCapcha)) {
-						if (!MetodosSiare.verificaSeOElementoPossuiInformacao(ObjetosMetodosComuns.menssagemCapcha) && cont > 0)
+						if (!MetodosSiare.verificaSeOElementoPossuiInformacao(ObjetosMetodosComuns.menssagemCapcha)
+								&& cont > 0)
 							saida = true;
 					}
-					if (MetodosSiare.verificaSeOElementoEstaVisivel(ObjetosMetodosComuns.menssageCapcha)) {
-						if (!MetodosSiare.verificaSeOElementoPossuiInformacao(ObjetosMetodosComuns.menssageCapcha) && cont > 0)
+					if (MetodosSiare.verificaSeOElementoEstaVisivel(ObjetosMetodosComuns.excecaoMenssage)) {
+						if (!MetodosSiare.verificaSeOElementoPossuiInformacao(ObjetosMetodosComuns.excecaoMenssage)
+								&& cont > 0)
 							saida = true;
 					}
 				} else {
@@ -1518,23 +1574,25 @@ public class MetodosSiare {
 	}
 
 	/**
-	 * Método para Leitura de um valor, incrementar um outro valor e atualizar o arquivo com o valor incrementado.
-	 * OBS.: Para esse método precisa criar um subdiretório dentro da pastas do projeto no Z: 
-	 * 		 e ter os aqruivos de parametrização criados dentro deste novo subdiretório. 
+	 * Método para Leitura de um valor, incrementar um outro valor e atualizar o
+	 * arquivo com o valor incrementado. OBS.: Para esse método precisa criar um
+	 * subdiretório dentro da pastas do projeto no Z: e ter os aqruivos de
+	 * parametrização criados dentro deste novo subdiretório.
+	 * 
 	 * @param subPastaProjeto
 	 * @param nomeDoArquivo
 	 * @param valorIncrementado
 	 * @return
 	 * @throws IOException
-	 * @author antonio.bernardo
-	 * Data 19-10-2017
+	 * @author antonio.bernardo Data 19-10-2017
 	 */
-	public static String lerArquivoTextoEIncrementarValorSalvarEmArquivo(String subPastaProjeto, String nomeDoArquivo, String valorIncrementado, String nomeDoArquivo1)
-					throws IOException {
+	public static String lerArquivoTextoEIncrementarValorSalvarEmArquivo(String subPastaProjeto, String nomeDoArquivo,
+			String valorIncrementado, String nomeDoArquivo1) throws IOException {
 		int valor, contador;
 		String resultado, conteudo = "";
 		try {
-			//Método para Ler o arquivo texto e incrementar o valor passado como o paramentro.
+			// Método para Ler o arquivo texto e incrementar o valor passado
+			// como o paramentro.
 			BufferedReader ler = new BufferedReader(
 					new FileReader(diretorioPrincipal + subPastaProjeto + "\\" + nomeDoArquivo + ".txt"));
 			String linha = ler.readLine();
@@ -1573,6 +1631,7 @@ public class MetodosSiare {
 	 * Método que percorre a caixa de relatórios afim de localizar o relatório
 	 * informado, quando encontrado o sistema irá selecionar o registro e
 	 * acionar o botão infomado no parâmetro do método.
+	 * 
 	 * @author Fábio Heller
 	 */
 	public static void sicafCaixaDeRelatoriosSolicitados(String protocolo, By botaoAcao) throws InterruptedException {
@@ -1641,11 +1700,11 @@ public class MetodosSiare {
 	}
 
 	/**
-	 * Método que irá setar o atributo 'value' do elemento com um dado por meio do javaScript 
-	 * Para utilizar o método inserir Dado Pelo JavaScript é imprescindível que
-	 * seja informado o id do campo, se for informado um valor divergente do id
-	 * do campo, o JavascriptExecutor não vai encontrar o campo e
-	 * consequentemente não fará a inserção do dado
+	 * Método que irá setar o atributo 'value' do elemento com um dado por meio
+	 * do javaScript Para utilizar o método inserir Dado Pelo JavaScript é
+	 * imprescindível que seja informado o id do campo, se for informado um
+	 * valor divergente do id do campo, o JavascriptExecutor não vai encontrar o
+	 * campo e consequentemente não fará a inserção do dado
 	 * 
 	 * @param idCampo
 	 * @param valueDoCampo
@@ -1659,19 +1718,19 @@ public class MetodosSiare {
 		jse.executeScript(script);
 
 	}
-	
-	
+
 	/**
-     * 
-      * 
-      * @throws IOException 
-      * @throws InterruptedException 
-      * 
-      * @Author Jacqueline Lucas,  24/11/2017 -
-     * String subPastaProjeto: informar a subpasta do Projeto
-     * String nomeDoArquivoProtocolo: informar nome do arquivo que foi salvo o protocolo a ser pesquisado. 
-      * String nomeDoArquivoResponsavel: informar nome do arquivo que foi salvo o nome do responsável a ser pesquisado.       
-      */
+	 * 
+	 * 
+	 * @throws IOException
+	 * @throws InterruptedException
+	 * 
+	 * @Author Jacqueline Lucas, 24/11/2017 - String subPastaProjeto: informar a
+	 *         subpasta do Projeto String nomeDoArquivoProtocolo: informar nome
+	 *         do arquivo que foi salvo o protocolo a ser pesquisado. String
+	 *         nomeDoArquivoResponsavel: informar nome do arquivo que foi salvo
+	 *         o nome do responsável a ser pesquisado.
+	 */
 
 	public static void consultarResponsavelOuPriorizarELogar(String subPastaProjeto, String nomeDoArquivoProtocolo,
 			String nomeDoArquivoResponsavel) throws IOException, InterruptedException {
@@ -1695,7 +1754,7 @@ public class MetodosSiare {
 				MetodosSiare.umClique(ObjetosMetodosComuns.comandoPesquisar);
 				Thread.sleep(20000);
 				contador++;
-				System.out.println("Aguardando o protocolo cair para um Servidor Responsável... "+contador);
+				System.out.println("Aguardando o protocolo cair para um Servidor Responsável... " + contador);
 			}
 			if (contador == limiteDoContador) {
 				if (!MetodosSiare.verificaSeOElementoPossuiInformacao(ObjetosMetodosComuns.campoAnalistaResponsavel)) {
@@ -1739,7 +1798,8 @@ public class MetodosSiare {
 	}
 
 	/**
-	 ***************************** METODOS DEFINIDOS E JA UTLIZADOS NO ARCHETYPE*****************************
+	 ***************************** METODOS DEFINIDOS E JA UTLIZADOS NO
+	 * ARCHETYPE*****************************
 	 */
 
 	public static String diretorioPrincipal = new String("Z:\\ArtefatosWebdriver\\");
@@ -1754,8 +1814,8 @@ public class MetodosSiare {
 	public static WebDriverWait wait;
 
 	/**
-	 * Construtor que ira adicionar a instância do WebDriver nos amientes para utilização dos scripts
-	 * métodos
+	 * Construtor que ira adicionar a instância do WebDriver nos amientes para
+	 * utilização dos scripts métodos
 	 * 
 	 * @Author Fábio Heller
 	 */

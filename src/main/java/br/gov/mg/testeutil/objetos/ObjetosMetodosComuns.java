@@ -149,7 +149,7 @@ public class ObjetosMetodosComuns {
 	 */
 
     public static By menssagemCapcha = By.id("messagem");
-    public static By menssageCapcha = By.id("message");
+    public static By excecaoMenssage = By.id("message");
     
     /*
      * Contador de Telas
