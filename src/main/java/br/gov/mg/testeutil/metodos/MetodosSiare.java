@@ -431,8 +431,10 @@ public class MetodosSiare {
 		}
 	}
 
+	@SuppressWarnings("unused")
 	private static PrintWriter getPrintWriter(String subPastaProjeto, String nomeDoArquivo){
-		String string = "\\";
+		//TODO: (Fabio) ajustar metodo para correção via sonar referente ao metodo  escreverEmArquivoTexto
+		String string = "\\"; 
 		try (FileWriter canal = new FileWriter(
 				new File(diretorioPrincipal + subPastaProjeto + string + nomeDoArquivo + ".txt"));
 				PrintWriter escrever = new PrintWriter(canal)){
@@ -455,37 +457,35 @@ public class MetodosSiare {
 	 */
 
 	public static void escreverEmArquivoTexto(By objetoCopiar, String subPastaProjeto, String nomeDoArquivo) {
-		PrintWriter escrever =  null;
 		try {
-			escrever = getPrintWriter(subPastaProjeto, nomeDoArquivo);
+			boolean success = (new File(diretorioPrincipal + subPastaProjeto)).mkdirs();
+			if (!success) {
+				// Falha no momento de criar o diretório
+			}
+			FileWriter canal = new FileWriter(
+					new File(diretorioPrincipal + subPastaProjeto + "\\" + nomeDoArquivo + ".txt"));
+			PrintWriter escrever = new PrintWriter(canal);
 			String guardaValor = null;
 			guardaValor = driver.findElement(objetoCopiar).getText();
 			String str = guardaValor;
-			String string = "-";
-			while (str.indexOf(string) != -1) {
-				if (str.indexOf(string) != 0) {
-					str = str.substring(0, str.indexOf(string)) + str.substring(str.indexOf(string) + 1);
+			while (str.indexOf("-") != -1) {
+				if (str.indexOf("-") != 0) {
+					str = str.substring(0, str.indexOf("-")) + str.substring(str.indexOf("-") + 1);
 				} else {
-					str = str.substring(str.indexOf(string) + 1);
+					str = str.substring(str.indexOf("-") + 1);
 				}
 			}
-			String string2 = ".";
-			while (str.indexOf(string2) != -1) {
-				if (str.indexOf(string2) != 0) {
-					str = str.substring(0, str.indexOf(string2)) + str.substring(str.indexOf(string2) + 1);
+			while (str.indexOf(".") != -1) {
+				if (str.indexOf(".") != 0) {
+					str = str.substring(0, str.indexOf(".")) + str.substring(str.indexOf(".") + 1);
 				} else {
-					str = str.substring(str.indexOf(string2) + 1);
+					str = str.substring(str.indexOf(".") + 1);
 				}
 			}
-			if (escrever != null){
-				escrever.println(str);
-			}
+			escrever.println(str);
+			escrever.close();
 		} catch (Exception ex) {
 			ex.printStackTrace();
-		} finally {
-			if (escrever != null){
-				escrever.close();
-			}
 		}
 	}
 
