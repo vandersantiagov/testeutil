@@ -32,8 +32,7 @@ import static br.gov.mg.testeutil.report.html.FileHTML.escreverArquivoGeral;
 import static br.gov.mg.testeutil.report.html.FileHTML.escreverArquivoGeralMinimized;
 import static br.gov.mg.testeutil.report.html.FileHTML.escreverArquivoGeralProjeto;
 import static br.gov.mg.testeutil.report.html.FileHTML.escreverArquivoSucessoProjeto;
-import static br.gov.mg.testeutil.report.html.FileHTML.getPathReportGeral;
-import static br.gov.mg.testeutil.report.html.FileHTML.getPathReportGeralMinimized;
+import static br.gov.mg.testeutil.report.html.FileHTML.getPathReport;
 import static br.gov.mg.testeutil.report.html.FileHTML.getPathReportGeralProjeto;
 import static br.gov.mg.testeutil.report.html.FileHTML.openReportGeralMinimizedInBrowser;
 
@@ -113,8 +112,10 @@ public class ReportHTML {
 
 	private static int countFalhasSuites;
 	private static int countSucessoSuites;
+	private static boolean printErrosJunit;
 
-	public static void createHTML(SuitePrincipalVO suitePrincipalVO) throws IOException {
+	public static void createHTML(SuitePrincipalVO suitePrincipalVO, boolean printErrosJunit) throws IOException {
+		ReportHTML.printErrosJunit = printErrosJunit;
 		Date date = new Date();
 		String nomeProjetoAnterior = "";
 		SuiteVO suiteVO = null;
@@ -122,13 +123,13 @@ public class ReportHTML {
 
 		String nomePastaProjetoPrincipal = suitePrincipalVO.getNomeProjeto();
 
-		String path = getPathReportGeral(nomePastaProjetoPrincipal);
+		String path = getPathReport(nomePastaProjetoPrincipal);
 		// Deleta as últimas 10 pastas referente ao projeto.
 		deleteArquivosDatasAntigas(path, false);
 		// Cria o arquivo html geral na pasta report.
 		String[] caminhoFileGeral = createFilesGeral(nomePastaProjetoPrincipal, path, date);
 
-		String pathMinimized = getPathReportGeralMinimized(nomePastaProjetoPrincipal);
+		String pathMinimized = getPathReport(nomePastaProjetoPrincipal);
 		// Deleta as últimas 10 pastas referente ao projeto.
 		deleteArquivosDatasAntigas(pathMinimized, false);
 		// Cria o arquivo html geral na pasta report.
@@ -683,7 +684,8 @@ public class ReportHTML {
 	 */
 	private static void openHTMLGeralMinimized() throws IOException {
 		appendReportGeralMinimized("<!DOCTYPE html>");
-		appendReportGeralMinimized("<html><head><meta charset=\"utf-8\">");
+		appendReportGeralMinimized(
+				"<html><head><meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\"");
 		appendReportGeralMinimized(
 				"<!--[if lt IE 9]><script src=\"http://html5shiv.googlecode.com/svn/trunk/html5.js\"></script><![endif]-->");
 		appendReportGeralMinimized("<style type=\"text/css\">");
@@ -949,18 +951,20 @@ public class ReportHTML {
 				HTML_CLOSE_NEGRITO, metodo.getNome(), metodo.getTextoTempoTotalExecucaoEmSegundos(), HTML_CLOSE_FONT,
 				HTML_CLOSE_SUMMARY);
 
-		List<StackTraceElementVO> stacksTraceVO = exception.getStacksTraceVO();
-		if (CollectionUtils.isNotEmpty(stacksTraceVO)) {
-			for (StackTraceElementVO stackTraceElement : stacksTraceVO) {
-				String methodName = stackTraceElement.getMethodName();
-				String className = stackTraceElement.getClassName();
-				String fileName = stackTraceElement.getFileName();
-				String numeroLinha = stackTraceElement.getNumeroLinhaString();
-				String openFontBlue = openFont(HTML_COLOR_BLUE, "", "");
-				appendReportGeralMinimized(openFont, HTML_QUEBRA_LINHA, HTML_OPEN_SPAN, className, ".", methodName, "(",
-						openFontBlue, fileName, ":", numeroLinha, HTML_CLOSE_FONT, ")", HTML_CLOSE_SPAN,
-						HTML_CLOSE_FONT);
+		if (printErrosJunit) {
+			List<StackTraceElementVO> stacksTraceVO = exception.getStacksTraceVO();
+			if (CollectionUtils.isNotEmpty(stacksTraceVO)) {
+				for (StackTraceElementVO stackTraceElement : stacksTraceVO) {
+					String methodName = stackTraceElement.getMethodName();
+					String className = stackTraceElement.getClassName();
+					String fileName = stackTraceElement.getFileName();
+					String numeroLinha = stackTraceElement.getNumeroLinhaString();
+					String openFontBlue = openFont(HTML_COLOR_BLUE, "", "");
+					appendReportGeralMinimized(openFont, HTML_QUEBRA_LINHA, HTML_OPEN_SPAN, className, ".", methodName,
+							"(", openFontBlue, fileName, ":", numeroLinha, HTML_CLOSE_FONT, ")", HTML_CLOSE_SPAN,
+							HTML_CLOSE_FONT);
 
+				}
 			}
 		}
 
@@ -973,24 +977,25 @@ public class ReportHTML {
 	public static void appendExceptionProjeto(ExceptionVO exception, String openFont) {
 		String closeFont = HTML_CLOSE_FONT;
 
-		String textoException = "#### Exception: ";
+		if (printErrosJunit) {
+			String textoException = "#### Exception: ";
 
-		appendReportGeralProjeto(openFont, HTML_QUEBRA_LINHA, textoException, closeFont, HTML_QUEBRA_LINHA);
-		appendReportFalhaProjeto(openFont, HTML_QUEBRA_LINHA, textoException, closeFont, HTML_QUEBRA_LINHA);
+			appendReportGeralProjeto(openFont, HTML_QUEBRA_LINHA, textoException, closeFont, HTML_QUEBRA_LINHA);
+			appendReportFalhaProjeto(openFont, HTML_QUEBRA_LINHA, textoException, closeFont, HTML_QUEBRA_LINHA);
+			List<StackTraceElementVO> stacksTraceVO = exception.getStacksTraceVO();
+			if (CollectionUtils.isNotEmpty(stacksTraceVO)) {
+				for (StackTraceElementVO stackTraceElement : stacksTraceVO) {
+					String methodName = stackTraceElement.getMethodName();
+					String className = stackTraceElement.getClassName();
+					String fileName = stackTraceElement.getFileName();
+					String numeroLinha = stackTraceElement.getNumeroLinhaString();
+					String openFontBlue = openFont(HTML_COLOR_BLUE, "", "");
 
-		List<StackTraceElementVO> stacksTraceVO = exception.getStacksTraceVO();
-		if (CollectionUtils.isNotEmpty(stacksTraceVO)) {
-			for (StackTraceElementVO stackTraceElement : stacksTraceVO) {
-				String methodName = stackTraceElement.getMethodName();
-				String className = stackTraceElement.getClassName();
-				String fileName = stackTraceElement.getFileName();
-				String numeroLinha = stackTraceElement.getNumeroLinhaString();
-				String openFontBlue = openFont(HTML_COLOR_BLUE, "", "");
-
-				appendReportGeralProjeto(openFont, HTML_QUEBRA_LINHA, HTML_OPEN_SPAN, className, ".", methodName, "(",
-						openFontBlue, fileName, ":", numeroLinha, closeFont, ")", HTML_CLOSE_SPAN, closeFont);
-				appendReportFalhaProjeto(openFont, HTML_QUEBRA_LINHA, HTML_OPEN_SPAN, className, ".", methodName, "(",
-						openFontBlue, fileName, ":", numeroLinha, closeFont, ")", HTML_CLOSE_SPAN, closeFont);
+					appendReportGeralProjeto(openFont, HTML_QUEBRA_LINHA, HTML_OPEN_SPAN, className, ".", methodName,
+							"(", openFontBlue, fileName, ":", numeroLinha, closeFont, ")", HTML_CLOSE_SPAN, closeFont);
+					appendReportFalhaProjeto(openFont, HTML_QUEBRA_LINHA, HTML_OPEN_SPAN, className, ".", methodName,
+							"(", openFontBlue, fileName, ":", numeroLinha, closeFont, ")", HTML_CLOSE_SPAN, closeFont);
+				}
 			}
 		}
 
@@ -1006,23 +1011,24 @@ public class ReportHTML {
 	public static void appendException(ExceptionVO exception, String openFont) {
 		String closeFont = HTML_CLOSE_FONT;
 
-		String textoException = "#### Exception: ";
+		if (printErrosJunit) {
+			String textoException = "#### Exception: ";
 
-		appendReportGeral(openFont, HTML_QUEBRA_LINHA, textoException, closeFont, HTML_QUEBRA_LINHA);
-		appendReportFalha(openFont, HTML_QUEBRA_LINHA, textoException, closeFont, HTML_QUEBRA_LINHA);
-
-		List<StackTraceElementVO> stacksTraceVO = exception.getStacksTraceVO();
-		if (CollectionUtils.isNotEmpty(stacksTraceVO)) {
-			for (StackTraceElementVO stackTraceElement : stacksTraceVO) {
-				String methodName = stackTraceElement.getMethodName();
-				String className = stackTraceElement.getClassName();
-				String fileName = stackTraceElement.getFileName();
-				String numeroLinha = stackTraceElement.getNumeroLinhaString();
-				String openFontBlue = openFont(HTML_COLOR_BLUE, "", "");
-				appendReportGeral(openFont, HTML_QUEBRA_LINHA, HTML_OPEN_SPAN, className, ".", methodName, "(",
-						openFontBlue, fileName, ":", numeroLinha, closeFont, ")", HTML_CLOSE_SPAN, closeFont);
-				appendReportFalha(openFont, HTML_QUEBRA_LINHA, HTML_OPEN_SPAN, className, ".", methodName, "(",
-						openFontBlue, fileName, ":", numeroLinha, closeFont, ")", HTML_CLOSE_SPAN, closeFont);
+			appendReportGeral(openFont, HTML_QUEBRA_LINHA, textoException, closeFont, HTML_QUEBRA_LINHA);
+			appendReportFalha(openFont, HTML_QUEBRA_LINHA, textoException, closeFont, HTML_QUEBRA_LINHA);
+			List<StackTraceElementVO> stacksTraceVO = exception.getStacksTraceVO();
+			if (CollectionUtils.isNotEmpty(stacksTraceVO)) {
+				for (StackTraceElementVO stackTraceElement : stacksTraceVO) {
+					String methodName = stackTraceElement.getMethodName();
+					String className = stackTraceElement.getClassName();
+					String fileName = stackTraceElement.getFileName();
+					String numeroLinha = stackTraceElement.getNumeroLinhaString();
+					String openFontBlue = openFont(HTML_COLOR_BLUE, "", "");
+					appendReportGeral(openFont, HTML_QUEBRA_LINHA, HTML_OPEN_SPAN, className, ".", methodName, "(",
+							openFontBlue, fileName, ":", numeroLinha, closeFont, ")", HTML_CLOSE_SPAN, closeFont);
+					appendReportFalha(openFont, HTML_QUEBRA_LINHA, HTML_OPEN_SPAN, className, ".", methodName, "(",
+							openFontBlue, fileName, ":", numeroLinha, closeFont, ")", HTML_CLOSE_SPAN, closeFont);
+				}
 			}
 		}
 
@@ -1110,12 +1116,11 @@ public class ReportHTML {
 		sbResultRunHTML.append(HTML_CLOSE_HTML);
 
 		escreverArquivoGeral(sbResultRunHTML.toString());
-		if (StringUtils.isNotBlank(sbReportGeral.toString())) {
+		if (sbReportGeral.toString().length() > 0) {
 			appendReportGeral(getLegenda());
 			appendReportGeral(HTML_CLOSE_HTML);
 			escreverArquivoGeral(sbReportGeral.toString());
 			closePastaGeral();
-			// openReportGeralInBrowser();
 		}
 
 		escreverArquivoGeralMinimized(sbResultRunHTML.toString());

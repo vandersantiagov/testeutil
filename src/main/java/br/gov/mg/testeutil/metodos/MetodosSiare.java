@@ -1803,6 +1803,7 @@ public class MetodosSiare {
 	 */
 
 	public static String diretorioPrincipal = new String("Z:\\ArtefatosWebdriver\\");
+	public static String diretorioPrincipalNFCE = "Z:\\ArtefatosNFCe\\";
 
 	/**
 	 * Instância privada do WebDriver que virá da suite de teste Objetivo:

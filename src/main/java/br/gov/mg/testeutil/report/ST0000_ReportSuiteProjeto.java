@@ -13,6 +13,7 @@ import br.gov.mg.testeutil.report.rules.SuiteSiare;
 public class ST0000_ReportSuiteProjeto {
 	private static String nomeSuite;
 	public static boolean quitAmbiente = true;
+	public static boolean printErrosJunit = true;
 
 	@ClassRule
 	public static RuleReport getResource() {
@@ -21,18 +22,19 @@ public class ST0000_ReportSuiteProjeto {
 		return RuleReportSuiteProjeto.startTestesSuiteFilha();
 	}
 
-	public static void setNomeProjeto(String nomeProjeto_, String nomeSuite_) {
+	public static void setNomeProjeto(String nomeProjeto, String nomeSuite) {
+		SuiteSiare.printErrosJunit = printErrosJunit;
 		if (StringUtils.isBlank(SuiteSiare.nomePrimeiraSuite)) {
 			RuleReportSuiteProjeto.isSuiteTotal = true;
-			SuiteSiare.nomePrimeiraSuite = nomeSuite_;
-			SuiteSiare.suitePrincipalVO.setNomeSuite(nomeSuite_);
-			SuiteSiare.nomeProjetoSuitePrincipal = nomeProjeto_;
-			nomeSuite = nomeSuite_;
+			SuiteSiare.nomePrimeiraSuite = nomeSuite;
+			SuiteSiare.suitePrincipalVO.setNomeSuite(nomeSuite);
+			SuiteSiare.nomeProjetoSuitePrincipal = nomeProjeto;
+			ST0000_ReportSuiteProjeto.nomeSuite = nomeSuite;
 		} else {
 			RuleReportSuiteProjeto.isSuiteTotal = false;
 		}
 		SuiteSiare.quitAmbiente = quitAmbiente;
-		RuleReportSuiteProjeto.beforeClassSuite(nomeProjeto_, nomeSuite_);
+		RuleReportSuiteProjeto.beforeClassSuite(nomeProjeto, nomeSuite);
 	}
 
 	@AfterClass

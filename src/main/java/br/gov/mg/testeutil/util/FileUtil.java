@@ -1,14 +1,17 @@
 package br.gov.mg.testeutil.util;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
-import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
@@ -19,68 +22,69 @@ import br.gov.mg.testeutil.enums.TipoArquivoEnum;
 
 public class FileUtil {
 
-	private static List<String> logNotDeleted = new ArrayList<String>();
-	private static List<String> logDelete = new ArrayList<String>();
-	private static int MANTER_QUANTIDADE = 10;
+	private static final String SEPARADOR_EXTENSAO = ".";
 
-	public FileUtil() {
+	protected FileUtil() {
 	}
 
-	public FileUtil(int manterQuantidade) {
-		MANTER_QUANTIDADE = manterQuantidade;
-	}
-
-	/**
-	 * Deleta todos os arquivos de extensão html, txt, jpeg e jpg que existe no
-	 * local informado no parâmetro caminho. <br/>
-	 * Ex.: Se informar "Z:\\ArtefatosWebdriver\\Report\\PROJETO_X\\" na
-	 * variavel caminho então: <br/>
-	 * Este método encontrará todos os arquivos .html ou .html ou .txt ou .jpeg
-	 * ou .jpg na pasta PROJETO_X, que se encontra dentro da pasta Report, que
-	 * está dentro de ArtefatosWebdriver, que está dentro de "Z:". <br/>
-	 * Se for informado <b>false</b> na variável "deletePastaProjeto", pastas
-	 * que contem o texto "PROJETO_" em seu nome <b>não</b> serão deletadas.
-	 * 
-	 * @param caminho
-	 * @return
-	 */
-	public static void deleteArquivoByPath(File caminho, boolean deletePastaProjeto) {
-		File arrayFiles[] = caminho.listFiles();
-
-		String[] tiposArquivosToDelete = { TipoArquivoEnum.HTML.getTipoArquivo(), TipoArquivoEnum.TXT.getTipoArquivo(),
-				TipoArquivoEnum.JPEG.getTipoArquivo(), TipoArquivoEnum.JPG.getTipoArquivo() };
-
-		List<File> arquivosToDelete = new ArrayList<File>();
-
-		if (ArrayUtils.isNotEmpty(arrayFiles)) {
-			if (!deletePastaProjeto) {
-				arquivosToDelete = getArquivosToDelete(arrayFiles);
-			}
-
-			if (arquivosToDelete.size() > MANTER_QUANTIDADE) {
-
-				int count = arquivosToDelete.size() - MANTER_QUANTIDADE;
-				ordenaArquivosPorDataModificacao(arquivosToDelete, true);
-				for (File arquivo : arquivosToDelete) {
-					boolean deletou = deleteArquivo(arquivo, deletePastaProjeto, tiposArquivosToDelete);
-					if (deletou) {
-						count--;
-					}
-					if (count <= 0) {
-						break;
+	public static List<File> getArquivoByNameAndPath(String path, String... nomes) {
+		List<File> listReturn = new ArrayList<File>();
+		try {
+			File file = new File(path);
+			List<File> listFiles = Arrays.asList(file.listFiles());
+			for (File fileEncontrado : listFiles) {
+				String nomeArquivoComExtensao = fileEncontrado.getName();
+				String nameArquivo = nomeArquivoComExtensao;
+				if (nomeArquivoComExtensao.indexOf(SEPARADOR_EXTENSAO) > 0) {
+					nameArquivo = nomeArquivoComExtensao.substring(0, nomeArquivoComExtensao.indexOf("."));
+				}
+				for (String nome : nomes) {
+					if (Objects.equals(nameArquivo, nome)) {
+						listReturn.add(fileEncontrado);
 					}
 				}
 			}
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
+		return listReturn;
 	}
 
-	private static List<File> getArquivosToDelete(File[] files) {
-		List<File> filesToDelete = new ArrayList<File>();
+	public static boolean existeArquivo(String path, String nomeArquivo) {
+		boolean existe = false;
+		List<File> filesByPath = getFilesByPath(path);
+		for (File file : filesByPath) {
+			if (!existe) {
+				existe = StringUtils.equals(file.getName(), nomeArquivo);
+			}
+		}
+
+		return existe;
+	}
+
+	public static List<File> getFilesByPath(String path) {
+		List<File> arquivosEncontrados = new ArrayList<>();
+		File file = new File(path);
+		File[] listFiles = file.listFiles();
+		if (ArrayUtils.isNotEmpty(listFiles)) {
+			for (File fileEncontrado : listFiles) {
+				if (!fileEncontrado.isDirectory()) {
+					arquivosEncontrados.add(fileEncontrado);
+				}
+			}
+		}
+		return arquivosEncontrados;
+	}
+
+	public static List<File> getArquivosToDelete(File[] files) {
+		List<File> filesToDelete = new ArrayList<>();
 		for (File arquivo : files) {
 			boolean isPastaProjetoGeral = StringUtils.containsIgnoreCase(arquivo.getPath(),
 					"AutomacaoSiareWebDriver_QA");
-			boolean isPastaProjeto = StringUtils.containsIgnoreCase(arquivo.getPath(), "Projeto_");
-			if (!isPastaProjeto && !isPastaProjetoGeral) {
+			boolean isPastaProjeto = StringUtils.containsIgnoreCase(arquivo.getName(), "Projeto_");
+			if (isPastaProjetoGeral && !isPastaProjeto) {
+				filesToDelete.add(arquivo);
+			} else if (!isPastaProjeto) {
 				filesToDelete.add(arquivo);
 			}
 		}
@@ -96,66 +100,8 @@ public class FileUtil {
 	 * @param arquivos
 	 * @param asc
 	 */
-	private static void ordenaArquivosPorDataModificacao(List<File> arquivos, boolean asc) {
+	public static void ordenaArquivosPorDataModificacao(List<File> arquivos, boolean asc) {
 		Collections.sort(arquivos, (f1, f2) -> Long.compare(f1.lastModified(), f2.lastModified()));
-	}
-
-	private static boolean isArquivoToDelete(File arquivo, String[] tiposArquivosToDelete) {
-		boolean isPastaProjetoGeral = StringUtils.containsIgnoreCase(arquivo.getPath(), "AutomacaoSiareWebDriver_QA");
-		boolean containsTextoProjeto = StringUtils.containsIgnoreCase(arquivo.getPath(), "Projeto_");
-		boolean isDirectory = arquivo.isDirectory();
-		boolean isDirectoryEmpty = arquivo.length() <= 0;
-		boolean isTipoArquivoToDelete = StringUtils.endsWithAny(arquivo.getName().toLowerCase(), tiposArquivosToDelete);
-		return !isPastaProjetoGeral && !containsTextoProjeto
-				&& (isTipoArquivoToDelete || isDirectory || isDirectoryEmpty);
-	}
-
-	private static boolean deleteArquivo(File arquivo, boolean deletePastaProjeto, String[] tiposArquivosToDelete) {
-		String nameArquivo = arquivo.getName();
-		String lastDateModify = DateUtil.getDataFormatadaByFormato(new Date(arquivo.lastModified()),
-				DateUtil.FORMATO_DATA7);
-
-		boolean wasExcluded = false;
-
-		if (deletePastaProjeto || isArquivoToDelete(arquivo, tiposArquivosToDelete)) {
-			wasExcluded = arquivo.delete();
-			if (!wasExcluded) {
-				File[] listFiles = arquivo.listFiles();
-				if (ArrayUtils.isNotEmpty(listFiles)) {
-					for (File file : listFiles) {
-						if (deletePastaProjeto || isArquivoToDelete(file, tiposArquivosToDelete)) {
-							wasExcluded |= file.delete();
-						} else {
-							wasExcluded = false;
-						}
-					}
-				}
-			}
-			wasExcluded = arquivo.delete();
-		}
-		String dadosArquivo = "Arquivo " + nameArquivo + ", data: " + lastDateModify;
-		if (wasExcluded) {
-			logDelete.add(dadosArquivo + " Foi deletado com sucesso!");
-		} else {
-			logNotDeleted.add(dadosArquivo + " Não foi deletado.");
-		}
-		return wasExcluded;
-	}
-
-	public static List<String> getLogDelete() {
-		return logDelete;
-	}
-
-	public static void setLogDelete(List<String> logDelete) {
-		FileUtil.logDelete = logDelete;
-	}
-
-	public static List<String> getLogNotDeleted() {
-		return logNotDeleted;
-	}
-
-	public static void setLogNotDeleted(List<String> logNotDeleted) {
-		FileUtil.logNotDeleted = logNotDeleted;
 	}
 
 	/**
@@ -176,11 +122,9 @@ public class FileUtil {
 	 * @author sandra.rodrigues 10/11/2017
 	 * @throws IOException
 	 */
-	public static File createArquivo(String caminhoPasta, String caminhoArquivo, TipoArquivoEnum tipoArquivo)
-			throws IOException {
+	public static File createArquivo(String caminhoPasta, String caminhoArquivo, TipoArquivoEnum tipoArquivo) {
 		createPastaCaseNotExists(caminhoPasta);
-		File file = new File(caminhoArquivo + tipoArquivo.getTipoArquivo());
-		return file;
+		return new File(caminhoArquivo + tipoArquivo.getTipoArquivo());
 	}
 
 	/**
@@ -275,5 +219,17 @@ public class FileUtil {
 			e.printStackTrace();
 		}
 		return file.getPath() + TipoArquivoEnum.TXT.getTipoArquivo();
+	}
+
+	public static String lerArquivo(File file) throws FileNotFoundException, IOException {
+		StringBuilder sb = new StringBuilder();
+		BufferedReader br = new BufferedReader(new FileReader(file));
+		String curLine = "";
+		while ((curLine = br.readLine()) != null) {
+			sb.append(curLine);
+		}
+		br.close();
+
+		return sb.toString();
 	}
 }

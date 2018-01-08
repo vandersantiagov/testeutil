@@ -1,7 +1,7 @@
 package br.gov.mg.testeutil.enums;
 
 public enum TipoArquivoEnum {
-	HTML(".html"), JPEG(".jpeg"), JPG(".jpg"), PDF(".pdf"), TXT(".txt"), PNG(".png");
+	HTML(".html"), JPEG(".jpeg"), JPG(".jpg"), PDF(".pdf"), TXT(".txt"), PNG(".png"), XML(".xml");
 
 	private String tipoArquivo;
 
@@ -12,5 +12,5 @@ public enum TipoArquivoEnum {
 	public String getTipoArquivo() {
 		return tipoArquivo;
 	}
-	
+
 }

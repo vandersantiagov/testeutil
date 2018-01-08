@@ -176,8 +176,10 @@ public class RuleReport extends TestWatcher {
 			setDataFimExecucaoMetodo();
 
 			addException(e, metodo.getExceptions());
-
-			File fileCriado = MetodosSiare.capturaScreenDaTela(RuleReportSuiteProjeto.nomeProjeto, fileName);
+			File fileCriado = null;
+			if (MetodosSiare.driver != null) {
+				fileCriado = MetodosSiare.capturaScreenDaTela(RuleReportSuiteProjeto.nomeProjeto, fileName);
+			}
 			String path = MetodosSiare.diretorioPrincipal + RuleReportSuiteProjeto.nomeProjeto;
 			if (fileCriado == null) {
 				fileCriado = FileUtil.getFileByPath(path, fileName, TipoArquivoEnum.PNG);
@@ -211,7 +213,10 @@ public class RuleReport extends TestWatcher {
 		if (isTelaErro(comandoDetalharPilhaDeErro)) {
 			MetodosSiare.umClique(comandoDetalharPilhaDeErro);
 			String nameArquivo = fileName + "_Pilha_Erro";
-			File capturaScreenDaTela = MetodosSiare.capturaScreenDaTela(RuleReportSuiteProjeto.nomeProjeto, fileName);
+			File capturaScreenDaTela = null;
+			if (MetodosSiare.driver != null) {
+				capturaScreenDaTela = MetodosSiare.capturaScreenDaTela(RuleReportSuiteProjeto.nomeProjeto, fileName);
+			}
 			String path = MetodosSiare.diretorioPrincipal + RuleReportSuiteProjeto.nomeProjeto;
 			if (capturaScreenDaTela == null) {
 				capturaScreenDaTela = FileUtil.getFileByPath(path, fileName, TipoArquivoEnum.PNG);

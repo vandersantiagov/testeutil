@@ -7,7 +7,7 @@ import org.junit.Rule;
 import br.gov.mg.testeutil.report.rules.RuleReport;
 
 public class A0000_ReportTeste {
-	private Date dataTeste = new Date();
+	Date dataTeste = new Date();
 	@Rule
 	public RuleReport log = new RuleReport(dataTeste);
 

@@ -1,9 +1,11 @@
 package br.gov.mg.testeutil.report.rules;
 
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.regex.Pattern;
 
+import org.apache.commons.lang3.StringUtils;
 import org.junit.runner.Description;
 
 import br.gov.mg.testeutil.metodos.MetodosSiare;
@@ -27,6 +29,7 @@ public class SuiteSiare {
 	public static Integer idSuite = 0;
 	public static boolean quitAmbiente;
 	public static String nomeProjetoSuitePrincipal;
+	public static boolean printErrosJunit;
 
 	public static void startReport() {
 		try {
@@ -46,7 +49,7 @@ public class SuiteSiare {
 	public static void finalizeReport() {
 		boolean suiteQueIniciouOsTestes = isSuiteQueIniciouOsTestes();
 		try {
-			if (suiteQueIniciouOsTestes && quitAmbiente) {
+			if (suiteQueIniciouOsTestes && quitAmbiente && MetodosSiare.driver != null) {
 				quitAmbiente();
 			}
 		} catch (Throwable e) {
@@ -58,7 +61,7 @@ public class SuiteSiare {
 					Date dataFimExecucao = new Date();
 					suitePrincipalVO.setDataFimExecucao(dataFimExecucao);
 					// Cria os arquivos de report
-					ReportHTML.createHTML(suitePrincipalVO);
+					ReportHTML.createHTML(suitePrincipalVO, printErrosJunit);
 					System.out.println("Relatório Finalizado!");
 				}
 			} catch (Throwable e) {
@@ -107,9 +110,35 @@ public class SuiteSiare {
 		ExceptionVO exceptionVO = new ExceptionVO();
 		exceptionVO.setFalha(isFailed(e));
 		exceptionVO.setException(e);
-		exceptionVO.setMessage(e.getMessage());
+		exceptionVO.setMessage(removeCaracteresHtml(e.getMessage()));
 		exceptions.add(exceptionVO);
 		e.printStackTrace();
+	}
+
+	private static String removeCaracteresHtml(String message) {
+		StringBuilder sb = new StringBuilder();
+
+		List<String> caracteresToRemove = Arrays.asList("<", ">", "[", "]");
+
+		if (StringUtils.isNotBlank(message)) {
+			sb.append(message);
+			do {
+				for (String caracter : caracteresToRemove) {
+					sb.deleteCharAt(sb.toString().indexOf(caracter));
+				}
+			} while (containsCaracteresToRemove(sb.toString(), caracteresToRemove));
+		}
+		return sb.toString();
+	}
+
+	private static boolean containsCaracteresToRemove(String message, List<String> caracteresToRemove) {
+		for (String caracter : caracteresToRemove) {
+			boolean contains = message.contains(caracter);
+			if (contains) {
+				return contains;
+			}
+		}
+		return false;
 	}
 
 	public static String getNameByPosition(Description description) {

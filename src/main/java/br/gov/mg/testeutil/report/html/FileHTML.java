@@ -8,8 +8,12 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import br.gov.mg.testeutil.enums.TipoArquivoEnum;
@@ -22,7 +26,10 @@ import br.gov.mg.testeutil.util.FileUtil;
  */
 public class FileHTML {
 
-	public static final String HTML_OPEN_HTML = "<html><head><meta charset='UTF-8'></head><body style='font: 1em Arial, Helvetica, sans-serif;'>";
+	protected FileHTML() {
+	}
+
+	public static final String HTML_OPEN_HTML = "<html><head><meta http-equiv='Content-Type' content='text/html; charset=UTF-8'></head><body style='font: 1em Arial, Helvetica, sans-serif;'>";
 	public static final String HTML_CLOSE_HTML = "</body></html>";
 	public static final String HTML_OPEN_TABLE_HTML = "<table border='0' bgcolor = 'EFEFEF' width='100.0%' height='20'>";
 	public static final String HTML_CLOSE_TABLE_HTML = "</table>";
@@ -53,6 +60,7 @@ public class FileHTML {
 	private static final String SUCESSO = "_Sucesso";
 	private static final String FALHA = "_Falha";
 	private static final String DUAS_CONTRA_BARRAS = "\\";
+	private static int MANTER_QUANTIDADE = 10;
 
 	private static File fileReportGeralMinimized;
 
@@ -70,6 +78,9 @@ public class FileHTML {
 	public static BufferedWriter bwReportGeralProjeto;
 	public static BufferedWriter bwReportFalhaProjeto;
 	public static BufferedWriter bwReportSucessoProjeto;
+
+	public static List<String> logNotDeleted = new ArrayList<>();
+	public static List<String> logDelete = new ArrayList<>();
 
 	/**
 	 * Cria arquivos dentro da pasta Report e retorna o caminho do relatorio
@@ -98,8 +109,8 @@ public class FileHTML {
 				TipoArquivoEnum.HTML);
 		bwReportFalha = new BufferedWriter(new FileWriter(fileReportFalha, true));
 
-		String pathReturn[] = { fileReportGeral.getPath(), fileReportFalha.getPath() };
-		return pathReturn;
+		List<String> asList = Arrays.asList(fileReportGeral.getPath(), fileReportFalha.getPath());
+		return asList.toArray(new String[0]);
 	}
 
 	/**
@@ -130,15 +141,7 @@ public class FileHTML {
 		return pathReturn;
 	}
 
-	protected static String getPathReportGeral(String nomePastaProjetoPrincipal) {
-		String path = PATH_DIRETORIO_REPORT + DUAS_CONTRA_BARRAS;
-		if (StringUtils.isNotBlank(nomePastaProjetoPrincipal)) {
-			path = PATH_DIRETORIO_REPORT + DUAS_CONTRA_BARRAS + PROJETO + nomePastaProjetoPrincipal;
-		}
-		return path;
-	}
-
-	protected static String getPathReportGeralMinimized(String nomePastaProjetoPrincipal) {
+	protected static String getPathReport(String nomePastaProjetoPrincipal) {
 		String path = PATH_DIRETORIO_REPORT + DUAS_CONTRA_BARRAS;
 		if (StringUtils.isNotBlank(nomePastaProjetoPrincipal)) {
 			path = PATH_DIRETORIO_REPORT + DUAS_CONTRA_BARRAS + PROJETO + nomePastaProjetoPrincipal;
@@ -147,11 +150,101 @@ public class FileHTML {
 	}
 
 	protected static void deleteArquivosDatasAntigas(String caminhoArquivo, boolean deletePastaProjeto) {
-		FileUtil.deleteArquivoByPath(new File(caminhoArquivo), deletePastaProjeto);
-		System.out.println("Número de arquivos deletados: " + FileUtil.getLogDelete().size());
-		for (String fileDeletado : FileUtil.getLogDelete()) {
+		deleteArquivoByPath(caminhoArquivo, deletePastaProjeto);
+		System.out.println("Número de arquivos deletados: " + getLogDelete().size());
+		for (String fileDeletado : getLogDelete()) {
 			System.out.println(fileDeletado);
 		}
+	}
+
+	/**
+	 * Deleta todos os arquivos de extensão html, txt, jpeg e jpg que existe no
+	 * local informado no parâmetro caminho. <br/>
+	 * Ex.: Se informar "Z:\\ArtefatosWebdriver\\Report\\PROJETO_X\\" na
+	 * variavel caminho então: <br/>
+	 * Este método encontrará todos os arquivos .html ou .html ou .txt ou .jpeg
+	 * ou .jpg na pasta PROJETO_X, que se encontra dentro da pasta Report, que
+	 * está dentro de ArtefatosWebdriver, que está dentro de "Z:". <br/>
+	 * Se for informado <b>false</b> na variável "deletePastaProjeto", pastas
+	 * que contem o texto "PROJETO_" em seu nome <b>não</b> serão deletadas.
+	 * 
+	 * @param caminho
+	 * @return
+	 */
+	private static void deleteArquivoByPath(String caminhoArquivo, boolean deletePastaProjeto) {
+		File caminho = new File(caminhoArquivo);
+		File arrayFiles[] = caminho.listFiles();
+
+		String[] tiposArquivosToDelete = { TipoArquivoEnum.HTML.getTipoArquivo(), TipoArquivoEnum.TXT.getTipoArquivo(),
+				TipoArquivoEnum.JPEG.getTipoArquivo(), TipoArquivoEnum.JPG.getTipoArquivo(),
+				TipoArquivoEnum.PNG.getTipoArquivo() };
+
+		List<File> arquivosToDelete = new ArrayList<File>();
+
+		if (ArrayUtils.isNotEmpty(arrayFiles)) {
+			if (!deletePastaProjeto) {
+				arquivosToDelete = FileUtil.getArquivosToDelete(arrayFiles);
+			}
+
+			int quantidadeManterArquivos = MANTER_QUANTIDADE;
+			if (arquivosToDelete.size() > quantidadeManterArquivos) {
+
+				int count = arquivosToDelete.size() - quantidadeManterArquivos;
+				FileUtil.ordenaArquivosPorDataModificacao(arquivosToDelete, true);
+				for (File arquivo : arquivosToDelete) {
+					boolean deletou = deleteArquivo(arquivo, deletePastaProjeto, tiposArquivosToDelete);
+					if (deletou) {
+						count--;
+					}
+					if (count <= 0) {
+						break;
+					}
+				}
+			}
+		}
+	}
+
+	private static boolean isArquivoToDelete(File arquivo, String[] tiposArquivosToDelete) {
+		boolean isPastaProjetoGeral = StringUtils.containsIgnoreCase(arquivo.getPath(), "AutomacaoSiareWebDriver_QA");
+		boolean containsTextoProjeto = StringUtils.containsIgnoreCase(arquivo.getName(), "Projeto_");
+		boolean isDirectory = arquivo.isDirectory();
+		boolean isDirectoryEmpty = arquivo.length() <= 0;
+		boolean isTipoArquivoToDelete = StringUtils.endsWithAny(arquivo.getName().toLowerCase(), tiposArquivosToDelete);
+		return (isPastaProjetoGeral && !containsTextoProjeto)
+				|| (!containsTextoProjeto && (isTipoArquivoToDelete || isDirectory || isDirectoryEmpty));
+	}
+
+	private static boolean deleteArquivo(File arquivo, boolean deletePastaProjeto, String[] tiposArquivosToDelete) {
+		String nameArquivo = arquivo.getName();
+		String lastDateModify = DateUtil.getDataFormatadaByFormato(new Date(arquivo.lastModified()),
+				DateUtil.FORMATO_DATA7);
+
+		boolean wasExcluded = false;
+
+		boolean isArquivoToDelete = isArquivoToDelete(arquivo, tiposArquivosToDelete);
+		if (deletePastaProjeto || isArquivoToDelete) {
+			wasExcluded = arquivo.delete();
+			if (!wasExcluded) {
+				File[] listFiles = arquivo.listFiles();
+				if (ArrayUtils.isNotEmpty(listFiles)) {
+					for (File file : listFiles) {
+						if (deletePastaProjeto || isArquivoToDelete(file, tiposArquivosToDelete)) {
+							wasExcluded |= file.delete();
+						} else {
+							wasExcluded = false;
+						}
+					}
+				}
+			}
+			wasExcluded = arquivo.delete();
+		}
+		String dadosArquivo = "Arquivo " + nameArquivo + ", data: " + lastDateModify;
+		if (wasExcluded) {
+			getLogDelete().add(dadosArquivo + " Foi deletado com sucesso!");
+		} else {
+			getLogNotDeleted().add(dadosArquivo + " Não foi deletado.");
+		}
+		return wasExcluded;
 	}
 
 	/**
@@ -221,14 +314,14 @@ public class FileHTML {
 	 *
 	 */
 	public static void escreverArquivoGeral(String... textos) {
-		try {
-			if (bwReportPastaGeral != null) {
-				for (String texto : textos) {
+		if (bwReportPastaGeral != null) {
+			for (String texto : textos) {
+				try {
 					bwReportPastaGeral.write(texto);
+				} catch (IOException e) {
+					e.printStackTrace();
 				}
 			}
-		} catch (Throwable e) {
-			e.printStackTrace();
 		}
 	}
 
@@ -242,14 +335,14 @@ public class FileHTML {
 	 *
 	 */
 	public static void escreverArquivoGeralMinimized(String... textos) {
-		try {
-			if (bwReportPastaGeralMinimized != null) {
-				for (String texto : textos) {
+		if (bwReportPastaGeralMinimized != null) {
+			for (String texto : textos) {
+				try {
 					bwReportPastaGeralMinimized.write(texto);
+				} catch (IOException e) {
+					e.printStackTrace();
 				}
 			}
-		} catch (Throwable e) {
-			e.printStackTrace();
 		}
 	}
 
@@ -263,14 +356,14 @@ public class FileHTML {
 	 *
 	 */
 	public static void escreverArquivoFalha(String... textos) {
-		try {
-			if (bwReportFalha != null) {
-				for (String texto : textos) {
+		if (bwReportFalha != null) {
+			for (String texto : textos) {
+				try {
 					bwReportFalha.write(texto);
+				} catch (IOException e) {
+					e.printStackTrace();
 				}
 			}
-		} catch (Throwable e) {
-			e.printStackTrace();
 		}
 	}
 
@@ -284,14 +377,14 @@ public class FileHTML {
 	 *
 	 */
 	public static void escreverArquivoGeralProjeto(String... textos) {
-		try {
-			if (bwReportGeralProjeto != null) {
-				for (String texto : textos) {
+		if (bwReportGeralProjeto != null) {
+			for (String texto : textos) {
+				try {
 					bwReportGeralProjeto.write(texto);
+				} catch (IOException e) {
+					e.printStackTrace();
 				}
 			}
-		} catch (Throwable e) {
-			e.printStackTrace();
 		}
 	}
 
@@ -305,14 +398,14 @@ public class FileHTML {
 	 *
 	 */
 	public static void escreverArquivoFalhaProjeto(String... textos) {
-		try {
-			if (bwReportFalhaProjeto != null) {
-				for (String texto : textos) {
+		if (bwReportFalhaProjeto != null) {
+			for (String texto : textos) {
+				try {
 					bwReportFalhaProjeto.write(texto);
+				} catch (IOException e) {
+					e.printStackTrace();
 				}
 			}
-		} catch (Throwable e) {
-			e.printStackTrace();
 		}
 	}
 
@@ -327,13 +420,29 @@ public class FileHTML {
 	 *
 	 */
 	public static void escreverArquivoSucessoProjeto(String... textos) {
-		try {
-			if (bwReportSucessoProjeto != null) {
-				for (String texto : textos) {
+		if (bwReportSucessoProjeto != null) {
+			for (String texto : textos) {
+				try {
 					bwReportSucessoProjeto.write(texto);
+				} catch (IOException e) {
+					e.printStackTrace();
 				}
 			}
-		} catch (Throwable e) {
+		}
+
+	}
+
+	/**
+	 * Fechar escrita reportGeral (BufferedWriter);
+	 * 
+	 * @author sandra.rodrigues
+	 *         16 de nov de 2017 09:54:54
+	 *
+	 */
+	public static void closePastaGeral() {
+		try {
+			bwReportPastaGeral.close();
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
@@ -341,79 +450,76 @@ public class FileHTML {
 	/**
 	 * Fechar escrita reportGeral (BufferedWriter);
 	 * 
-	 * @throws IOException
-	 *
 	 * @author sandra.rodrigues
 	 *         16 de nov de 2017 09:54:54
 	 *
 	 */
-	public static void closePastaGeral() throws IOException {
-		bwReportPastaGeral.close();
-	}
-
-	/**
-	 * Fechar escrita reportGeral (BufferedWriter);
-	 * 
-	 * @throws IOException
-	 *
-	 * @author sandra.rodrigues
-	 *         16 de nov de 2017 09:54:54
-	 *
-	 */
-	public static void closePastaGeralMinimized() throws IOException {
-		bwReportPastaGeralMinimized.close();
+	public static void closePastaGeralMinimized() {
+		try {
+			bwReportPastaGeralMinimized.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	/**
 	 * Fechar escrita reportFalha (BufferedWriter);
 	 * 
-	 * @throws IOException
-	 *
 	 * @author sandra.rodrigues
 	 *         16 de nov de 2017 09:56:02
 	 *
 	 */
-	public static void closeFalha() throws IOException {
-		bwReportFalha.close();
+	public static void closeFalha() {
+		try {
+			bwReportFalha.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	/**
 	 * Fechar escrita reportGeralProjeto (BufferedWriter);
 	 * 
-	 * @throws IOException
-	 *
 	 * @author sandra.rodrigues
 	 *         16 de nov de 2017 09:56:10
 	 *
 	 */
-	public static void closeGeralProjeto() throws IOException {
-		bwReportGeralProjeto.close();
+	public static void closeGeralProjeto() {
+		try {
+			bwReportGeralProjeto.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	/**
 	 * Fechar escrita reportFalhaProjeto (BufferedWriter);
 	 * 
-	 * @throws IOException
-	 *
 	 * @author sandra.rodrigues
 	 *         16 de nov de 2017 09:56:19
 	 *
 	 */
-	public static void closeFalhaProjeto() throws IOException {
-		bwReportFalhaProjeto.close();
+	public static void closeFalhaProjeto() {
+		try {
+			bwReportFalhaProjeto.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	/**
 	 * Fechar escrita reportSucessoProjeto (BufferedWriter);
 	 * 
-	 * @throws IOException
-	 *
 	 * @author sandra.rodrigues
 	 *         16 de nov de 2017 09:56:31
 	 *
 	 */
-	public static void closeSucessoProjeto() throws IOException {
-		bwReportSucessoProjeto.close();
+	public static void closeSucessoProjeto() {
+		try {
+			bwReportSucessoProjeto.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	public static void openReportGeralInBrowser() throws IOException {
@@ -429,19 +535,37 @@ public class FileHTML {
 		try {
 
 			filePilhaErro = createArquivo(path, TipoArquivoEnum.HTML);
-			BufferedWriter bwEscrever = new BufferedWriter(new FileWriter(filePilhaErro, true));
-
-			if (bwEscrever != null) {
+			if (filePilhaErro != null) {
+				BufferedWriter bwEscrever = getBufferdWriter(filePilhaErro);
 				for (String texto : conteudo) {
 					bwEscrever.write(texto);
 				}
+				bwEscrever.close();
+				return filePilhaErro.getPath();
 			}
-
-			bwEscrever.close();
-
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		return filePilhaErro.getPath();
+		return "";
 	}
+
+	private static BufferedWriter getBufferdWriter(File filePilhaErro) throws IOException {
+		try (FileWriter fileWriter = new FileWriter(filePilhaErro, true);
+				BufferedWriter bwEscrever = new BufferedWriter(fileWriter);) {
+			return bwEscrever;
+		}
+	}
+
+	private static List<String> getLogDelete() {
+		return logDelete;
+	}
+
+	private static List<String> getLogNotDeleted() {
+		return logNotDeleted;
+	}
+
+	public static void setLogNotDeleted(List<String> logNotDeleted) {
+		FileHTML.logNotDeleted = logNotDeleted;
+	}
+
 }
