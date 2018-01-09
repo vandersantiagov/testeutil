@@ -685,7 +685,7 @@ public class ReportHTML {
 	private static void openHTMLGeralMinimized() throws IOException {
 		appendReportGeralMinimized("<!DOCTYPE html>");
 		appendReportGeralMinimized(
-				"<html><head><meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\"");
+				"<html><head><meta meta charset='UTF-8'");
 		appendReportGeralMinimized(
 				"<!--[if lt IE 9]><script src=\"http://html5shiv.googlecode.com/svn/trunk/html5.js\"></script><![endif]-->");
 		appendReportGeralMinimized("<style type=\"text/css\">");

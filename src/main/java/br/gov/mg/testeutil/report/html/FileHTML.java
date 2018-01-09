@@ -29,7 +29,7 @@ public class FileHTML {
 	protected FileHTML() {
 	}
 
-	public static final String HTML_OPEN_HTML = "<html><head><meta http-equiv='Content-Type' content='text/html; charset=UTF-8'></head><body style='font: 1em Arial, Helvetica, sans-serif;'>";
+	public static final String HTML_OPEN_HTML = "<html><head><meta charset='UTF-8'></head><body style='font: 1em Arial, Helvetica, sans-serif;'>";
 	public static final String HTML_CLOSE_HTML = "</body></html>";
 	public static final String HTML_OPEN_TABLE_HTML = "<table border='0' bgcolor = 'EFEFEF' width='100.0%' height='20'>";
 	public static final String HTML_CLOSE_TABLE_HTML = "</table>";
