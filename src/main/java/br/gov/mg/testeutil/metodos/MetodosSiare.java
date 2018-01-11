@@ -22,6 +22,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.OutputType;
@@ -1720,81 +1721,230 @@ public class MetodosSiare {
 	}
 
 	/**
-	 * 
-	 * 
-	 * @throws IOException
-	 * @throws InterruptedException
-	 * 
 	 * @Author Jacqueline Lucas, 24/11/2017 - String subPastaProjeto: informar a
 	 *         subpasta do Projeto String nomeDoArquivoProtocolo: informar nome
 	 *         do arquivo que foi salvo o protocolo a ser pesquisado. String
 	 *         nomeDoArquivoResponsavel: informar nome do arquivo que foi salvo
-	 *         o nome do responsável a ser pesquisado.
+	 *         o nome do responsável a ser pesquisado. boolean isExecutado =
+	 *         false
 	 */
 
 	public static void consultarResponsavelOuPriorizarELogar(String subPastaProjeto, String nomeDoArquivoProtocolo,
-			String nomeDoArquivoResponsavel) throws IOException, InterruptedException {
-
-		MetodosSiare.menuSubMenuNivel2(ObjetosMetodosComuns.menuAdiministracaoDeServico,
-				ObjetosMetodosComuns.subMenuServico, ObjetosMetodosComuns.subMenuPriorizacao);
-		MetodosSiare.validarTexto("Manutenção de Priorização de Serviços", ObjetosMetodosComuns.textoValidarTituloHome);
-		MetodosSiare.lerArquivoTexto(subPastaProjeto, nomeDoArquivoProtocolo,
-				ObjetosMetodosComuns.campoProtocoloPriorizacao);
-		MetodosSiare.umClique(ObjetosMetodosComuns.comandoPesquisar);
-		MetodosSiare.validarTexto("Manutenção de Priorização de Serviços", ObjetosMetodosComuns.textoValidarTituloHome);
-
-		boolean achou = false;
-		int contador = 0;
-		int limiteDoContador = 15;
-
-		do {
-			if (!MetodosSiare.verificaSeOElementoPossuiInformacao(ObjetosMetodosComuns.campoAnalistaResponsavel)) {
-				// codificar a estrutura caso não seja encontrado o responsavel
-				// pelo protocolo
-				MetodosSiare.umClique(ObjetosMetodosComuns.comandoPesquisar);
-				Thread.sleep(20000);
-				contador++;
-				System.out.println("Aguardando o protocolo cair para um Servidor Responsável... " + contador);
-			}
-			if (contador == limiteDoContador) {
+		String nomeDoArquivoResponsavel, boolean isExecutado) throws IOException, InterruptedException {
+		MetodosSiare.umClique(ObjetosMetodosComuns.abaHomeSiareSICAF);
+		MetodosSiare.umClique(ObjetosMetodosComuns.menuAdiministracaoDeServico);
+		// Verifica se o usuário tem perfil para acesso a opção Home >
+		// Administração de Serviço > Serviço > Priorização
+		if (MetodosSiare.verificaVisibilidadeVariosElementos(ObjetosMetodosComuns.subMenuServico)) {
+			MetodosSiare.menuSubMenuNivel2(ObjetosMetodosComuns.menuAdiministracaoDeServico,
+					ObjetosMetodosComuns.subMenuServico, ObjetosMetodosComuns.subMenuPriorizacao);
+			MetodosSiare.validarTexto("Manutenção de Priorização de Serviços",
+					ObjetosMetodosComuns.textoValidarTituloHome);
+			MetodosSiare.lerArquivoTexto(subPastaProjeto, nomeDoArquivoProtocolo,
+					ObjetosMetodosComuns.campoProtocoloPriorizacao);
+			MetodosSiare.umClique(ObjetosMetodosComuns.comandoPesquisar);
+			MetodosSiare.validarTexto("Manutenção de Priorização de Serviços",
+					ObjetosMetodosComuns.textoValidarTituloHome);
+			boolean achou = false;
+			int contador = 0;
+			int limiteDoContador = 15;
+			do {
 				if (!MetodosSiare.verificaSeOElementoPossuiInformacao(ObjetosMetodosComuns.campoAnalistaResponsavel)) {
-					// metodo que ira priorizar o protocolo
-					MetodosSiare.umClique(ObjetosMetodosComuns.selecionarProtocoloPesquisado);
-					MetodosSiare.umClique(ObjetosMetodosComuns.linkPriorizar);
-					MetodosSiare.validarTexto("Priorizar Serviços", ObjetosMetodosComuns.textoValidarTituloHome);
-					MetodosSiare.clickCampoCheckBox(ObjetosMetodosComuns.checkEnviarAnalistaResponsavelSim, "1");
-					MetodosSiare.selecionarOpcaoEmCombobox(ObjetosMetodosComuns.campoAnalistaResp,
-							ObjetosMetodosComuns.opcaoAnalistaResp);//
-					MetodosSiare.umClique(ObjetosMetodosComuns.comandoPriorizar);
-					System.out.println("Solicitação efetuada com sucesso.");
-					MetodosSiare.validarTexto("Solicitação efetuada com sucesso.",
-							ObjetosMetodosComuns.mensagemDeSucesso);
+					// codificar a estrutura caso não seja encontrado o
+					// responsavel pelo protocolo
+					MetodosSiare.umClique(ObjetosMetodosComuns.comandoPesquisar);
+					Thread.sleep(20000);
+					contador++;
+					System.out.println("Aguardando o protocolo cair para um Servidor Responsável... " + contador);
+				}
+				if (contador == limiteDoContador) {
+					if (!MetodosSiare
+							.verificaSeOElementoPossuiInformacao(ObjetosMetodosComuns.campoAnalistaResponsavel)) {
+						// metodo que ira priorizar o protocolo
+						MetodosSiare.umClique(ObjetosMetodosComuns.selecionarProtocoloPesquisado);
+						MetodosSiare.umClique(ObjetosMetodosComuns.linkPriorizar);
+						MetodosSiare.validarTexto("Priorizar Serviços", ObjetosMetodosComuns.textoValidarTituloHome);
+						MetodosSiare.clickCampoCheckBox(ObjetosMetodosComuns.checkEnviarAnalistaResponsavelSim, "1");
+						MetodosSiare.selecionarOpcaoEmCombobox(ObjetosMetodosComuns.campoAnalistaResp,
+								ObjetosMetodosComuns.opcaoAnalistaResp);//
+						MetodosSiare.umClique(ObjetosMetodosComuns.comandoPriorizar);
+						// Trata exceção quando o protocolo é distribuido no
+						// momento que solicita a Priorização.
+						if (iniciaComTexto(ObjetosMetodosComuns.excecaoMenssage, "Solicitação efetuada com sucesso.")) {
+							System.out.println("Solicitação efetuada com sucesso.");
+						} else if (iniciaComTexto(ObjetosMetodosComuns.excecaoMenssage,
+								"Não foi possível enviar o protocolo")) {
+							System.out.println("Protocolo NÃO Priorizado.");
+						}
+						achou = true;					}
+				}
+				if (MetodosSiare.verificaSeOElementoPossuiInformacao(ObjetosMetodosComuns.campoAnalistaResponsavel)) {
 					achou = true;
 				}
+			} while (!achou);
+		} else {
+			// Caso o ultimo usuário não tenha perfil para acessar a rotina de
+			// priorizar, sai do SICAF e loga com usuário ADM
+			MetodosSiare.umClique(ObjetosMetodosComuns.linkSairSiareSICAF);
+			MetodosSiare.logarComAdministrador();
+			consultarResponsavelOuPriorizarELogar(subPastaProjeto, nomeDoArquivoProtocolo, nomeDoArquivoResponsavel,
+					isExecutado);
+			isExecutado = true;
+		}
+
+		if (!isExecutado) {
+			MetodosSiare.escreverEmArquivoTexto(ObjetosMetodosComuns.campoAnalistaResponsavel, subPastaProjeto,
+					nomeDoArquivoResponsavel);
+			System.out.println("Arquivo OK");
+			// Pesquisa para achar o o CPF do responsável para logar através do
+			// Nome
+			MetodosSiare.umClique(ObjetosMetodosComuns.linkControleDeAcesso);
+			// Verifica se o usuário tem perfil de acesso a opção Controle de
+			// Acesso > Cadastros > Servidores
+			if (MetodosSiare.verificaVisibilidadeVariosElementos(ObjetosMetodosComuns.menuCadastroControleDeAcesso,
+					ObjetosMetodosComuns.subMenuServidorControleDeAcesso)) {
+				MetodosSiare.doisCliques(ObjetosMetodosComuns.menuCadastroControleDeAcesso,
+						ObjetosMetodosComuns.subMenuServidorControleDeAcesso);
+				MetodosSiare.lerArquivoTexto(subPastaProjeto, nomeDoArquivoResponsavel,
+						ObjetosMetodosComuns.campoNomeResponsavel);
+				MetodosSiare.metodoParaRecuperarOResponsavelPeloProcolo();
+				MetodosSiare.escreverEmArquivoTexto(ObjetosMetodosComuns.campoCPFResponsavelPeloProtocolo,
+						subPastaProjeto, "CPFResponsavel");
+			} else {
+				MetodosSiare.umClique(ObjetosMetodosComuns.linkSairSiareSICAF);
+				MetodosSiare.logarComAdministrador();
+				MetodosSiare.metodoConsultaOResponsavelPeloProtocolo();
+				MetodosSiare.lerArquivoTexto(subPastaProjeto, nomeDoArquivoResponsavel,
+						ObjetosMetodosComuns.campoNomeResponsavel);
+				MetodosSiare.metodoParaRecuperarOResponsavelPeloProcolo();
+				MetodosSiare.escreverEmArquivoTexto(ObjetosMetodosComuns.campoCPFResponsavelPeloProtocolo,
+						subPastaProjeto, "CPFResponsavel");
 			}
-			if (MetodosSiare.verificaSeOElementoPossuiInformacao(ObjetosMetodosComuns.campoAnalistaResponsavel)) {
+
+			// Logar com o Responsável no qual o Protocolo caiu em sua caixa
+			MetodosSiare.umClique(ObjetosMetodosComuns.linkSairSiareSICAF);
+			MetodosSiare.lerArquivoTexto(subPastaProjeto, "CPFResponsavel", ObjetosMetodosComuns.cpfField);
+			MetodosSiare.inserirDadoNoCampo("12345678", ObjetosMetodosComuns.senhaField);
+			MetodosSiare.umClique(ObjetosMetodosComuns.confirmarFieldLogin);
+		}
+
+	}
+	/**Desenvolvido por 
+	 * @Author Jacqueline Lucas
+	 */
+	public static boolean verificaVisibilidadeVariosElementos(By... elementos) {
+		Boolean visible = null;
+		if (elementos != null) {
+			for (By elemento : elementos) {
+				boolean elementoEstaVisivel = MetodosSiare.verificaSeOElementoEstaVisivel(elemento);
+				if (visible == null) {
+					visible = elementoEstaVisivel;
+				} else {
+					visible &= elementoEstaVisivel;
+				}
+
+				if (!visible) {
+					return visible;
+				}
+			}
+		} else {
+			visible = false;
+		}
+		return visible;
+	}
+
+	/**
+	 * 
+	 * Método para verificar um trecho de um texto
+	 * 
+	 * @Author Sandra
+	 */
+
+	public static boolean iniciaComTexto(By elemento, String texto) {
+		String textoElemento = MetodosSiare.driver.findElement(elemento).getText();
+		return StringUtils.startsWithIgnoreCase(textoElemento, texto);
+	}
+
+	/**
+	 * @Author Jacqueline Lucas,
+	 */
+	public static boolean iniciaComTextoIgnoreCase(By elemento, String texto) {
+		String textoElemento = MetodosSiare.driver.findElement(elemento).getText();
+		return StringUtils.containsIgnoreCase(textoElemento, texto);
+	}
+
+	/**
+	 * @Author Jacqueline Lucas, 08/01/2018 - Método para acessar Internet com
+	 *         dados do Contribuinte e na Caixa de Ciência, localizar o
+	 *         protocolo, ler a mensagem, para o RE se tornar Vigente.
+	 * 
+	 *         String subPastaProjeto: informar a subpasta do Projeto String
+	 *         nomeDoArquivoProtocolo: informar nome do arquivo que foi salvo o
+	 *         protocolo a ser pesquisado. String assunto: informar o Assunto a
+	 *         ser filtrado.
+	 **/
+	public static void solCaixadeMensagensPTAVigente(String subPastaProjeto, String nomeDoArquivoProtocolo,
+			String assunto) throws InterruptedException, IOException {
+
+		MetodosSiare.umClique(ObjetosMetodosComuns.botaoCaixaMensagem);
+		MetodosSiare.inserirDadoNoCampo(assunto, ObjetosMetodosComuns.campoPesquisarAssunto);
+		MetodosSiare.umClique(ObjetosMetodosComuns.comandoPesquisar);
+
+		boolean achou = false;
+		String protocolo = MetodosSiare.retornaRegistroDaPrimeiraLinhaDeArquivoTexto(subPastaProjeto,
+				nomeDoArquivoProtocolo);
+		int contador = 0, iteracaoQtdDeRegistros = 0, qtdDeRegistros = MetodosSiare.obterQTDDeRegistrosNaCaixa(
+				By.xpath("/html/body/div[3]/div[2]/div/div[3]/div/form/div[1]/table/tbody/tr/td[3]"));
+		String[][] arrayprotocolos = {
+				{ "/html/body/div[3]/div[2]/div/div[3]/div/form/div[1]/div/div/table[1]/tbody/tr[1]/td[4]" },
+				{ "/html/body/div[3]/div[2]/div/div[3]/div/form/div[1]/div/div/table[1]/tbody/tr[2]/td[4]" },
+				{ "/html/body/div[3]/div[2]/div/div[3]/div/form/div[1]/div/div/table[1]/tbody/tr[3]/td[4]" },
+				{ "/html/body/div[3]/div[2]/div/div[3]/div/form/div[1]/div/div/table[1]/tbody/tr[4]/td[4]" },
+				{ "/html/body/div[3]/div[2]/div/div[3]/div/form/div[1]/div/div/table[1]/tbody/tr[5]/td[4]" },
+				{ "/html/body/div[3]/div[2]/div/div[3]/div/form/div[1]/div/div/table[1]/tbody/tr[6]/td[4]" },
+				{ "/html/body/div[3]/div[2]/div/div[3]/div/form/div[1]/div/div/table[1]/tbody/tr[7]/td[4]" },
+				{ "/html/body/div[3]/div[2]/div/div[3]/div/form/div[1]/div/div/table[1]/tbody/tr[8]/td[4]" },
+				{ "/html/body/div[3]/div[2]/div/div[3]/div/form/div[1]/div/div/table[1]/tbody/tr[9]/td[4]" },
+				{ "/html/body/div[3]/div[2]/div/div[3]/div/form/div[1]/div/div/table[1]/tbody/tr[10]/td[4]" } };
+		do {
+			if (iteracaoQtdDeRegistros + 1 > qtdDeRegistros) {
+				contador = 0;
+				iteracaoQtdDeRegistros = 0;
+				MetodosSiare.umClique(ObjetosMetodosComuns.botaoCaixaMensagem);
+				qtdDeRegistros = MetodosSiare.obterQTDDeRegistrosNaCaixa(
+						By.xpath("/html/body/div[3]/div[2]/div/div[3]/div/form/div[1]/table/tbody/tr/td[3]"));
+				MetodosSiare.inserirDadoNoCampo("1", ObjetosMetodosComuns.campoPaginacao);
+				MetodosSiare.umClique(ObjetosMetodosComuns.botaoIr);
+				MetodosSiare.aguardarOProximoPasso(3000);
+			}
+
+			MetodosSiare.umClique(MetodosSiare.campoXpath(arrayprotocolos[contador][0]));
+			if (iniciaComTextoIgnoreCase(ObjetosMetodosComuns.campoMensage, protocolo)) {
 				achou = true;
+				System.out.println("Localizou Protocolo");
 			}
-
+			if (qtdDeRegistros > 10 && achou == false) {
+				if (contador == 9) {
+					contador = 0;
+					MetodosSiare.umClique(MetodosSiare.campoLinkText(">"));
+					iteracaoQtdDeRegistros++;
+				} else {
+					contador++;
+					iteracaoQtdDeRegistros++;
+				}
+			} else if (!achou) {
+				if (contador + 1 == qtdDeRegistros) {
+					contador = 0;
+					iteracaoQtdDeRegistros = 0;
+					MetodosSiare.umClique(MetodosSiare.campoLinkText("Home"));
+					qtdDeRegistros = MetodosSiare.obterQTDDeRegistrosNaCaixa(
+							By.xpath("/html/body/div[3]/div[2]/div/div[3]/div/form/div[1]/table/tbody/tr/td[3]"));
+				} else {
+					contador++;
+					iteracaoQtdDeRegistros++;
+				}
+			}
 		} while (!achou);
-
-		MetodosSiare.escreverEmArquivoTexto(ObjetosMetodosComuns.campoAnalistaResponsavel, subPastaProjeto,
-				nomeDoArquivoResponsavel);
-		System.out.println("Arquivo OK");
-		// Pesquisa para achar o o CPF do responsável para logar através do Nome
-		MetodosSiare.metodoConsultaOResponsavelPeloProtocolo();
-		wait.until(ExpectedConditions.visibilityOfElementLocated(ObjetosMetodosComuns.campoNomeResponsavel));
-		MetodosSiare.lerArquivoTexto(subPastaProjeto, nomeDoArquivoResponsavel,
-				ObjetosMetodosComuns.campoNomeResponsavel);
-		MetodosSiare.metodoParaRecuperarOResponsavelPeloProcolo();
-		MetodosSiare.escreverEmArquivoTexto(ObjetosMetodosComuns.campoCPFResponsavelPeloProtocolo, subPastaProjeto,
-				"CPFResponsavel");
-		// Logar com o Responsável no qual o Protocolo caiu em sua caixa
-		MetodosSiare.umClique(ObjetosMetodosComuns.linkSairSiareSICAF);
-		MetodosSiare.lerArquivoTexto(subPastaProjeto, "CPFResponsavel", ObjetosMetodosComuns.cpfField);
-		MetodosSiare.inserirDadoNoCampo("12345678", ObjetosMetodosComuns.senhaField);
-		MetodosSiare.umClique(ObjetosMetodosComuns.confirmarFieldLogin);
-
 	}
 
 	/**
