@@ -31,16 +31,18 @@ public class FileUtil {
 		List<File> listReturn = new ArrayList<File>();
 		try {
 			File file = new File(path);
-			List<File> listFiles = Arrays.asList(file.listFiles());
-			for (File fileEncontrado : listFiles) {
-				String nomeArquivoComExtensao = fileEncontrado.getName();
-				String nameArquivo = nomeArquivoComExtensao;
-				if (nomeArquivoComExtensao.indexOf(SEPARADOR_EXTENSAO) > 0) {
-					nameArquivo = nomeArquivoComExtensao.substring(0, nomeArquivoComExtensao.indexOf("."));
-				}
-				for (String nome : nomes) {
-					if (Objects.equals(nameArquivo, nome)) {
-						listReturn.add(fileEncontrado);
+			if (ArrayUtils.isNotEmpty(file.listFiles())) {
+				List<File> listFiles = Arrays.asList(file.listFiles());
+				for (File fileEncontrado : listFiles) {
+					String nomeArquivoComExtensao = fileEncontrado.getName();
+					String nameArquivo = nomeArquivoComExtensao;
+					if (nomeArquivoComExtensao.indexOf(SEPARADOR_EXTENSAO) > 0) {
+						nameArquivo = nomeArquivoComExtensao.substring(0, nomeArquivoComExtensao.indexOf("."));
+					}
+					for (String nome : nomes) {
+						if (Objects.equals(nameArquivo, nome)) {
+							listReturn.add(fileEncontrado);
+						}
 					}
 				}
 			}
