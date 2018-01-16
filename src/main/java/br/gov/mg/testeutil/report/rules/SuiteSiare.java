@@ -112,7 +112,9 @@ public class SuiteSiare {
 		exceptionVO.setException(e);
 		exceptionVO.setMessage(removeCaracteresHtml(e.getMessage()));
 		exceptions.add(exceptionVO);
-		e.printStackTrace();
+		if (printErrosJunit) {
+			e.printStackTrace();
+		}
 	}
 
 	private static String removeCaracteresHtml(String message) {
