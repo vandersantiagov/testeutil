@@ -1208,7 +1208,7 @@ public class MetodosSiare {
 			if (element.isDisplayed())
 				visivel = true;
 		} catch (Exception e) {
-			e.printStackTrace();
+			//e.printStackTrace(); 
 			visivel = false;
 		}
 		return visivel;
@@ -1250,85 +1250,92 @@ public class MetodosSiare {
 	}
 
 	/**
-	 * Método que executa o fluxo para a Resolução de Pendência de um protocolo
-	 * - Pendências de Documentacao
-	 * 
-	 * @author jacqueline.lucas
-	 * @throws InterruptedException
-	 */
-	public static void acessarMenuHomeAtendimentoEntregadeDocumentosResolucaodePendenciasPendenciasdeDocumentacao(
-			String subPastaDiretorio, String nomeDoArquivoProtocolo) throws IOException, InterruptedException {
-		Set<String> janelas;
-		String[] janela;
-		boolean achou = false;
-		MetodosSiare.umClique(ObjetosMetodosComuns.abaHomeSiareSICAF);
-		MetodosSiare.doisCliques(ObjetosMetodosComuns.menuAtendimento,
-				ObjetosMetodosComuns.submenuEntregadeDocumentosResolucaodePendencias);
-		MetodosSiare.validarTexto("Entrega de Documentos / Resolução de Pendências",
-				ObjetosMetodosComuns.textoTituloTelaEntregadeDocumentosResolucaodePendencias);
-		MetodosSiare.inserirDadoNoCampo(
-				lerArquivoTextoERetornaDadoDaPrimeiraLinha(subPastaDiretorio, nomeDoArquivoProtocolo).replace(".", "")
-						.replace("-", ""),
-				ObjetosMetodosComuns.campoProtocolo);
-		MetodosSiare.umClique(ObjetosMetodosComuns.comandoPesquisarPendencias);
-		MetodosSiare.umClique(ObjetosMetodosComuns.selecaoRegistro);
-		MetodosSiare.umClique(ObjetosMetodosComuns.linkResolvePendencia);
-		MetodosSiare.validarTexto("Pendências",
-				ObjetosMetodosComuns.textoTituloTelaEntregadeDocumentosResolucaodePendencias);
-		MetodosSiare.umClique(ObjetosMetodosComuns.selecaoRegistroPendenciasdeDocumentacao);
-		MetodosSiare.umClique(ObjetosMetodosComuns.comandoRegistrarEntrega);
-		MetodosSiare.validarTexto("Entrega de documentos pendentes",
-				ObjetosMetodosComuns.textoTituloTelaEntregadeDocumentosResolucaodePendencias);
-		MetodosSiare.inserirDadoNoCampo("Teste Pendência de Documentação", ObjetosMetodosComuns.campoObservacoes);
-		MetodosSiare.umClique(ObjetosMetodosComuns.comandoConfirmarEntregaDocumento);
-		janelas = driver.getWindowHandles();
-		janela = janelas.toArray(new String[0]);
-		do {
-			if (janela.length > 1) {
-				driver.switchTo().window(janela[janela.length - 1]).close();
-				janelas = driver.getWindowHandles();
-				janela = janelas.toArray(new String[0]);
-			} else {
-				MetodosSiare.aguardarOProximoPasso(200);
-				janelas = driver.getWindowHandles();
-				janela = janelas.toArray(new String[0]);
-			}
-			if (janela.length == 1) {
-				driver.switchTo().window(janela[0]);
-				achou = true;
-			}
-		} while (!achou);
-	}
+     * Método que executa o fluxo para a Resolução de Pendência de um protocolo
+     * - Pendências de Documentacao
+     * 
+      * @author jacqueline.lucas
+     * @throws InterruptedException
+     */
+     public static void acessarMenuHomeAtendimentoEntregadeDocumentosResolucaodePendenciasPendenciasdeDocumentacao(
+                  String subPastaDiretorio, String nomeDoArquivoProtocolo) throws IOException, InterruptedException {
+           Set<String> janelas;
+           String[] janela;
+           boolean achou = false;
+           MetodosSiare.umClique(ObjetosMetodosComuns.abaHomeSiareSICAF);
+           MetodosSiare.doisCliques(ObjetosMetodosComuns.menuAtendimento,
+                         ObjetosMetodosComuns.submenuEntregadeDocumentosResolucaodePendencias);
+           MetodosSiare.validarTexto("Entrega de Documentos / Resolução de Pendências",
+                         ObjetosMetodosComuns.textoTituloTelaEntregadeDocumentosResolucaodePendencias);
+           MetodosSiare.inserirDadoNoCampo(
+                         lerArquivoTextoERetornaDadoDaPrimeiraLinha(subPastaDiretorio, nomeDoArquivoProtocolo).replace(".", "")
+                                      .replace("-", ""),
+                         ObjetosMetodosComuns.campoProtocolo);
+           MetodosSiare.umClique(ObjetosMetodosComuns.comandoPesquisarPendencias);
+                  MetodosSiare.umClique(ObjetosMetodosComuns.selecaoRegistro);
+                  MetodosSiare.umClique(ObjetosMetodosComuns.linkResolvePendencia);
+                  MetodosSiare.validarTexto("Pendências",
+                                ObjetosMetodosComuns.textoTituloTelaEntregadeDocumentosResolucaodePendencias);
+                  if (MetodosSiare.verificaSeOElementoPossuiInformacao(ObjetosMetodosComuns.campoDocumento)){
+                                MetodosSiare.umClique(ObjetosMetodosComuns.selecaoRegistroPendenciasdeDocumentacao);
+                                MetodosSiare.umClique(ObjetosMetodosComuns.comandoRegistrarEntrega);
+                                MetodosSiare.validarTexto("Entrega de documentos pendentes",
+                         ObjetosMetodosComuns.textoTituloTelaEntregadeDocumentosResolucaodePendencias);
+                                MetodosSiare.inserirDadoNoCampo("Teste Pendência de Documentação", ObjetosMetodosComuns.campoObservacoes);
+                                MetodosSiare.umClique(ObjetosMetodosComuns.comandoConfirmarEntregaDocumento);
+                  }
+           
+                  janelas = driver.getWindowHandles();
+                  janela = janelas.toArray(new String[0]);
+                  do {
+                         if (janela.length > 1) {
+                                driver.switchTo().window(janela[janela.length - 1]).close();
+                                janelas = driver.getWindowHandles();
+                                janela = janelas.toArray(new String[0]);
+                         } else {
+                                MetodosSiare.aguardarOProximoPasso(200);
+                                janelas = driver.getWindowHandles();
+                                janela = janelas.toArray(new String[0]);
+                         }
+                         if (janela.length == 1) {
+                                driver.switchTo().window(janela[0]);
+                                achou = true;
+                         }
+                  } while (!achou);
+           }
 
-	/**
-	 * Método que executa o fluxo para a Resolução de Pendência de um protocolo
-	 * - Pendências de Esclarecimento
-	 * 
-	 * @author jacqueline.lucas
-	 */
-	public static void acessarMenuHomeAtendimentoEntregadeDocumentosResolucaodePendenciasPendenciasdeEsclarecimento(
-			String subPastaDiretorio, String nomeDoArquivoProtocolo) throws IOException {
-		MetodosSiare.umClique(ObjetosMetodosComuns.abaHomeSiareSICAF);
-		MetodosSiare.menuSubMenuNivel1(ObjetosMetodosComuns.menuAtendimento,
-				ObjetosMetodosComuns.submenuEntregadeDocumentosResolucaodePendencias);
-		MetodosSiare.validarTexto("Entrega de Documentos / Resolução de Pendências",
-				ObjetosMetodosComuns.textoTituloTelaEntregadeDocumentosResolucaodePendencias);
-		MetodosSiare.inserirDadoNoCampo(
-				lerArquivoTextoERetornaDadoDaPrimeiraLinha(subPastaDiretorio, nomeDoArquivoProtocolo).replace(".", "")
-						.replace("-", ""),
-				ObjetosMetodosComuns.campoProtocolo);
-		MetodosSiare.umClique(ObjetosMetodosComuns.comandoPesquisarPendencias);
-		MetodosSiare.umClique(ObjetosMetodosComuns.selecaoRegistro);
-		MetodosSiare.umClique(ObjetosMetodosComuns.linkResolvePendencia);
-		MetodosSiare.validarTexto("Pendências",
-				ObjetosMetodosComuns.textoTituloTelaEntregadeDocumentosResolucaodePendencias);
-		MetodosSiare.umClique(ObjetosMetodosComuns.checkProtocoloCaixaDeServico);
-		MetodosSiare.umClique(ObjetosMetodosComuns.comandoResolver);
-		MetodosSiare.validarTexto("Resolver Pendências de Esclarecimento",
-				ObjetosMetodosComuns.textoTituloTelaEntregadeDocumentosResolucaodePendencias);
-		MetodosSiare.inserirDadoNoCampo("Teste Pendências de Esclarecimento", ObjetosMetodosComuns.campoRelato);
-		MetodosSiare.umClique(ObjetosMetodosComuns.comandoConfirmarSuspensaoProtocolo);
-	}
+
+     /**
+      * Método que executa o fluxo para a Resolução de Pendência de um protocolo
+      * - Pendências de Esclarecimento
+      * 
+       * @author jacqueline.lucas
+      */
+      public static void acessarMenuHomeAtendimentoEntregadeDocumentosResolucaodePendenciasPendenciasdeEsclarecimento(
+                   String subPastaDiretorio, String nomeDoArquivoProtocolo) throws IOException {
+            MetodosSiare.umClique(ObjetosMetodosComuns.abaHomeSiareSICAF);
+            MetodosSiare.menuSubMenuNivel1(ObjetosMetodosComuns.menuAtendimento,
+                          ObjetosMetodosComuns.submenuEntregadeDocumentosResolucaodePendencias);
+            MetodosSiare.validarTexto("Entrega de Documentos / Resolução de Pendências",
+                          ObjetosMetodosComuns.textoTituloTelaEntregadeDocumentosResolucaodePendencias);
+            MetodosSiare.inserirDadoNoCampo(
+                          lerArquivoTextoERetornaDadoDaPrimeiraLinha(subPastaDiretorio, nomeDoArquivoProtocolo).replace(".", "")
+                                       .replace("-", ""),
+                          ObjetosMetodosComuns.campoProtocolo);
+            MetodosSiare.umClique(ObjetosMetodosComuns.comandoPesquisarPendencias);
+            
+            MetodosSiare.umClique(ObjetosMetodosComuns.selecaoRegistro);
+            MetodosSiare.umClique(ObjetosMetodosComuns.linkResolvePendencia);
+            MetodosSiare.validarTexto("Pendências",
+                          ObjetosMetodosComuns.textoTituloTelaEntregadeDocumentosResolucaodePendencias);
+            if (MetodosSiare.verificaSeOElementoPossuiInformacao(ObjetosMetodosComuns.campoDocumento)){
+                   MetodosSiare.umClique(ObjetosMetodosComuns.checkProtocoloCaixaDeServico);
+                   MetodosSiare.umClique(ObjetosMetodosComuns.comandoResolver);
+                   MetodosSiare.validarTexto("Resolver Pendências de Esclarecimento", ObjetosMetodosComuns.textoTituloTelaEntregadeDocumentosResolucaodePendencias);
+                   MetodosSiare.inserirDadoNoCampo("Teste Pendências de Esclarecimento", ObjetosMetodosComuns.campoRelato);
+                   MetodosSiare.umClique(ObjetosMetodosComuns.comandoConfirmarSuspensaoProtocolo);
+            }
+      }
+
 
 	/**
 	 * Método que auxilia a execução do método presumirDAEPeloNumeroDoProtocolo

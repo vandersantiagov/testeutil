@@ -198,6 +198,8 @@ public class ObjetosMetodosComuns {
     public static By campoPaginacao = By.name("ufw_posicionador_gridMensagens");
     public static By botaoIr = By.name("ufw_link_ir_gridMensagens");
     public static By campoMensage = By.xpath("/html/body/div[3]/div[2]/div/div[3]/div/form/div[2]/div[2]/table[2]/tbody/tr/td");  
+    // Pendencia de Documentação
+    public static By campoDocumento = By.id("desMotivo");
 
 	
 }
