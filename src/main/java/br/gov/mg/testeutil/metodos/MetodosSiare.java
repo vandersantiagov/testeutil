@@ -1195,8 +1195,7 @@ public class MetodosSiare {
 
 	/**
 	 * Método para verificar se o elemento está visível na tela retorna true -
-	 * caso elemento visível retorna false - caso elemento não visível
-	 * 
+	 * caso elemento visível retorna false - caso elemento não visível	 * 
 	 * @Author Fábio Heller
 	 */
 	public static boolean verificaSeOElementoEstaVisivel(By elemento) {
