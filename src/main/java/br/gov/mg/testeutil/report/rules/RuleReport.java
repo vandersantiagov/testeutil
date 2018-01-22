@@ -209,29 +209,32 @@ public class RuleReport extends TestWatcher {
 	}
 
 	private void treathPilhaErro(String fileName) {
-		By comandoDetalharPilhaDeErro = ObjetosReportDetalhesErro.comandoDetalharPilhaDeErro;
-		if (isTelaErro(comandoDetalharPilhaDeErro)) {
-			MetodosSiare.umClique(comandoDetalharPilhaDeErro);
-			String nameArquivo = fileName + "_Pilha_Erro";
-			File capturaScreenDaTela = null;
-			if (MetodosSiare.driver != null) {
-				capturaScreenDaTela = MetodosSiare.capturaScreenDaTela(RuleReportSuiteProjeto.nomeProjeto, fileName);
-			}
-			String path = MetodosSiare.diretorioPrincipal + RuleReportSuiteProjeto.nomeProjeto;
-			if (capturaScreenDaTela == null) {
-				capturaScreenDaTela = FileUtil.getFileByPath(path, fileName, TipoArquivoEnum.PNG);
-			}
-			StringBuilder textoToHTML = createHTML();
-			StringBuilder textoToTxt = createTxt();
+		if (SuiteSiare.printErrosJunit) {
+			By comandoDetalharPilhaDeErro = ObjetosReportDetalhesErro.comandoDetalharPilhaDeErro;
+			if (isTelaErro(comandoDetalharPilhaDeErro)) {
+				MetodosSiare.umClique(comandoDetalharPilhaDeErro);
+				String nameArquivo = fileName + "_Pilha_Erro";
+				File capturaScreenDaTela = null;
+				if (MetodosSiare.driver != null) {
+					capturaScreenDaTela = MetodosSiare.capturaScreenDaTela(RuleReportSuiteProjeto.nomeProjeto,
+							fileName);
+				}
+				String path = MetodosSiare.diretorioPrincipal + RuleReportSuiteProjeto.nomeProjeto;
+				if (capturaScreenDaTela == null) {
+					capturaScreenDaTela = FileUtil.getFileByPath(path, fileName, TipoArquivoEnum.PNG);
+				}
+				StringBuilder textoToHTML = createHTML();
+				StringBuilder textoToTxt = createTxt();
 
-			String pathComNomeArquivo = MetodosSiare.diretorioPrincipal + RuleReportSuiteProjeto.nomeProjeto + "\\"
-					+ nameArquivo + TipoArquivoEnum.PNG.getTipoArquivo();
-			String pathFileHTMLPilhaErro = FileHTML.generateHTMLByText(pathComNomeArquivo, textoToHTML.toString());
-			String pathFileTxtPilhaErro = FileUtil.generateTxtByText(pathComNomeArquivo, textoToTxt.toString());
+				String pathComNomeArquivo = MetodosSiare.diretorioPrincipal + RuleReportSuiteProjeto.nomeProjeto + "\\"
+						+ nameArquivo + TipoArquivoEnum.PNG.getTipoArquivo();
+				String pathFileHTMLPilhaErro = FileHTML.generateHTMLByText(pathComNomeArquivo, textoToHTML.toString());
+				String pathFileTxtPilhaErro = FileUtil.generateTxtByText(pathComNomeArquivo, textoToTxt.toString());
 
-			metodo.setCaminhoArquivoHTMLPilhaErro(pathFileHTMLPilhaErro);
-			metodo.setCaminhoArquivoTXTPilhaErro(pathFileTxtPilhaErro);
-			metodo.setCaminhoPrintPilhaErro(capturaScreenDaTela.getPath());
+				metodo.setCaminhoArquivoHTMLPilhaErro(pathFileHTMLPilhaErro);
+				metodo.setCaminhoArquivoTXTPilhaErro(pathFileTxtPilhaErro);
+				metodo.setCaminhoPrintPilhaErro(capturaScreenDaTela.getPath());
+			}
 		}
 	}
 
