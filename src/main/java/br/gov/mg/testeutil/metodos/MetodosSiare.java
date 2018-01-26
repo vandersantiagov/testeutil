@@ -318,7 +318,7 @@ public class MetodosSiare {
 		WebElement element = driver.findElement(opcaoCombobox);
 		action.moveToElement(element).build().perform();
 		action.click(element).build().perform();
-		// element.click();
+		element.click();
 	}
 
 	/**
