@@ -1511,7 +1511,7 @@ public class MetodosSiare {
 		robot.keyPress(KeyEvent.VK_PAGE_DOWN);
 	}
 
-	public static void pageUpJanelaMaximizad() throws AWTException {
+	public static void pageUpJanelaMaximizada() throws AWTException {
 		driver.manage().window().maximize();
 		Robot robot = new Robot();
 		robot.keyPress(KeyEvent.VK_PAGE_UP);
