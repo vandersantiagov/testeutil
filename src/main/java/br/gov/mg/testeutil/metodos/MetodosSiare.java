@@ -42,6 +42,7 @@ import com.lowagie.text.PageSize;
 import com.lowagie.text.Paragraph;
 import com.lowagie.text.pdf.PdfWriter;
 
+import br.gov.mg.testeutil.enums.TipoArquivoEnum;
 import br.gov.mg.testeutil.objetos.ObjetosMetodosComuns;
 import br.gov.mg.testeutil.util.FileUtil;
 import br.gov.mg.testeutil.util.naoSiare.PropertyNaoSiare;
@@ -2036,5 +2037,15 @@ public class MetodosSiare {
 
 	public static WebDriverWait getWait() {
 		return wait;
+	}
+	
+
+	public static void renameFile(String caminhoArquivo, String antigoNome, String novoNome) {
+		try {
+			File arquivo = FileUtil.getFileByPath(caminhoArquivo, antigoNome, TipoArquivoEnum.TXT);
+			arquivo.renameTo(new File(caminhoArquivo + "//" + novoNome + TipoArquivoEnum.TXT.getTipoArquivo()));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 }
