@@ -23,7 +23,7 @@ public class FTPDownloadDriveBrowser {
 
 	protected static String CAMINHO_PROPERTIES_DRIVER_POROS = "/stor/home/siareear/ambiente/testeFuncional/driverBrowser.properties";
 	// Caminho dos drivers
-	private static final String PATH_DRIVER_CHROME = "C:/Ambiente/DriversBrowser/chromedriver_2_32.EXE";
+	private static final String PATH_DRIVER_CHROME = "C:/Ambiente/DriversBrowser/chromedriver_2_35.EXE";
 	private static final String PATH_DRIVER_FIREFOX = "C:/Ambiente/DriversBrowser/geckodriver_0_15_0.EXE";
 	private static final String PATH_DRIVER_IE = "C:/Ambiente/DriversBrowser/IEDriverServer_3.4.0.EXE";
 	private static final String PATH_DRIVER_PHANTOMJS = "C:/Ambiente/DriversBrowser/phantomjs_2_1_1.EXE";

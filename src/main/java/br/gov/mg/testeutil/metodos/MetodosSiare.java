@@ -1980,7 +1980,7 @@ public class MetodosSiare {
 	public static void setAmbienteSol() {
 		try {
 			if (killTasks) {
-				Runtime.getRuntime().exec("cmd /c TASKKILL /F /IM chromedriver_2_33.exe");
+				Runtime.getRuntime().exec("cmd /c TASKKILL /F /IM chromedriver_2_35.exe");
 				killTasks = false;
 			}
 		} catch (Exception e) {
@@ -1996,7 +1996,7 @@ public class MetodosSiare {
 	public static void setAmbienteSicaf() {
 		try {
 			if (killTasks) {
-				Runtime.getRuntime().exec("cmd /c TASKKILL /F /IM chromedriver_2_33.exe");
+				Runtime.getRuntime().exec("cmd /c TASKKILL /F /IM chromedriver_2_35.exe");
 				killTasks = false;
 			}
 		} catch (Exception e) {
@@ -2012,7 +2012,7 @@ public class MetodosSiare {
 	public static void setAmbienteNaoSiare() {
 		try {
 			if (killTasks) {
-				Runtime.getRuntime().exec("cmd /c TASKKILL /F /IM chromedriver_2_33.exe");
+				Runtime.getRuntime().exec("cmd /c TASKKILL /F /IM chromedriver_2_35.exe");
 				killTasks = false;
 			}
 		} catch (Exception e) {
