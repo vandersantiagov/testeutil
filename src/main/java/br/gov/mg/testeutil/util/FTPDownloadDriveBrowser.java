@@ -27,6 +27,7 @@ public class FTPDownloadDriveBrowser {
 	private static final String PATH_DRIVER_FIREFOX = "C:/Ambiente/DriversBrowser/geckodriver_0_15_0.EXE";
 	private static final String PATH_DRIVER_IE = "C:/Ambiente/DriversBrowser/IEDriverServer_3.4.0.EXE";
 	private static final String PATH_DRIVER_PHANTOMJS = "C:/Ambiente/DriversBrowser/phantomjs_2_1_1.EXE";
+	private static boolean killTasks = true;
 
 	public static void obterDriver(BrowserEnum browser, String version) {
 
@@ -120,7 +121,10 @@ public class FTPDownloadDriveBrowser {
 	}
 
 	private static void killTasks(String task) throws IOException {
-		Runtime.getRuntime().exec("cmd /c TASKKILL /F /IM " + task);
+		if (killTasks) {
+			killTasks = false;
+			Runtime.getRuntime().exec("cmd /c TASKKILL /F /IM " + task);
+		}
 	}
 
 	protected static FTPClient connectFtp() throws SocketException, IOException {
