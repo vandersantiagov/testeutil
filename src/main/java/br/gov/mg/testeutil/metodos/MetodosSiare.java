@@ -57,9 +57,6 @@ import br.gov.mg.testeutil.util.sol.SeleniumSol;
 
 public class MetodosSiare {
 
-	private static boolean killTasks = true;
-	
-
 	/*
 	 ***************************** METODOS GLOBAIS PARA CHAMADA NAS CLASSES*****************************
 	 **/
@@ -1978,14 +1975,6 @@ public class MetodosSiare {
 	 * @Author Fábio Heller
 	 */
 	public static void setAmbienteSol() {
-		try {
-			if (killTasks) {
-				Runtime.getRuntime().exec("cmd /c TASKKILL /F /IM chromedriver_2_35.exe");
-				killTasks = false;
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
 		driver = SeleniumSol.getDriver();
 		wait = new WebDriverWait(driver, 30);
 		driver.navigate().to(PropertySol.SITE_ADDRESS);
@@ -1994,14 +1983,6 @@ public class MetodosSiare {
 	}
 
 	public static void setAmbienteSicaf() {
-		try {
-			if (killTasks) {
-				Runtime.getRuntime().exec("cmd /c TASKKILL /F /IM chromedriver_2_35.exe");
-				killTasks = false;
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
 		driver = SeleniumSicaf.getDriver();
 		wait = new WebDriverWait(driver, 30);
 		driver.navigate().to(PropertySicaf.SITE_ADDRESS);
@@ -2010,14 +1991,6 @@ public class MetodosSiare {
 	}
 
 	public static void setAmbienteNaoSiare() {
-		try {
-			if (killTasks) {
-				Runtime.getRuntime().exec("cmd /c TASKKILL /F /IM chromedriver_2_35.exe");
-				killTasks = false;
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
 		driver = SeleniumNaoSiare.getDriver();
 		wait = new WebDriverWait(driver, 30);
 		driver.navigate().to(PropertyNaoSiare.SITE_ADDRESS);

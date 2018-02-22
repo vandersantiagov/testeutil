@@ -38,7 +38,9 @@ public class FTPDownloadDriveBrowser {
 			p.waitFor();
 
 			String caminhoDriver = obtemCaminhoDrive(browser, version);
+			String task = getTask(caminhoDriver);
 			if (StringUtils.isNotBlank(caminhoDriver)) {
+				killTasks(task);
 				caminhoLocal = "C:/Ambiente/DriversBrowser/"
 						+ caminhoDriver.split("/")[caminhoDriver.split("/").length - 1];
 				File downloadDrive = new File(
@@ -58,26 +60,30 @@ public class FTPDownloadDriveBrowser {
 				}
 			} else {
 				switch (browser) {
-				case CHROME:
-					caminhoLocal = PATH_DRIVER_CHROME;
-					break;
-				case FIREFOX:
-					caminhoLocal = PATH_DRIVER_FIREFOX;
-					break;
-				case IE:
-					caminhoLocal = PATH_DRIVER_IE;
-					break;
-				default:
-					caminhoLocal = PATH_DRIVER_PHANTOMJS;
-					break;
+					case CHROME:
+						killTasks(getTask(PATH_DRIVER_CHROME));
+						caminhoLocal = PATH_DRIVER_CHROME;
+						break;
+					case FIREFOX:
+						killTasks(getTask(PATH_DRIVER_FIREFOX));
+						caminhoLocal = PATH_DRIVER_FIREFOX;
+						break;
+					case IE:
+						killTasks(getTask(PATH_DRIVER_IE));
+						caminhoLocal = PATH_DRIVER_IE;
+						break;
+					default:
+						killTasks(getTask(PATH_DRIVER_PHANTOMJS));
+						caminhoLocal = PATH_DRIVER_PHANTOMJS;
+						break;
 				}
 				System.out.println("Driver carregado do diretório local!");
 			}
 
 			File downloadDrive = new File(caminhoLocal);
-			if(downloadDrive.exists()){
+			if (downloadDrive.exists()) {
 				System.setProperty(browser.getChaveSystemProperty(), caminhoLocal);
-			}else{
+			} else {
 				throw new IllegalArgumentException("Tentativa de download do ftp falhou e não existe driver local.");
 			}
 
@@ -100,6 +106,21 @@ public class FTPDownloadDriveBrowser {
 			}
 		}
 
+	}
+
+	private static String getTask(String caminhoDriver) {
+		if (caminhoDriver == null) {
+			return caminhoDriver;
+		}
+		int lastIndexOf = StringUtils.lastIndexOf(caminhoDriver, "/");
+		if (lastIndexOf >= 0) {
+			return caminhoDriver.substring(lastIndexOf + 1, caminhoDriver.length());
+		}
+		return "";
+	}
+
+	private static void killTasks(String task) throws IOException {
+		Runtime.getRuntime().exec("cmd /c TASKKILL /F /IM " + task);
 	}
 
 	protected static FTPClient connectFtp() throws SocketException, IOException {
