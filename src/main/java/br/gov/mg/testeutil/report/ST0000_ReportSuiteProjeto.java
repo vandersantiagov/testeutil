@@ -1,6 +1,10 @@
 package br.gov.mg.testeutil.report;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.Objects;
+import java.util.Properties;
 
 import org.apache.commons.lang3.StringUtils;
 import org.junit.AfterClass;
@@ -35,6 +39,14 @@ public class ST0000_ReportSuiteProjeto {
 		}
 		SuiteSiare.quitAmbiente = quitAmbiente;
 		RuleReportSuiteProjeto.beforeClassSuite(nomeProjeto, nomeSuite);
+	}
+
+	public static void relatorioPerformace(String caminhoRelatorio) throws IOException {
+		Properties p = new Properties();
+		p.load(new FileInputStream(new File(caminhoRelatorio)));
+		for (String k : p.stringPropertyNames()) {
+			System.setProperty(k, p.getProperty(k));
+		}
 	}
 
 	@AfterClass
