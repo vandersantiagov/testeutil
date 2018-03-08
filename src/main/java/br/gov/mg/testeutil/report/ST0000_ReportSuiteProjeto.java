@@ -3,6 +3,7 @@ package br.gov.mg.testeutil.report;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.Date;
 import java.util.Objects;
 import java.util.Properties;
 
@@ -13,6 +14,7 @@ import org.junit.ClassRule;
 import br.gov.mg.testeutil.report.rules.RuleReport;
 import br.gov.mg.testeutil.report.rules.RuleReportSuiteProjeto;
 import br.gov.mg.testeutil.report.rules.SuiteSiare;
+import br.gov.mg.testeutil.util.DateUtil;
 
 public class ST0000_ReportSuiteProjeto {
 	private static String nomeSuite;
@@ -44,6 +46,8 @@ public class ST0000_ReportSuiteProjeto {
 	public static void relatorioPerformace(String caminhoRelatorio) throws IOException {
 		Properties p = new Properties();
 		p.load(new FileInputStream(new File(caminhoRelatorio)));
+		p.setProperty("jub.charts.dir","Z:\\ArtefatosWebdriver\\Relatorios\\Performance\\Relatório Performance "+DateUtil.getDataFormatadaByFormato(new Date(), DateUtil.FORMATO_DATA1));
+		p.setProperty("jub.db.file","Z:\\ArtefatosWebdriver\\Relatorios\\Performance\\.benchmarks");
 		for (String k : p.stringPropertyNames()) {
 			System.setProperty(k, p.getProperty(k));
 		}
