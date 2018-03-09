@@ -43,11 +43,11 @@ public class ST0000_ReportSuiteProjeto {
 		RuleReportSuiteProjeto.beforeClassSuite(nomeProjeto, nomeSuite);
 	}
 
-	public static void relatorioPerformace(String caminhoRelatorio) throws IOException {
+	public static void relatorioPerformace() throws IOException {
 		Properties p = new Properties();
-		p.load(new FileInputStream(new File(caminhoRelatorio)));
-		p.setProperty("jub.charts.dir","Z:\\ArtefatosWebdriver\\Relatorios\\Performance\\Relatório Performance "+DateUtil.getDataFormatadaByFormato(new Date(), DateUtil.FORMATO_DATA1));
-		p.setProperty("jub.db.file","Z:\\ArtefatosWebdriver\\Relatorios\\Performance\\.benchmarks");
+		p.load(new FileInputStream(new File("src/test/resources/jub.properties")));
+		p.setProperty("jub.charts.dir","Z:\\ArtefatosWebdriver\\Relatorios\\Performance\\"+SuiteSiare.nomeProjetoSuitePrincipal +"\\Relatório Performance "+DateUtil.getDataFormatadaByFormato(new Date(), DateUtil.FORMATO_DATA1));
+		p.setProperty("jub.db.file","Z:\\ArtefatosWebdriver\\Relatorios\\Performance\\"+SuiteSiare.nomeProjetoSuitePrincipal +"\\.benchmarks");
 		for (String k : p.stringPropertyNames()) {
 			System.setProperty(k, p.getProperty(k));
 		}
