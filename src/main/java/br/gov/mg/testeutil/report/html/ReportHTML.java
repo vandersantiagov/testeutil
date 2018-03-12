@@ -629,7 +629,7 @@ public class ReportHTML {
 
 			String projeto = suiteByKey.getKey().getKey1();
 			String suite = suiteByKey.getValue().getNomeSuite();
-			if (projeto.contains("\\")) {
+			if (projeto !=null && projeto.contains("\\")) {
 				String projetoComSuite = projeto;
 				int firtIndexOf = projetoComSuite.lastIndexOf("\\");
 				String nomeProjeto = projetoComSuite.substring(0, firtIndexOf);
