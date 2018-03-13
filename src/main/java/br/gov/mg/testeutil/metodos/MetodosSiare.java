@@ -102,7 +102,7 @@ public class MetodosSiare {
 		if (driver.findElement(campo).getText().equals(texto))
 			achou = true;
 		else
-			assertThat("Título Incorreto!!", driver.findElement(campo).getText(), is(texto));
+			assertThat("Titulo Incorreto!!", driver.findElement(campo).getText(), is(texto));
 		return achou;
 	}
 
@@ -207,9 +207,9 @@ public class MetodosSiare {
 	}
 
 	/**
-	 * Método que insere um valor em um campo
+	 * Metodo que insere um valor em um campo
 	 * 
-	 * @Author Fábio Heller
+	 * @Author Fabio Heller
 	 */
 	public static void inserirDadoNoCampo(String textoAInserir, By nomeElemento) {
 		wait.until(ExpectedConditions.visibilityOfElementLocated(nomeElemento));
@@ -219,9 +219,9 @@ public class MetodosSiare {
 	}
 
 	/**
-	 * Método que valida uma string em uma janela/popup aberta
+	 * Metodo que valida uma string em uma janela/popup aberta
 	 * 
-	 * @Author Fábio Heller
+	 * @Author Fabio Heller
 	 */
 	public static void validaJanelaPopUpDetalhamento(String NomePopup) {
 		Set<String> janelas = driver.getWindowHandles();
@@ -234,9 +234,9 @@ public class MetodosSiare {
 	}
 
 	/**
-	 * Fechar janela/popup
+	 * Fechar janela popup
 	 * 
-	 * @Author Fábio Heller
+	 * @Author Fabio Heller
 	 */
 	public static void fecharDriverAposJanelaPopUpDetalhamento() {
 		driver.close();
@@ -295,7 +295,7 @@ public class MetodosSiare {
 	}
 
 	/**
-	 * Validar a existência do campo na Interface
+	 * Validar a existencia do campo na Interface
 	 * 
 	 * @Author Antonio Bernardo
 	 */
@@ -304,10 +304,10 @@ public class MetodosSiare {
 	}
 
 	/**
-	 * Método que clica em um item da lista de um Combobox
+	 * Metodo que clica em um item da lista de um Combobox
 	 * 
 	 * @throws InterruptedException
-	 * @Author Fábio Heller
+	 * @Author Fabio Heller
 	 */
 	public static void selecionarOpcaoEmCombobox(By combobox, By opcaoCombobox) throws InterruptedException {
 		Actions action = new Actions(driver);
@@ -321,11 +321,11 @@ public class MetodosSiare {
 
 	/**
 	 * 
-	 * Método para criar uma subpasta no diretório ScreencShot e capturar Print.
+	 * Metodo para criar uma subpasta no diretorio ScreencShot e capturar Print.
 	 * 
 	 * @param fileName
-	 *            - Nome do arquivo
-	 * @Athor Antonio Bernardo e Fábio Heller e Sandra Leodoro
+	 *             Nome do arquivo
+	 * @Athor Antonio Bernardo e Fabio Heller e Sandra Rodrigues
 	 */
 	public static File capturaScreenDaTela(String subPastaProjeto, String fileName) {
 		boolean existeScrollHorizontalNaPagina = existeScrollHorizontalNaPagina();
@@ -386,11 +386,11 @@ public class MetodosSiare {
 
 	/**
 	 * 
-	 * Método para criar uma subpasta no diretório ScreencShot e capturar Print.
+	 * Metodo para criar uma subpasta no diretorio ScreencShot e capturar Print.
 	 * 
 	 * @param fileName
 	 *            - Nome do arquivo
-	 * @Athor Antonio Bernardo e Fábio Heller
+	 * @Athor Antonio Bernardo e Fabio Heller
 	 */
 	public static File capturaScreenDaTelaIgnoreScrool(String subPastaProjeto, String fileName) {
 		File scrFile = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
@@ -407,8 +407,8 @@ public class MetodosSiare {
 	}
 
 	/**
-	 * Método para excluir os arquivo na Subpasta do diretório onde estão sendo
-	 * gerados os prints. * @Author Antonio Bernardo e Fábio Heller
+	 * Metodo para excluir os arquivo na Subpasta do diretorio onde estão sendo
+	 * gerados os prints. * @Author Antonio Bernardo e Fabio Heller
 	 */
 	public static void deletarArquivosDaSubpasta(String subPastaProjeto) {
 		try {
@@ -432,7 +432,7 @@ public class MetodosSiare {
 
 	@SuppressWarnings("unused")
 	private static PrintWriter getPrintWriter(String subPastaProjeto, String nomeDoArquivo){
-		//TODO: (Fabio) ajustar metodo para correção via sonar referente ao metodo  escreverEmArquivoTexto
+		//TODO: (Fabio) ajustar metodo para correcao via sonar referente ao metodo  escreverEmArquivoTexto
 		String string = "\\"; 
 		try (FileWriter canal = new FileWriter(
 				new File(diretorioPrincipal + subPastaProjeto + string + nomeDoArquivo + ".txt"));
@@ -447,11 +447,11 @@ public class MetodosSiare {
 	}
 	
 	/**
-	 * Método para Criar o arquivo colocar a informação dentro do arquivo
-	 * Arquivo.txt Por exemplo, copiar o número de um protocolo e colar em um
-	 * arquivo texto para utilizá-lo posteriormente. (CTRL C + CTRL V)
+	 * Metodo para Criar o arquivo colocar a informacao dentro do arquivo
+	 * Arquivo.txt Por exemplo, copiar o numero de um protocolo e colar em um
+	 * arquivo texto para utiliza-lo posteriormente. (CTRL C + CTRL V)
 	 * 
-	 * @Author Antonio Bernardo e Fábio Heller Atualizado dia 25/08/2017 -
+	 * @Author Antonio Bernardo e Fabio Heller Atualizado dia 25/08/2017 -
 	 *         Antonio Bernardo
 	 */
 
@@ -489,8 +489,8 @@ public class MetodosSiare {
 	}
 
 	/**
-	 * Método para ler o Arquivo.txt que foi criado e inserido um valor Por
-	 * exemplo, copiar o número de um protocolo que está em um arquivo txt e
+	 * Metodo para ler o Arquivo.txt que foi criado e inserido um valor Por
+	 * exemplo, copiar o numero de um protocolo que esta em um arquivo txt e
 	 * inserir no elemento que receberá a informação
 	 * 
 	 * @Author Antonio Bernardo
@@ -529,7 +529,7 @@ public class MetodosSiare {
 	}
 
 	/**
-	 * Método para criar um arquivo .pdf e inserido um valor
+	 * Metodo para criar um arquivo .pdf e inserido um valor
 	 * 
 	 * @Athor Jacqueline Lucas
 	 */
@@ -548,7 +548,7 @@ public class MetodosSiare {
 	}
 
 	/**
-	 * Método para anexar um arquivo
+	 * Metodo para anexar um arquivo
 	 * 
 	 * @Athor Jacqueline Lucas e Antonio Bernardo
 	 */
@@ -559,7 +559,7 @@ public class MetodosSiare {
 	}
 
 	/**
-	 * Método para acessar o Menu e o Submenu1.
+	 * Metodo para acessar o Menu e o Submenu1.
 	 * 
 	 * @Athor Jacqueline Lucas
 	 */
@@ -574,7 +574,7 @@ public class MetodosSiare {
 	}
 
 	/**
-	 * Método para acessar o Menu, Submenu1 e Submenu2
+	 * Metodo para acessar o Menu, Submenu1 e Submenu2
 	 * 
 	 * @Athor Jacqueline Lucas
 	 */
@@ -592,7 +592,7 @@ public class MetodosSiare {
 	}
 
 	/**
-	 * Método para acessar o Menu, Submenu1, Submenu2 e Submenu3.
+	 * Metodo para acessar o Menu, Submenu1, Submenu2 e Submenu3.
 	 * 
 	 * @Athor Jacqueline Lucas
 	 */
@@ -613,7 +613,7 @@ public class MetodosSiare {
 	}
 
 	/**
-	 * Método para acessar o Menu, Submenu1, Submenu2 e Submenu3 e Submenu4.
+	 * Metodo para acessar o Menu, Submenu1, Submenu2 e Submenu3 e Submenu4.
 	 * 
 	 * @Athor Jacqueline Lucas
 	 */
@@ -637,7 +637,7 @@ public class MetodosSiare {
 	}
 
 	/**
-	 * Método para clicar em um campo checkbox esse método irá setar o elemento
+	 * Metodo para clicar em um campo checkbox esse metodo ira setar o elemento
 	 * da tela conforme o value seja (true,false,0,1,2,3...)
 	 * 
 	 * @Author Jacqueline Lucas
@@ -663,7 +663,7 @@ public class MetodosSiare {
 	}
 
 	/**
-	 * Método para capturar a data atual do sistema e acrescentar ou diminuir em
+	 * Metodo para capturar a data atual do sistema e acrescentar ou diminuir em
 	 * dias a data capturada set true com mascara ("dd/MM/yyyy") // set false
 	 * sem mascara ("ddMMyyyy")
 	 * 
@@ -683,7 +683,7 @@ public class MetodosSiare {
 	}
 
 	/**
-	 * Método para capturar a hora atual do sistema
+	 * Metodo para capturar a hora atual do sistema
 	 * 
 	 * @Author Fábio Heller
 	 */
@@ -694,9 +694,9 @@ public class MetodosSiare {
 	}
 
 	/**
-	 * Método que efetua a ação de um clique em uma opção existente em Tela
+	 * Metodo que efetua a acao de um clique em uma opção existente em Tela
 	 * String texto = título da tela modal By campo = passar um elemento para
-	 * validar o título da tela Modal By ElementoOpcaoClick1 = passar o elemento
+	 * validar o titulo da tela Modal By ElementoOpcaoClick1 = passar o elemento
 	 * que vai receber a ação click int int tempo = tempo de espera do
 	 * carregamento DOM
 	 * 
@@ -712,14 +712,14 @@ public class MetodosSiare {
 	}
 
 	/**
-	 * Método para Criar o arquivo colocar a informação dentro do arquivo
-	 * Arquivo .txt (Esse método só vai preencher se o campo a qual for
-	 * recuperado tiver o valor, caso o campo não tiver o valor foi vazio, o
-	 * método vai tentar novamente daqui 30 segundos) Por exemplo, copiar o
-	 * responsável pelo Protocolo Gerado até que o mesmo protocolo caia na caixa
-	 * do Servidor Resposável. (CTRL C + CTRL V)
+	 * Metodo para Criar o arquivo colocar a informacao dentro do arquivo
+	 * Arquivo .txt (Esse metodo só vai preencher se o campo a qual for
+	 * recuperado tiver o valor, caso o campo nao tiver o valor foi vazio, o
+	 * metodo vai tentar novamente daqui 30 segundos) Por exemplo, copiar o
+	 * responsavel pelo Protocolo Gerado até que o mesmo protocolo caia na caixa
+	 * do Servidor Resposavel. (CTRL C + CTRL V)
 	 * 
-	 * @Author Antonio Bernardo e Fábio Heller Atualizado dia 28/08/2017 -
+	 * @Author Antonio Bernardo e Fabio Heller Atualizado dia 28/08/2017 -
 	 *         Antonio Bernardo
 	 */
 
@@ -763,7 +763,7 @@ public class MetodosSiare {
 					// codificar a estrutura caso não seja encontrado o
 					// responsavel pelo protocolo
 					MetodosSiare.umClique(elementoPesquisar);
-					System.out.println("Aguardando o protocolo cair para um Servidor Responsável...");
+					System.out.println("Aguardando o protocolo cair para um Servidor Responsavel...");
 					Thread.sleep(20000);
 					contador++;
 				}
@@ -803,7 +803,7 @@ public class MetodosSiare {
 	}
 
 	/**
-	 * Método para logar com o Administrador Siare e ir até o Consulta de
+	 * Método para logar com o Administrador Siare e ir ate o Consulta de
 	 * Histório de Protocolo
 	 * 
 	 * @author Antonio Benardo
