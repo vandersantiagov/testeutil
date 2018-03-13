@@ -86,6 +86,12 @@
 			<artifactId>jmh-core</artifactId>
 			<version>1.20</version>
 		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.seleniumhq.selenium/htmlunit-driver -->
+		<dependency>
+			<groupId>org.seleniumhq.selenium</groupId>
+			<artifactId>htmlunit-driver</artifactId>
+			<version>2.29.2</version>
+		</dependency>
 	</dependencies>
 	<parent>
 		<groupId>gov.sefmg</groupId>
