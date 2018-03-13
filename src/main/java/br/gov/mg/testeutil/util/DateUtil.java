@@ -5,9 +5,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
-import org.apache.commons.lang3.time.DateFormatUtils;
-import org.apache.commons.lang3.time.DateUtils;
-
 /**
  * @author sandra.rodrigues
  */
@@ -175,20 +172,5 @@ public class DateUtil {
 			e.printStackTrace();
 		}
 		return null;
-	}
-
-	/**
-	 * Retorna data no formato 2018-02-01T20:41:19-02:00
-	 * 
-	 * @return
-	 *
-	 * @author sandra.rodrigues
-	 *         2 de fev de 2018 09:09:50
-	 *
-	 */
-	public static String getDataAtual() {
-		Date date = new Date();
-		Date addMinutes = DateUtils.addMinutes(date, 5);
-		return DateFormatUtils.ISO_DATETIME_TIME_ZONE_FORMAT.format(addMinutes);
 	}
 }
