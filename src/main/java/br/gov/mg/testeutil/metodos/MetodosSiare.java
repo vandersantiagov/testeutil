@@ -466,6 +466,9 @@ public class MetodosSiare {
 			PrintWriter escrever = new PrintWriter(canal);
 			String guardaValor = null;
 			guardaValor = driver.findElement(objetoCopiar).getText();
+			if(StringUtils.isBlank(guardaValor)){
+				guardaValor = driver.findElement(objetoCopiar).getAttribute("value");
+			}
 			String str = guardaValor;
 			while (str.indexOf("-") != -1) {
 				if (str.indexOf("-") != 0) {
