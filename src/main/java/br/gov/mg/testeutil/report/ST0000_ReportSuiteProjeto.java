@@ -44,10 +44,29 @@ public class ST0000_ReportSuiteProjeto {
 	}
 
 	public static void relatorioPerformace() throws IOException {
+		File file = new File("Z:\\ArtefatosWebdriver\\Relatorios\\Performance\\" + SuiteSiare.nomeProjetoSuitePrincipal
+				+ "\\.benchmarks");
+		if (!file.exists()) {
+			file.createNewFile();
+		}
 		Properties p = new Properties();
 		p.load(new FileInputStream(new File("C:\\Ambiente\\siare5\\testeutil\\src\\test\\resources\\jub.properties")));
-		p.setProperty("jub.charts.dir","Z:\\ArtefatosWebdriver\\Relatorios\\Performance\\"+SuiteSiare.nomeProjetoSuitePrincipal +"\\Relatório Performance "+DateUtil.getDataFormatadaByFormato(new Date(), DateUtil.FORMATO_DATA1));
-		p.setProperty("jub.db.file","Z:\\ArtefatosWebdriver\\Relatorios\\Performance\\"+SuiteSiare.nomeProjetoSuitePrincipal +"\\.benchmarks");
+		Date data = new Date();
+		File fileCharts = new File("Z:\\ArtefatosWebdriver\\Relatorios\\Performance\\"
+				+ SuiteSiare.nomeProjetoSuitePrincipal + "\\Relatório Performance "
+				+ DateUtil.getDataFormatadaByFormato(data, DateUtil.FORMATO_DATA1));
+
+		if (!fileCharts.exists()) {
+			fileCharts.mkdirs();
+		}
+
+		p.setProperty("jub.charts.dir",
+				"Z:\\ArtefatosWebdriver\\Relatorios\\Performance\\" + SuiteSiare.nomeProjetoSuitePrincipal
+						+ "\\Relatório Performance "
+						+ DateUtil.getDataFormatadaByFormato(data, DateUtil.FORMATO_DATA1));
+		p.setProperty("jub.db.file", "Z:\\ArtefatosWebdriver\\Relatorios\\Performance\\"
+				+ SuiteSiare.nomeProjetoSuitePrincipal + "\\.benchmarks");
+
 		for (String k : p.stringPropertyNames()) {
 			System.setProperty(k, p.getProperty(k));
 		}
