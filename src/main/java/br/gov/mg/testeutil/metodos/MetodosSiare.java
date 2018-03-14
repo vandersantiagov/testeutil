@@ -1761,12 +1761,12 @@ public class MetodosSiare {
 	 */
 
 	public static void consultarResponsavelOuPriorizarELogar(String subPastaProjeto, String nomeDoArquivoProtocolo,
-		String nomeDoArquivoResponsavel, boolean isExecutado) throws IOException, InterruptedException {
+			String nomeDoArquivoResponsavel, boolean isExecutado) throws IOException, InterruptedException {
 		MetodosSiare.umClique(ObjetosMetodosComuns.abaHomeSiareSICAF);
-		MetodosSiare.umClique(ObjetosMetodosComuns.menuAdiministracaoDeServico);
-		// Verifica se o usuário tem perfil para acesso a opção Home >
+		// Verifica se o usuário tem perfil para acesso a opção Home > //
 		// Administração de Serviço > Serviço > Priorização
-		if (MetodosSiare.verificaVisibilidadeVariosElementos(ObjetosMetodosComuns.subMenuServico)) {
+		if (MetodosSiare.verificaVisibilidadeVariosElementos(ObjetosMetodosComuns.menuAdiministracaoDeServico,
+				ObjetosMetodosComuns.subMenuServico, ObjetosMetodosComuns.subMenuPriorizacao)) {
 			MetodosSiare.menuSubMenuNivel2(ObjetosMetodosComuns.menuAdiministracaoDeServico,
 					ObjetosMetodosComuns.subMenuServico, ObjetosMetodosComuns.subMenuPriorizacao);
 			MetodosSiare.validarTexto("Manutenção de Priorização de Serviços",
@@ -1807,7 +1807,8 @@ public class MetodosSiare {
 								"Não foi possível enviar o protocolo")) {
 							System.out.println("Protocolo NÃO Priorizado.");
 						}
-						achou = true;					}
+						achou = true;
+					}
 				}
 				if (MetodosSiare.verificaSeOElementoPossuiInformacao(ObjetosMetodosComuns.campoAnalistaResponsavel)) {
 					achou = true;
@@ -1860,6 +1861,8 @@ public class MetodosSiare {
 		}
 
 	}
+		
+	
 	/**Desenvolvido por 
 	 * @Author Jacqueline Lucas
 	 */
