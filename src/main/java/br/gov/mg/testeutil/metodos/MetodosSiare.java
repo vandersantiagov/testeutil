@@ -1551,31 +1551,55 @@ public class MetodosSiare {
 	 */
 	public static void aguardarInsercaoDeTextoDaImagemCapcha(By elementoCapcha, By elementoPesquisar)
 			throws InterruptedException {
-		boolean processa = true, saida = false;
-		int cont = 0;
-		MetodosSiare.umClique(elementoCapcha);
-		while (!saida) {
-			if (processa) {
-				MetodosSiare.aguardarOProximoPasso(10000);
-				if (!MetodosSiare.driver.findElement(elementoCapcha).getAttribute("value").equals("")) {
-					MetodosSiare.umClique(elementoPesquisar);
-					cont++;
+		if (MetodosSiare.driver.getPageSource().toString().contains("www.gstatic.com/recaptcha/api2/")) {
+			MetodosSiare.driver.switchTo().frame(0);
+		}
+		if (MetodosSiare.verificaSeOElementoEstaVisivel(ObjetosMetodosComuns.elementoCapcha)) {
+			MetodosSiare.umClique(ObjetosMetodosComuns.elementoCapcha);
+			String title = MetodosSiare.driver.getTitle();
+			while (title.equals(MetodosSiare.driver.getTitle())) {
+				try {
+					MetodosSiare.driver.switchTo().defaultContent();
+					if (MetodosSiare.driver.findElement(elementoPesquisar).isDisplayed()) {
+						WebElement firstField = MetodosSiare.driver.findElement(By.id("query"));
+						firstField.sendKeys("INFO: APÓS INTERAGIR COM CAPCHA, ACIONE O COMANDO CONFIRMAR");
+						MetodosSiare.aguardarOProximoPasso(2000);
+						firstField.clear();
+						if (MetodosSiare.driver.findElement(elementoPesquisar).isDisplayed()) {
+							MetodosSiare.driver.switchTo().frame(0);
+						}
+					}
+				} catch (Exception e) {
+					System.out.println(e);
 				}
-				if (MetodosSiare.verificaSeOElementoEstaVisivel(elementoCapcha)) {
-					MetodosSiare.umClique(elementoCapcha);
-					if (MetodosSiare.verificaSeOElementoEstaVisivel(ObjetosMetodosComuns.menssagemCapcha)) {
-						if (!MetodosSiare.verificaSeOElementoPossuiInformacao(ObjetosMetodosComuns.menssagemCapcha)
-								&& cont > 0)
-							saida = true;
+			}
+		} else {
+			boolean processa = true, saida = false;
+			int cont = 0;
+			MetodosSiare.umClique(elementoCapcha);
+			while (!saida) {
+				if (processa) {
+					MetodosSiare.aguardarOProximoPasso(10000);
+					if (!MetodosSiare.driver.findElement(elementoCapcha).getAttribute("value").equals("")) {
+						MetodosSiare.umClique(elementoPesquisar);
+						cont++;
 					}
-					if (MetodosSiare.verificaSeOElementoEstaVisivel(ObjetosMetodosComuns.excecaoMenssage)) {
-						if (!MetodosSiare.verificaSeOElementoPossuiInformacao(ObjetosMetodosComuns.excecaoMenssage)
-								&& cont > 0)
-							saida = true;
+					if (MetodosSiare.verificaSeOElementoEstaVisivel(elementoCapcha)) {
+						MetodosSiare.umClique(elementoCapcha);
+						if (MetodosSiare.verificaSeOElementoEstaVisivel(ObjetosMetodosComuns.menssagemCapcha)) {
+							if (!MetodosSiare.verificaSeOElementoPossuiInformacao(ObjetosMetodosComuns.menssagemCapcha)
+									&& cont > 0)
+								saida = true;
+						}
+						if (MetodosSiare.verificaSeOElementoEstaVisivel(ObjetosMetodosComuns.excecaoMenssage)) {
+							if (!MetodosSiare.verificaSeOElementoPossuiInformacao(ObjetosMetodosComuns.excecaoMenssage)
+									&& cont > 0)
+								saida = true;
+						}
+					} else {
+						processa = false;
+						saida = true;
 					}
-				} else {
-					processa = false;
-					saida = true;
 				}
 			}
 		}
