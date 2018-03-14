@@ -150,6 +150,7 @@ public class ObjetosMetodosComuns {
 
     public static By menssagemCapcha = By.id("messagem");
     public static By excecaoMenssage = By.id("message");
+    public static By elementoCapcha = By.xpath("//*[@id='recaptcha-anchor']/div[5]");
     
     /*
      * Contador de Telas
