@@ -2006,7 +2006,7 @@ public class MetodosSiare {
 	 */
 	public static void setAmbienteSol() {
 		driver = SeleniumSol.getDriver();
-		wait = new WebDriverWait(driver, 40);
+		wait = new WebDriverWait(driver, 30);
 		driver.navigate().to(PropertySol.SITE_ADDRESS);
 		driver.manage().window().maximize();
 		PropertySol.ambienteSOL = true;
@@ -2014,7 +2014,7 @@ public class MetodosSiare {
 
 	public static void setAmbienteSicaf() {
 		driver = SeleniumSicaf.getDriver();
-		wait = new WebDriverWait(driver, 40);
+		wait = new WebDriverWait(driver, 30);
 		driver.navigate().to(PropertySicaf.SITE_ADDRESS);
 		driver.manage().window().maximize();
 		PropertySicaf.ambienteSICAF = true;
@@ -2022,7 +2022,7 @@ public class MetodosSiare {
 
 	public static void setAmbienteNaoSiare() {
 		driver = SeleniumNaoSiare.getDriver();
-		wait = new WebDriverWait(driver, 40);
+		wait = new WebDriverWait(driver, 30);
 		driver.navigate().to(PropertyNaoSiare.SITE_ADDRESS);
 		driver.manage().window().maximize();
 		PropertyNaoSiare.ambienteNAOSIARE = true;
